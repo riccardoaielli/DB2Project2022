@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Homepage</title>
+</head>
+<body class="has-background-light">
+<section class="container py-5 vh100">
+    <div class="has-text-right">
+        <div data-th-text="'Signed in as ' + ${session.user.username}">Signed in as pippo</div>
+        <a data-th-href="@{/logout}">Logout</a>
+    </div>
+
+</section>
+</body>
+</html>
