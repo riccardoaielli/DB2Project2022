@@ -23,6 +23,10 @@ public class UserEntity {
 
     @Column(name = "Email", nullable = false, length = 90)
     private String email;
+    
+    @Column(name = "Flag_ins", nullable = false, length = 45)
+    private String flag_ins;
+
 
 //    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.MERGE}, orphanRemoval = true)
 //    private List<ReviewEntity> reviews = new ArrayList<>();
@@ -30,10 +34,12 @@ public class UserEntity {
 //    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH}, orphanRemoval = true)
 //    private List<EntryEntity> entries = new ArrayList<>();
 
-    public UserEntity(String username, String password, String email) {
+    public UserEntity(String username, String password, String email, String flag) {
         this.username = username;
         this.password = password;
         this.email = email;
+        this.flag_ins = flag;
+
     }
 
     public UserEntity() {
@@ -70,6 +76,14 @@ public class UserEntity {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+    
+    public String getFlag_ins() {
+        return this.flag_ins;
+    }
+
+    public void setFlag_ins(String flag_ins) {
+        this.flag_ins = flag_ins;
     }
 
 }

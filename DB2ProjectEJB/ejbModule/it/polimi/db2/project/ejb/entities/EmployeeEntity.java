@@ -3,11 +3,11 @@ package it.polimi.db2.project.ejb.entities;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "admin")
+@Table(name = "employee")
 @NamedQueries({
-        @NamedQuery(name = "AdminEntity.checkCredentials", query = "SELECT a FROM AdminEntity a WHERE a.username = :username AND a.password = :password")
+        @NamedQuery(name = "EmployeeEntity.checkCredentials", query = "SELECT a FROM EmployeeEntity a WHERE a.username = :username AND a.password = :password")
 })
-public class AdminEntity {
+public class EmployeeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id", nullable = false)
@@ -18,8 +18,8 @@ public class AdminEntity {
 
     @Column(name = "Password", nullable = false, length = 45)
     private String password;
-
-
+    
+   
     public int getId() {
         return id;
     }
@@ -43,4 +43,6 @@ public class AdminEntity {
     public void setPassword(String password) {
         this.password = password;
     }
+    
+   
 }
