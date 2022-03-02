@@ -1,8 +1,8 @@
-package it.polimi.db2.project.web.controllers.admin;
+package it.polimi.db2.project.web.controllers.employee;
 
-import it.polimi.db2.project.ejb.entities.AdminEntity;
+import it.polimi.db2.project.ejb.entities.EmployeeEntity;
 import it.polimi.db2.project.ejb.exceptions.CredentialsException;
-import it.polimi.db2.project.ejb.services.AdminService;
+import it.polimi.db2.project.ejb.services.EmployeeService;
 import org.apache.commons.text.StringEscapeUtils;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -18,14 +18,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "AdminLoginServlet", value = "/admin/login")
+@WebServlet(name = "EmployeeLoginServlet", value = "/employee/login")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
     private TemplateEngine templateEngine;
 
-    @EJB(name = "it.polimi.db2.project.web.services/AdminService")
-    private AdminService adminService;
+    @EJB(name = "it.polimi.db2.project.web.services/EmployeeService")
+    private EmployeeService employeeService;
 
     @Override
     public void init() {
@@ -39,7 +39,7 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.sendRedirect(getServletContext().getContextPath() + "/admin");
+        resp.sendRedirect(getServletContext().getContextPath() + "/employee");
     }
 
     @Override
@@ -52,25 +52,25 @@ public class LoginServlet extends HttpServlet {
             return;
         }
 
-        AdminEntity admin;
+        EmployeeEntity employee;
         try {
-            admin = adminService.checkCredentials(username, password);
+        	employee = employeeService.checkCredentials(username, password);
         } catch (CredentialsException | NonUniqueResultException e) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Could not check credentials.");
             return;
         }
 
-        if (admin == null) {
+        if (employee == null) {
             resp.setContentType("text/html");
 
             ServletContext servletContext = getServletContext();
             final WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
             ctx.setVariable("errorMessage", "Incorrect username or password.");
 
-            templateEngine.process("/WEB-INF/admin/index.html", ctx, resp.getWriter());
+            templateEngine.process("/WEB-INF/employee/index.html", ctx, resp.getWriter());
         } else {
-            req.getSession().setAttribute("admin", admin);
-            resp.sendRedirect(getServletContext().getContextPath() + "/admin/homepage");
+            req.getSession().setAttribute("employee", employee);
+            resp.sendRedirect(getServletContext().getContextPath() + "/employee/homepage");
         }
     }
 }

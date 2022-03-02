@@ -37,6 +37,6 @@ public class OrderEntity {
 	    
 	 // ****************** TO BE FIXED
 
-	    @OneToMany
-	    private int user_id;
+//	    @OneToMany
+//	    private int user_id;
 }

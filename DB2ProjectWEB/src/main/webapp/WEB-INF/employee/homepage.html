@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Employee Homepage</title>
+    <link href="../../css/bulma.min.css" data-th-href="@{/css/bulma.min.css}" rel="stylesheet">
+    <link href="../../css/custom.css" data-th-href="@{/css/custom.css}" rel="stylesheet">
+</head>
+<body class="has-background-light">
+<section class="container py-5 vh100">
+    <div class="has-text-right">
+        <div data-th-text="'Signed in as ' + ${session.employee.username}">Signed in as employee</div>
+        <a data-th-href="@{/employee/logout}">Logout</a>
+    </div>
+
+    <div class="column">
+        <div class="has-text-centered mb-6">
+            <h1 class="title">Employee Homepage</h1>
+        </div>
+        <nav class="breadcrumb" aria-label="breadcrumbs">
+            <ul>
+                <li class="is-active"><a data-th-href="@{/employee/homepage}">Employee</a></li>
+            </ul>
+        </nav>
+
+        <h2 class="is-size-3 mb-2">Employee homepage!</h2>
+
+        <div><p>Go to<a href="salesreport.html" data-th-href="@{/employee/salesreport}">Sales Report Page</a></div>
+    </div>
+</section>
+</body>
+</html>
+
+<!-- //TODO form per creare Service-->
+<!-- //TODO form per creare OptionalProduct-->

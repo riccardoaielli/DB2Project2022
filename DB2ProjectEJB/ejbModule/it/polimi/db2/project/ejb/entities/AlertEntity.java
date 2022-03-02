@@ -38,7 +38,7 @@ public class AlertEntity {
 	    public AlertEntity(String amount, String timestamp, int user_alert) {
 	    	this.amount = amount;
 	        this.timestamp = timestamp;
-	        this.user_alert = user_alert;  // ****************** TO BE FIXED
+//	        this.user_alert = user_alert;  // ****************** TO BE FIXED
 	      
 
 	    }
@@ -69,13 +69,13 @@ public class AlertEntity {
 			this.timestamp = timestamp;
 		}
 
-		public int getUser_alert() {
-			return user_alert;
-		}
-
-		public void setUser_alert(int user_alert) {
-			this.user_alert = user_alert;
-		}
+//		public int getUser_alert() {
+//			return user_alert;
+//		}
+//
+//		public void setUser_alert(int user_alert) {
+//			this.user_alert = user_alert;
+//		}
 	    
 
 	    

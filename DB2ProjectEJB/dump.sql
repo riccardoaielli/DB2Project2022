@@ -63,7 +63,6 @@ CREATE TABLE `employee` (
   `Id` int NOT NULL AUTO_INCREMENT,
   `Username` varchar(45) NOT NULL,
   `Password` varchar(45) NOT NULL,
-  `Email` varchar(90) NOT NULL,
   PRIMARY KEY (`Id`),
   UNIQUE KEY `Username_UNIQUE` (`Username`),
   UNIQUE KEY `Email_UNIQUE` (`Email`)
