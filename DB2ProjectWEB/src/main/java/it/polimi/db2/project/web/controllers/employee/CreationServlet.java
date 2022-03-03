@@ -3,8 +3,9 @@ package it.polimi.db2.project.web.controllers.employee;
 //import it.polimi.db2.project.ejb.entities.ProductEntity;
 //import it.polimi.db2.project.ejb.exceptions.BadProductException;
 //import it.polimi.db2.project.ejb.exceptions.BadQuestionnaireException;
-//import it.polimi.db2.project.ejb.services.ProductService;
-//import it.polimi.db2.project.ejb.services.QuestionnaireService;
+import it.polimi.db2.project.ejb.services.ServicePackageService;
+import it.polimi.db2.project.ejb.services.OptionalProductService;
+
 import org.apache.commons.text.StringEscapeUtils;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -23,40 +24,40 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-//@WebServlet(name = "AdminCreationServlet", value = "/admin/creation")
-//public class CreationServlet extends HttpServlet {
-//    private TemplateEngine templateEngine;
-//
-//    @EJB(name = "it.polimi.db2.gma.GMAEJB.services/ProductService")
-//    private ProductService productService;
-//
-//    @EJB(name = "it.polimi.db2.gma.GMAEJB.services/QuestionnaireService")
-//    private QuestionnaireService questionnaireService;
-//
-//    public void init() {
-//        ServletContext servletContext = getServletContext();
-//        ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
-//        templateResolver.setTemplateMode(TemplateMode.HTML);
-//        this.templateEngine = new TemplateEngine();
-//        this.templateEngine.setTemplateResolver(templateResolver);
-//        templateResolver.setSuffix(".html");
-//    }
-//
-//    @Override
-//    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-//        resp.setContentType("text/html");
-//
-//        ServletContext servletContext = getServletContext();
-//        WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
-//
+@WebServlet(name = "EmployeeCreationServlet", value = "/employee/creation")
+public class CreationServlet extends HttpServlet {
+    private TemplateEngine templateEngine;
+
+    @EJB(name = "it.polimi.db2.project.ejb.services/ServicePackageService")
+    private ServicePackageService servicePackageService;
+
+    @EJB(name = "it.polimi.db2.project.ejb.services/OptionalProductService")
+    private OptionalProductService optionalProductService;
+
+    public void init() {
+        ServletContext servletContext = getServletContext();
+        ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
+        templateResolver.setTemplateMode(TemplateMode.HTML);
+        this.templateEngine = new TemplateEngine();
+        this.templateEngine.setTemplateResolver(templateResolver);
+        templateResolver.setSuffix(".html");
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.setContentType("text/html");
+
+        ServletContext servletContext = getServletContext();
+        WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
+
 //        List<ProductEntity> products = productService.findAllProducts();
-//
+
 //        ctx.setVariable("products", products);
-//
-//        String creationPath = "/WEB-INF/admin/creation.html";
-//        templateEngine.process(creationPath, ctx, resp.getWriter());
-//    }
-//
+
+        String creationPath = "/WEB-INF/employee/creation.html";
+        templateEngine.process(creationPath, ctx, resp.getWriter());
+    }
+
 //    @Override
 //    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 //        String date = StringEscapeUtils.escapeJava(req.getParameter("date"));
@@ -121,4 +122,4 @@ import java.util.List;
 //
 //        templateEngine.process(path, ctx, resp.getWriter());
 //    }
-//}
+}

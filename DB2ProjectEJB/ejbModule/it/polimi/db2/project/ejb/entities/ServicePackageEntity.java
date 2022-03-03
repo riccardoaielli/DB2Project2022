@@ -1,21 +1,21 @@
-//package it.polimi.db2.project.ejb.entities;
-//
-//import javax.persistence.*;
-//import java.util.ArrayList;
-//import java.util.List;
-//
+package it.polimi.db2.project.ejb.entities;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
 //@Entity
 //@Table(name = "product")
 //@NamedQueries({
 //        @NamedQuery(name = "ProductEntity.findAll", query = "SELECT p FROM ProductEntity p"),
 //        @NamedQuery(name = "ProductEntity.findByDate", query = "SELECT p FROM ProductEntity p INNER JOIN p.questionnaires q WHERE q.date = :date"),
 //})
-//public class ServiceEntity {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Column(name = "Id", nullable = false)
-//    private int id;
-//
+public class ServicePackageEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "Id", nullable = false)
+    private int id;
+
 //    @Column(name = "Name", nullable = false, length = 45)
 //    private String name;
 //
@@ -64,4 +64,4 @@
 //    public List<ReviewEntity> getReviews() {
 //        return reviews;
 //    }
-//}
+}
