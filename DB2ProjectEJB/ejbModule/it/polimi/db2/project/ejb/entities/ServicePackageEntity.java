@@ -3,8 +3,7 @@ package it.polimi.db2.project.ejb.entities;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-
-//@Entity
+@Entity
 //@Table(name = "product")
 //@NamedQueries({
 //        @NamedQuery(name = "ProductEntity.findAll", query = "SELECT p FROM ProductEntity p"),

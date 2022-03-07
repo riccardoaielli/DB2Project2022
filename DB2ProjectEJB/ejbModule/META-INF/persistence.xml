@@ -6,6 +6,7 @@
 		<class>it.polimi.db2.project.ejb.entities.EmployeeEntity</class>
 		<class>it.polimi.db2.project.ejb.entities.OrderEntity</class>
 		<class>it.polimi.db2.project.ejb.entities.UserEntity</class>
+		<class>it.polimi.db2.project.ejb.entities.ServicePackageEntity</class>
 		
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>

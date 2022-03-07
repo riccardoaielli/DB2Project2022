@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -35,8 +37,71 @@ public class OrderEntity {
 	    @Column(name = "Timestamp", nullable = false, length = 45)
 	    private String timestamp;
 	    
-	 // ****************** TO BE FIXED
+	 
+	    @ManyToOne
+	    @JoinColumn(name = "User_id", nullable = false)  // unidirectional, order has the fk of the user who created it 
+	    private UserEntity user_id;
+	    
+	    @ManyToOne
+	    @JoinColumn(name = "Service_pack_id", nullable = false)  // unidirectional, order has the fk of the user who created it 
+	    private ServicePackageEntity service_pack_id; // unidirectional
 
-//	    @OneToMany
-//	    private int user_id;
+		public int getId() {
+			return id;
+		}
+
+		public void setId(int id) {
+			this.id = id;
+		}
+
+		public String getCost() {
+			return cost;
+		}
+
+		public void setCost(String cost) {
+			this.cost = cost;
+		}
+
+		public String getStart_date() {
+			return start_date;
+		}
+
+		public void setStart_date(String start_date) {
+			this.start_date = start_date;
+		}
+
+		public String getStatus() {
+			return status;
+		}
+
+		public void setStatus(String status) {
+			this.status = status;
+		}
+
+		public String getTimestamp() {
+			return timestamp;
+		}
+
+		public void setTimestamp(String timestamp) {
+			this.timestamp = timestamp;
+		}
+
+		public UserEntity getUser_id() {
+			return user_id;
+		}
+
+		public void setUser_id(UserEntity user_id) {
+			this.user_id = user_id;
+		}
+
+		public ServicePackageEntity getService_pack_id() {
+			return service_pack_id;
+		}
+
+		public void setService_pack_id(ServicePackageEntity service_pack_id) {
+			this.service_pack_id = service_pack_id;
+		}
+	    
+	    
+	    
 }

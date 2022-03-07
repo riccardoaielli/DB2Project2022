@@ -63,6 +63,7 @@ CREATE TABLE `employee` (
   `Id` int NOT NULL AUTO_INCREMENT,
   `Username` varchar(45) NOT NULL,
   `Password` varchar(45) NOT NULL,
+  `Email` varchar(90) NOT NULL,
   PRIMARY KEY (`Id`),
   UNIQUE KEY `Username_UNIQUE` (`Username`),
   UNIQUE KEY `Email_UNIQUE` (`Email`)
@@ -117,8 +118,11 @@ CREATE TABLE `order` (
   `status` varchar(45) NOT NULL,
   `timestamp` varchar(45) NOT NULL,
   `user_id` int NOT NULL,
+  `service_pack_id` int DEFAULT NULL,
   PRIMARY KEY (`Id`),
   KEY `user_id_idx` (`user_id`),
+  KEY `service_pack_id_idx` (`service_pack_id`),
+  CONSTRAINT `service_pack_id` FOREIGN KEY (`service_pack_id`) REFERENCES `service_pack` (`Id`),
   CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -155,33 +159,6 @@ LOCK TABLES `service` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `service_oproduct`
---
-
-DROP TABLE IF EXISTS `service_oproduct`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `service_oproduct` (
-  `service_id` int NOT NULL,
-  `op_id` int NOT NULL,
-  PRIMARY KEY (`service_id`,`op_id`),
-  UNIQUE KEY `service_id_UNIQUE` (`service_id`),
-  UNIQUE KEY `op_id_UNIQUE` (`op_id`),
-  CONSTRAINT `oproduct` FOREIGN KEY (`op_id`) REFERENCES `optional_product` (`Id`),
-  CONSTRAINT `service` FOREIGN KEY (`service_id`) REFERENCES `service_pack` (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `service_oproduct`
---
-
-LOCK TABLES `service_oproduct` WRITE;
-/*!40000 ALTER TABLE `service_oproduct` DISABLE KEYS */;
-/*!40000 ALTER TABLE `service_oproduct` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `service_pack`
 --
 
@@ -192,9 +169,15 @@ CREATE TABLE `service_pack` (
   `Id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `validity_period` int NOT NULL,
+  `optional_products` int NOT NULL,
+  `services` int NOT NULL,
   PRIMARY KEY (`Id`),
   UNIQUE KEY `name_UNIQUE` (`name`),
-  UNIQUE KEY `validity_period_UNIQUE` (`validity_period`)
+  UNIQUE KEY `validity_period_UNIQUE` (`validity_period`),
+  KEY `service_pack_idx` (`optional_products`),
+  KEY `service_fk_idx` (`services`),
+  CONSTRAINT `optional_product_fk` FOREIGN KEY (`optional_products`) REFERENCES `optional_product` (`Id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `service_fk` FOREIGN KEY (`services`) REFERENCES `service` (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -205,32 +188,6 @@ CREATE TABLE `service_pack` (
 LOCK TABLES `service_pack` WRITE;
 /*!40000 ALTER TABLE `service_pack` DISABLE KEYS */;
 /*!40000 ALTER TABLE `service_pack` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `service_spack`
---
-
-DROP TABLE IF EXISTS `service_spack`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `service_spack` (
-  `service_id` int NOT NULL,
-  `spack_id` int NOT NULL,
-  KEY `service_id_idx` (`service_id`),
-  KEY `spack_id_idx` (`spack_id`),
-  CONSTRAINT `service_id` FOREIGN KEY (`service_id`) REFERENCES `service` (`Id`),
-  CONSTRAINT `spack_id` FOREIGN KEY (`spack_id`) REFERENCES `service_pack` (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `service_spack`
---
-
-LOCK TABLES `service_spack` WRITE;
-/*!40000 ALTER TABLE `service_spack` DISABLE KEYS */;
-/*!40000 ALTER TABLE `service_spack` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -295,4 +252,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-02-25  1:43:48
+-- Dump completed on 2022-03-07 19:53:00

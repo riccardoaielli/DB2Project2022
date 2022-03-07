@@ -33,7 +33,9 @@ public class UserEntity {
 //
 //    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH}, orphanRemoval = true)
 //    private List<EntryEntity> entries = new ArrayList<>();
-
+    
+   
+    
     public UserEntity(String username, String password, String email, String flag) {
         this.username = username;
         this.password = password;

@@ -32,18 +32,17 @@ public class AlertEntity {
 	    
 	    @OneToOne
 	    @JoinColumn(name = "User_alert", nullable = false)  // unidirectional, alert has the fk of the user who created the alert
-	    private UserEntity user_alert; // ****************** TO BE FIXED
+	    private UserEntity user_alert;
 
 	    
-	    public AlertEntity(String amount, String timestamp, int user_alert) {
-	    	this.amount = amount;
-	        this.timestamp = timestamp;
-//	        this.user_alert = user_alert;  // ****************** TO BE FIXED
-	      
-
-	    }
-	    public AlertEntity()
-	    {}
+//	    public AlertEntity(String amount, String timestamp, UserEntity user_alert) {
+//	    	this.amount = amount;
+//	        this.timestamp = timestamp;
+//	        this.user_alert = user_alert;
+//	      
+//
+//	    }
+	    public AlertEntity(){}
 	    
 		public int getId() {
 			return id;
