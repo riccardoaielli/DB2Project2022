@@ -36,7 +36,6 @@ public class OrderEntity {
 	    
 	    @Column(name = "Timestamp", nullable = false, length = 45)
 	    private String timestamp;
-	    
 	 
 	    @ManyToOne
 	    @JoinColumn(name = "User_id", nullable = false)  // unidirectional, order has the fk of the user who created it 

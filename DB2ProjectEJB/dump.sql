@@ -136,6 +136,13 @@ DROP TABLE IF EXISTS `service`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `service` (
   `Id` int NOT NULL,
+  `Type` varchar(45) NOT NULL,
+  `Min_fee` int,
+  `Sms_fee` int,
+  `Min` int,
+  `Sms` int,
+  `Gb_fee` int,
+  `Gb` int,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;

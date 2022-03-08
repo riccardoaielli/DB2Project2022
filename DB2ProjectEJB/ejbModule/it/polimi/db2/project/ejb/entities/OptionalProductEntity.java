@@ -11,6 +11,7 @@ import java.util.List;
 //        @NamedQuery(name = "ProductEntity.findAll", query = "SELECT p FROM ProductEntity p"),
 //        @NamedQuery(name = "ProductEntity.findByDate", query = "SELECT p FROM ProductEntity p INNER JOIN p.questionnaires q WHERE q.date = :date"),
 //})
+
 public class OptionalProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +26,6 @@ public class OptionalProductEntity {
     
     @ManyToMany(mappedBy = "optionalProductEntities")
     private Collection<ServicePackageEntity> servicePackageEntities;
-  
     
 
 	public int getId() {

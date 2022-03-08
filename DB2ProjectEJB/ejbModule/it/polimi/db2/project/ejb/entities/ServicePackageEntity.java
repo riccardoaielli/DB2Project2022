@@ -33,6 +33,10 @@ public class ServicePackageEntity {
 	@ManyToMany
 	@JoinTable(name = "has", joinColumns = @JoinColumn(name = "Service_pack_id"), inverseJoinColumns = @JoinColumn(name = "Optional_product_id"))
 	private List<OptionalProductEntity> optionalProductEntities; // owner of the relation
+	
+	@ManyToMany
+	@JoinTable(name = "comprises", joinColumns = @JoinColumn(name = "Service_pack_id"), inverseJoinColumns = @JoinColumn(name = "Service_id"))
+	private List<ServiceEntity> serviceEntities; // owner of the relation
     
     public int getId() {
 		return id;
