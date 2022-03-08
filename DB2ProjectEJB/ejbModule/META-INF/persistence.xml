@@ -4,9 +4,12 @@
 		<jta-data-source>db2Project</jta-data-source>
 		<class>it.polimi.db2.project.ejb.entities.AlertEntity</class>
 		<class>it.polimi.db2.project.ejb.entities.EmployeeEntity</class>
+		<class>it.polimi.db2.project.ejb.entities.OptionalProductEntity</class>
 		<class>it.polimi.db2.project.ejb.entities.OrderEntity</class>
-		<class>it.polimi.db2.project.ejb.entities.UserEntity</class>
+		<class>it.polimi.db2.project.ejb.entities.ServiceEntity</class>
 		<class>it.polimi.db2.project.ejb.entities.ServicePackageEntity</class>
+		<class>it.polimi.db2.project.ejb.entities.UserEntity</class>
+		<class>it.polimi.db2.project.ejb.entities.ValidityPeriodEntity</class>
 		
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>

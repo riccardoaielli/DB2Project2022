@@ -31,14 +31,14 @@ DROP TABLE IF EXISTS `alert`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `alert` (
-  `Id` int NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `amount` varchar(45) NOT NULL,
   `timestamp` varchar(45) NOT NULL,
   `user_alert` int NOT NULL,
-  PRIMARY KEY (`Id`),
+  PRIMARY KEY (`id`),
   UNIQUE KEY `user_alert_UNIQUE` (`user_alert`),
-  KEY `fk_alert_1_idx` (`Id`),
-  CONSTRAINT `user_alert` FOREIGN KEY (`user_alert`) REFERENCES `user` (`Id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  KEY `fk_alert_1_idx` (`id`),
+  CONSTRAINT `user_alert` FOREIGN KEY (`user_alert`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -60,11 +60,11 @@ DROP TABLE IF EXISTS `employee`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `employee` (
-  `Id` int NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `Username` varchar(45) NOT NULL,
   `Password` varchar(45) NOT NULL,
   `Email` varchar(90) NOT NULL,
-  PRIMARY KEY (`Id`),
+  PRIMARY KEY (`id`),
   UNIQUE KEY `Username_UNIQUE` (`Username`),
   UNIQUE KEY `Email_UNIQUE` (`Email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -87,10 +87,10 @@ DROP TABLE IF EXISTS `optional_product`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `optional_product` (
-  `Id` int NOT NULL,
+  `id` int NOT NULL,
   `name` varchar(45) NOT NULL,
   `fee` int NOT NULL,
-  PRIMARY KEY (`Id`),
+  PRIMARY KEY (`id`),
   UNIQUE KEY `name_UNIQUE` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -112,18 +112,18 @@ DROP TABLE IF EXISTS `order`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `order` (
-  `Id` int NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `cost` varchar(45) NOT NULL,
   `start_date` varchar(45) NOT NULL,
   `status` varchar(45) NOT NULL,
   `timestamp` varchar(45) NOT NULL,
   `user_id` int NOT NULL,
   `service_pack_id` int DEFAULT NULL,
-  PRIMARY KEY (`Id`),
+  PRIMARY KEY (`id`),
   KEY `user_id_idx` (`user_id`),
   KEY `service_pack_id_idx` (`service_pack_id`),
-  CONSTRAINT `service_pack_id` FOREIGN KEY (`service_pack_id`) REFERENCES `service_pack` (`Id`),
-  CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`Id`)
+  CONSTRAINT `service_pack_id` FOREIGN KEY (`service_pack_id`) REFERENCES `service_pack` (`id`),
+  CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -144,8 +144,8 @@ DROP TABLE IF EXISTS `service`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `service` (
-  `Id` int NOT NULL,
-  PRIMARY KEY (`Id`)
+  `id` int NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -166,18 +166,18 @@ DROP TABLE IF EXISTS `service_pack`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `service_pack` (
-  `Id` int NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `validity_period` int NOT NULL,
   `optional_products` int NOT NULL,
   `services` int NOT NULL,
-  PRIMARY KEY (`Id`),
+  PRIMARY KEY (`id`),
   UNIQUE KEY `name_UNIQUE` (`name`),
   UNIQUE KEY `validity_period_UNIQUE` (`validity_period`),
   KEY `service_pack_idx` (`optional_products`),
   KEY `service_fk_idx` (`services`),
-  CONSTRAINT `optional_product_fk` FOREIGN KEY (`optional_products`) REFERENCES `optional_product` (`Id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `service_fk` FOREIGN KEY (`services`) REFERENCES `service` (`Id`)
+  CONSTRAINT `optional_product_fk` FOREIGN KEY (`optional_products`) REFERENCES `optional_product` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `service_fk` FOREIGN KEY (`services`) REFERENCES `service` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -198,12 +198,12 @@ DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user` (
-  `Id` int NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `Username` varchar(45) NOT NULL,
   `Password` varchar(45) NOT NULL,
   `Email` varchar(90) NOT NULL,
   `Flag_Ins` varchar(45) NOT NULL,
-  PRIMARY KEY (`Id`),
+  PRIMARY KEY (`id`),
   UNIQUE KEY `Username_UNIQUE` (`Username`),
   UNIQUE KEY `Email_UNIQUE` (`Email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -220,6 +220,34 @@ INSERT INTO `user` VALUES (3,'ciao','ciao','ciao','ciao');
 UNLOCK TABLES;
 
 --
+-- Table structure for table `has`
+--
+
+DROP TABLE IF EXISTS `has`;
+
+CREATE TABLE `has` (
+  `service_pack_id` int NOT NULL,
+  `optional_product_id` int NOT NULL,
+  PRIMARY KEY (`service_pack_id`, `optional_product_id`),
+  FOREIGN KEY (`service_pack_id`) REFERENCES `service_pack` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  FOREIGN KEY (`optional_product_id`) REFERENCES `optional_product` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  );
+
+--
+-- Table structure for table `comprises`
+--
+
+DROP TABLE IF EXISTS `comprises`;
+
+CREATE TABLE `comprises` (
+  `service_pack_id` int NOT NULL,
+  `service_id` int NOT NULL,
+  PRIMARY KEY (`service_pack_id`, `service_id`),
+  FOREIGN KEY (`service_pack_id`) REFERENCES `service_pack` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  FOREIGN KEY (`service_id`) REFERENCES `service` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+);
+
+--
 -- Table structure for table `validity_period`
 --
 
@@ -227,10 +255,10 @@ DROP TABLE IF EXISTS `validity_period`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `validity_period` (
-  `Id` int NOT NULL,
+  `id` int NOT NULL,
   `monthly_fee` int NOT NULL,
   `months` int NOT NULL,
-  PRIMARY KEY (`Id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
