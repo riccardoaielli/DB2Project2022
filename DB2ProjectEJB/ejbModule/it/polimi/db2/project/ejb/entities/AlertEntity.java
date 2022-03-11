@@ -35,13 +35,13 @@ public class AlertEntity {
     private UserEntity user_alert;
 
     
-//	    public AlertEntity(String amount, String timestamp, UserEntity user_alert) {
-//	    	this.amount = amount;
-//	        this.timestamp = timestamp;
-//	        this.user_alert = user_alert;
-//	      
-//
-//	    }
+	    public AlertEntity(String amount, String timestamp, UserEntity user_alert) {
+	    	this.amount = amount;
+	        this.timestamp = timestamp;
+	        this.user_alert = user_alert;	      
+
+	    }
+    
     public AlertEntity(){}
     
 	public int getId() {

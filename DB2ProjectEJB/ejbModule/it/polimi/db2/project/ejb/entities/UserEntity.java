@@ -1,5 +1,8 @@
 package it.polimi.db2.project.ejb.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.*;
 
 @Entity
@@ -28,11 +31,11 @@ public class UserEntity {
     private String flag_ins;
 
 
-//    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.MERGE}, orphanRemoval = true)
-//    private List<ReviewEntity> reviews = new ArrayList<>();
+    @OneToMany(mappedBy = "user_id", cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.MERGE}, orphanRemoval = true)
+    private List<OrderEntity> orders = new ArrayList<>();
 //
-//    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH}, orphanRemoval = true)
-//    private List<EntryEntity> entries = new ArrayList<>();
+    @OneToOne(mappedBy = "user_alert", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH}, orphanRemoval = true)
+    private AlertEntity alert;
     
    
     

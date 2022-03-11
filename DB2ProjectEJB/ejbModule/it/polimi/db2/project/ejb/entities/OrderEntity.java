@@ -38,12 +38,12 @@ public class OrderEntity {
 	    private String timestamp;
 	 
 	    @ManyToOne
-	    @JoinColumn(name = "User_id", nullable = false)  // unidirectional, order has the fk of the user who created it 
+	    @JoinColumn(name = "User_id", nullable = false)  
 	    private UserEntity user_id;
 	    
 	    @ManyToOne
-	    @JoinColumn(name = "Service_pack_id", nullable = false)  // unidirectional, order has the fk of the user who created it 
-	    private ServicePackageEntity service_pack_id; // unidirectional
+	    @JoinColumn(name = "Service_pack_id", nullable = false)  
+	    private ServicePackageEntity service_pack_id; 
 
 		public int getId() {
 			return id;

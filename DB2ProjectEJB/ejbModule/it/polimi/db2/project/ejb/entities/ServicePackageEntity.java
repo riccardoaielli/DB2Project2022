@@ -38,6 +38,13 @@ public class ServicePackageEntity {
 	@JoinTable(name = "comprises", joinColumns = @JoinColumn(name = "Service_pack_id"), inverseJoinColumns = @JoinColumn(name = "Service_id"))
 	private List<ServiceEntity> serviceEntities; // owner of the relation
     
+	@OneToMany(mappedBy = "service_pack_id", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH}, orphanRemoval = true)
+	private List<OrderEntity> orders = new ArrayList<>();
+	
+	@ManyToOne
+    @JoinColumn(name="Service_package_fk", nullable = false)
+    private EmployeeServicePackEntity service_pack_id;
+	
     public int getId() {
 		return id;
 	}

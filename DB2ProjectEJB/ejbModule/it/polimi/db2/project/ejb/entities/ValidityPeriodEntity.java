@@ -1,5 +1,6 @@
 package it.polimi.db2.project.ejb.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -31,6 +32,9 @@ public class ValidityPeriodEntity {
     @OneToMany(mappedBy = "validity_period")
     private List<ServicePackageEntity> servicePackageEntities;
 
+    @OneToMany(mappedBy = "validityP_fk", cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.MERGE}, orphanRemoval = true)
+    private List<EmployeeServicePackEntity>  employeeSPacks = new ArrayList<>();
+    
     //fetch = FetchType.EAGER, cascade = CascadeType.REMOVE
 
 	public int getId() {
