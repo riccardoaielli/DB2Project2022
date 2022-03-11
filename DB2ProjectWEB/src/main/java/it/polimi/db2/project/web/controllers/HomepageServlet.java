@@ -34,13 +34,19 @@ public class HomepageServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         HttpSession session = req.getSession();
         UserEntity user = (UserEntity) session.getAttribute("user");
-
+        String path;
 
         resp.setContentType("text/html");
 
         ServletContext servletContext = getServletContext();
         WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
-        String path = "/WEB-INF/homepage.html";
+        
+        if(user==null) {
+        	path = "/WEB-INF/homepageguest.html";
+        }
+        else {
+        	path = "/WEB-INF/homepage.html";
+        }
 
         templateEngine.process(path, ctx, resp.getWriter());
     }

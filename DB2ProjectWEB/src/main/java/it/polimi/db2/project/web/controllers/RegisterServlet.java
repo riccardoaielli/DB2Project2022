@@ -25,7 +25,7 @@ public class RegisterServlet extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private final String registerPath = "/WEB-INF/register.html";
+	private final String indexPath = "/WEB-INF/index.html";
     private TemplateEngine templateEngine;
 
     @EJB(name = "it.polimi.db2.project.ejb.services/UserService")
@@ -41,15 +41,15 @@ public class RegisterServlet extends HttpServlet {
         templateResolver.setSuffix(".html");
     }
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.setContentType("text/html");
-
-        ServletContext servletContext = getServletContext();
-        WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
-
-        templateEngine.process(registerPath, ctx, resp.getWriter());
-    }
+//    @Override
+//    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+//        resp.setContentType("text/html");
+//
+//        ServletContext servletContext = getServletContext();
+//        WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
+//
+//        templateEngine.process(registerPath, ctx, resp.getWriter());
+//    }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -83,11 +83,11 @@ public class RegisterServlet extends HttpServlet {
             final WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
             ctx.setVariable("errorMessage", error);
 
-            templateEngine.process(registerPath, ctx, resp.getWriter());
+            templateEngine.process(indexPath, ctx, resp.getWriter());
         } else {
             req.getSession().setAttribute("user", user);
 
-            resp.sendRedirect(getServletContext().getContextPath() + "/homepage");
+            resp.sendRedirect(getServletContext().getContextPath() + "");
         }
     }
 
