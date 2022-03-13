@@ -216,6 +216,6 @@ CREATE TABLE `offers` (
   `EmployeeServicePack_id` int NOT NULL,
   `Validity_period_id` int NOT NULL,
   PRIMARY KEY (`EmployeeServicePack_id`,`Validity_period_id`),
-  CONSTRAINT `comprises_ibfk_1` FOREIGN KEY (`EmployeeServicePack_id`) REFERENCES `employeeServicePack` (`Id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `comprises_ibfk_2` FOREIGN KEY (`Validity_period_id`) REFERENCES `validity_period` (`Id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  CONSTRAINT `offers_ibfk_1` FOREIGN KEY (`EmployeeServicePack_id`) REFERENCES `employeeServicePack` (`Id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `offers_ibfk_2` FOREIGN KEY (`Validity_period_id`) REFERENCES `validity_period` (`Id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 );
