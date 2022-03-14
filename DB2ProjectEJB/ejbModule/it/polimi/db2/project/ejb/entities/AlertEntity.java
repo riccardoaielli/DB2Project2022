@@ -1,11 +1,16 @@
 package it.polimi.db2.project.ejb.entities;
 
+import java.sql.Timestamp;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
@@ -14,7 +19,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "alert")
 @NamedQueries({
-        @NamedQuery(name = "AlertEntity.findUser", query = "SELECT u FROM UserEntity u WHERE u.id = :user_alert"),
+        @NamedQuery(name = "AlertEntity.findUser", query = "SELECT u FROM UserEntity u WHERE u.id = :user_alert"), // TODO controllare sia corretta
         
 })
 public class AlertEntity {
@@ -25,17 +30,17 @@ public class AlertEntity {
     private int id;
  
  	@Column(name = "Amount", nullable = false, length = 45)
-    private String amount;
+    private int amount;
 
     @Column(name = "Timestamp", nullable = false, length = 45) // put by default from the db when the entry is created in the table
-    private String timestamp;
+    private Timestamp timestamp;
     
     @OneToOne
-    @JoinColumn(name = "User_alert", nullable = false)  // unidirectional, alert has the fk of the user who created the alert
+    @JoinColumn(name = "User_alert_id", nullable = false)  // alert has the fk of the user who created the alert
     private UserEntity user_alert;
 
     
-	    public AlertEntity(String amount, String timestamp, UserEntity user_alert) {
+	    public AlertEntity(int amount, Timestamp timestamp, UserEntity user_alert) {
 	    	this.amount = amount;
 	        this.timestamp = timestamp;
 	        this.user_alert = user_alert;	      
@@ -52,19 +57,19 @@ public class AlertEntity {
 		this.id = id;
 	}
 
-	public String getAmount() {
+	public int getAmount() {
 		return amount;
 	}
 
-	public void setAmount(String amount) {
+	public void setAmount(int amount) {
 		this.amount = amount;
 	}
 
-	public String getTimestamp() {
+	public Timestamp getTimestamp() {
 		return timestamp;
 	}
 
-	public void setTimestamp(String timestamp) {
+	public void setTimestamp(Timestamp timestamp) {
 		this.timestamp = timestamp;
 	}
 

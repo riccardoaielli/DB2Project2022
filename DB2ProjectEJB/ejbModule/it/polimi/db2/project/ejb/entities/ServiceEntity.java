@@ -1,7 +1,10 @@
 package it.polimi.db2.project.ejb.entities;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,10 +28,10 @@ public class ServiceEntity {
     private String type;
 
     @Column(name = "Min_fee", nullable = false)
-    private int min_fee;
+    private float min_fee;
     
     @Column(name = "Sms_fee", nullable = false)
-    private int sms_fee;
+    private float sms_fee;
     
     @Column(name = "Min", nullable = false)
     private int min;
@@ -37,13 +40,13 @@ public class ServiceEntity {
     private int sms;
     
     @Column(name = "Gb_fee", nullable = false)
-    private int gb_fee;
+    private float gb_fee;
     
     @Column(name = "Gb", nullable = false)
     private int gb;
     
-    @ManyToMany(mappedBy = "serviceEntities")
-    private Collection<ServicePackageEntity> servicePackageEntities;
+    @ManyToMany(mappedBy = "serviceEntities", cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.MERGE}) // relation comprises
+    private List<EmployeeServicePackEntity> employeeServicePackEntity = new ArrayList<>();
 
 	public int getId() {
 		return id;
@@ -61,19 +64,19 @@ public class ServiceEntity {
 		this.type = type;
 	}
 
-	public int getMin_fee() {
+	public float getMin_fee() {
 		return min_fee;
 	}
 
-	public void setMin_fee(int min_fee) {
+	public void setMin_fee(float min_fee) {
 		this.min_fee = min_fee;
 	}
 
-	public int getSms_fee() {
+	public float getSms_fee() {
 		return sms_fee;
 	}
 
-	public void setSms_fee(int sms_fee) {
+	public void setSms_fee(float sms_fee) {
 		this.sms_fee = sms_fee;
 	}
 
@@ -93,11 +96,11 @@ public class ServiceEntity {
 		this.sms = sms;
 	}
 
-	public int getGb_fee() {
+	public float getGb_fee() {
 		return gb_fee;
 	}
 
-	public void setGb_fee(int gb_fee) {
+	public void setGb_fee(float gb_fee) {
 		this.gb_fee = gb_fee;
 	}
 

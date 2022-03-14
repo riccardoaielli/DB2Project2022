@@ -27,19 +27,18 @@ public class UserEntity {
     @Column(name = "Email", nullable = false, length = 90)
     private String email;
     
-    @Column(name = "Flag_ins", nullable = false, length = 45)
-    private String flag_ins;
+    @Column(name = "Flag_ins", nullable = false)
+    private boolean flag_ins;
 
 
     @OneToMany(mappedBy = "user_id", cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.MERGE}, orphanRemoval = true)
     private List<OrderEntity> orders = new ArrayList<>();
-//
+
     @OneToOne(mappedBy = "user_alert", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH}, orphanRemoval = true)
     private AlertEntity alert;
     
-   
     
-    public UserEntity(String username, String password, String email, String flag) {
+    public UserEntity(String username, String password, String email, boolean flag) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -83,11 +82,11 @@ public class UserEntity {
         this.email = email;
     }
     
-    public String getFlag_ins() {
+    public boolean getFlag_ins() {
         return this.flag_ins;
     }
 
-    public void setFlag_ins(String flag_ins) {
+    public void setFlag_ins(boolean flag_ins) {
         this.flag_ins = flag_ins;
     }
 

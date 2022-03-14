@@ -78,7 +78,7 @@ public class UserService {
             throw new CredentialsException("Email already in use!");
         }
 
-        UserEntity newUser = new UserEntity(username, password, email, "no");
+        UserEntity newUser = new UserEntity(username, password, email, false);
         em.persist(newUser);
 
         return newUser;

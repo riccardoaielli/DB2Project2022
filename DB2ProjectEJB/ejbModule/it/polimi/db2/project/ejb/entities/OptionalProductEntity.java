@@ -22,9 +22,9 @@ public class OptionalProductEntity {
     private String name;
 
     @Column(name = "Fee", nullable = false)
-    private int fee;
+    private float fee;
     
-    @ManyToMany(mappedBy = "optionalProductEntities")
+    @ManyToMany(mappedBy = "optionalProductEntities") // relazione has
     private Collection<ServicePackageEntity> servicePackageEntities;
     
 
@@ -44,11 +44,11 @@ public class OptionalProductEntity {
 		this.name = name;
 	}
 
-	public int getFee() {
+	public float getFee() {
 		return fee;
 	}
 
-	public void setFee(int fee) {
+	public void setFee(float fee) {
 		this.fee = fee;
 	}
 

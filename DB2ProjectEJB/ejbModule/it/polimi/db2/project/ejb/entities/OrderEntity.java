@@ -1,4 +1,7 @@
 package it.polimi.db2.project.ejb.entities;
+import java.sql.Date;
+import java.sql.Timestamp;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,7 +11,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -25,25 +27,22 @@ public class OrderEntity {
 	    @Column(name = "Id", nullable = false)
 	    private int id;
 
-	    @Column(name = "Cost", nullable = false, length = 45)
-	    private String cost;
+	    @Column(name = "Totalcost", nullable = false, length = 45)
+	    private float totalcost;
 
-	    @Column(name = "Start_date", nullable = false, length = 45)
-	    private String start_date;
-
-	    @Column(name = "Status", nullable = false, length = 45)
-	    private String status;
+	    @Column(name = "Isvalid", nullable = false, length = 45)
+	    private boolean isvalid;
 	    
 	    @Column(name = "Timestamp", nullable = false, length = 45)
-	    private String timestamp;
+	    private Timestamp timestamp;
 	 
 	    @ManyToOne
 	    @JoinColumn(name = "User_id", nullable = false)  
 	    private UserEntity user_id;
 	    
-	    @ManyToOne
+	    @OneToOne
 	    @JoinColumn(name = "Service_pack_id", nullable = false)  
-	    private ServicePackageEntity service_pack_id; 
+	    private ServicePackageEntity service_pack_id;
 
 		public int getId() {
 			return id;
@@ -53,35 +52,11 @@ public class OrderEntity {
 			this.id = id;
 		}
 
-		public String getCost() {
-			return cost;
-		}
-
-		public void setCost(String cost) {
-			this.cost = cost;
-		}
-
-		public String getStart_date() {
-			return start_date;
-		}
-
-		public void setStart_date(String start_date) {
-			this.start_date = start_date;
-		}
-
-		public String getStatus() {
-			return status;
-		}
-
-		public void setStatus(String status) {
-			this.status = status;
-		}
-
-		public String getTimestamp() {
+		public Timestamp getTimestamp() {
 			return timestamp;
 		}
 
-		public void setTimestamp(String timestamp) {
+		public void setTimestamp(Timestamp timestamp) {
 			this.timestamp = timestamp;
 		}
 

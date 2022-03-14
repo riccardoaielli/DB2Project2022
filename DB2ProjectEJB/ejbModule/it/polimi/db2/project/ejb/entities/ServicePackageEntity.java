@@ -16,34 +16,25 @@ public class ServicePackageEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id", nullable = false)
     private int id;
-
-	@Column(name = "Name", nullable = false, length = 45)
-    private String name;
-    
-    @Column(name = "Optional_products", nullable = false)
-    private int optional_products;
-    
-    @Column(name = "Services", nullable = false)
-    private int services;
     
     @ManyToOne
-    @JoinColumn(name="Validity_period", nullable = false)
-    private ValidityPeriodEntity validity_period;
+    @JoinColumn(name="Validity_period_id", nullable = false) // owner della relazione associate
+    private ValidityPeriodEntity validity_period_id;
     
 	@ManyToMany
 	@JoinTable(name = "has", joinColumns = @JoinColumn(name = "Service_pack_id"), inverseJoinColumns = @JoinColumn(name = "Optional_product_id"))
-	private List<OptionalProductEntity> optionalProductEntities; // owner of the relation
+	private List<OptionalProductEntity> optionalProductEntities; // owner of the relation has
 	
-	@ManyToMany
-	@JoinTable(name = "comprises", joinColumns = @JoinColumn(name = "Service_pack_id"), inverseJoinColumns = @JoinColumn(name = "Service_id"))
-	private List<ServiceEntity> serviceEntities; // owner of the relation
+//	@ManyToMany
+//	@JoinTable(name = "comprises", joinColumns = @JoinColumn(name = "Service_pack_id"), inverseJoinColumns = @JoinColumn(name = "Service_id"))
+//	private List<ServiceEntity> serviceEntities; // owner of the relation
     
-	@OneToMany(mappedBy = "service_pack_id", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH}, orphanRemoval = true)
-	private List<OrderEntity> orders = new ArrayList<>();
+	@OneToOne(mappedBy = "service_pack_id", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH}, orphanRemoval = true)
+	private OrderEntity orders; // relazione in
 	
 	@ManyToOne
-    @JoinColumn(name="Service_package_fk", nullable = false)
-    private EmployeeServicePackEntity service_pack_id;
+    @JoinColumn(name="Service_pack_employee_id", nullable = false)
+    private EmployeeServicePackEntity service_pack_employee_id; // owner della relazione made_of
 	
     public int getId() {
 		return id;
@@ -51,30 +42,6 @@ public class ServicePackageEntity {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public int getOptional_products() {
-		return optional_products;
-	}
-
-	public void setOptional_products(int optional_products) {
-		this.optional_products = optional_products;
-	}
-
-	public int getServices() {
-		return services;
-	}
-
-	public void setServices(int services) {
-		this.services = services;
 	}
       
 }

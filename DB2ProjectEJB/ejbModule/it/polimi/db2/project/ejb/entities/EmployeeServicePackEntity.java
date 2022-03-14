@@ -6,7 +6,7 @@ import java.util.List;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "employeeServicePackEntity")
+@Table(name = "employeeServicePack")
 @NamedQueries({
         //@NamedQuery(name = "EmployeeEntity.checkCredentials", query = "SELECT a FROM EmployeeEntity a WHERE a.username = :username AND a.password = :password")
 })
@@ -19,10 +19,17 @@ public class EmployeeServicePackEntity {
 	    @Column(name = "Id", nullable = false)
 	    private int id;
 	 
-	 @OneToMany(mappedBy = "service_pack_id", cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.MERGE}, orphanRemoval = true)
-	    private List<ServicePackageEntity> servicePacks = new ArrayList<>();
+	 @Column(name = "Name", nullable=false)
+	    private String name;
 	 
-	 @ManyToOne
-	    @JoinColumn(name = "ValidityP_fk", nullable = false)  // unidirectional, order has the fk of the user who created it 
-	    private ValidityPeriodEntity validityP_fk;
+	 @OneToMany(mappedBy = "service_pack_employee_id", cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.MERGE}, orphanRemoval = true)
+	    private List<ServicePackageEntity> servicePacks = new ArrayList<>(); // relation made_of
+	 
+	 @ManyToMany
+	 @JoinTable(name = "offers", joinColumns = @JoinColumn(name = "EmployeeServicePack_id"), inverseJoinColumns = @JoinColumn(name = "Validity_period_id"))
+	 private List<ValidityPeriodEntity> validityPeriodEntity; // owner of the relation offers
+	 
+	 @ManyToMany
+	 @JoinTable(name = "comprises", joinColumns = @JoinColumn(name = "EmployeeServicePack_id"), inverseJoinColumns = @JoinColumn(name = "Service_id"))
+	 private List<ServiceEntity> serviceEntities; // owner of the relation comprises
 }
