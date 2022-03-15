@@ -7,13 +7,39 @@
     <link href="../css/bulma.min.css" data-th-href="@{/css/bulma.min.css}" rel="stylesheet">
     <link href="../css/style.css" data-th-href="@{/css/style.css}" rel="stylesheet">
 </head>
-<body class="has-background-light">
+<body>
 <section class="container py-5 vh100">
     <div class="has-text-right">
+    	<div data-th-if="${session.user == null}">
+    		<div data-th-text="GUEST"></div>
+    		<a data-th-href="@{/login}">Login</a>
+        </div>
+        <div data-th-if="${session.user != null}"> 
         <div data-th-text="'Signed in as ' + ${session.user.username}">Signed in as USER</div>
         <a data-th-href="@{/logout}">Logout</a>
+        </div>
+    </div>
+    
+    <h2 class="is-size-3 mb-2">Employee Service Pack</h2>
+    <div data-th-if="${employeeServicePacks.isEmpty()}" class="is-size-5 has-text-centered my-5">
+    There are no service packs!
     </div>
 
+	<table data-th-unless="${employeeServicePacks.isEmpty()}" class="table is-fullwidth my-5 has-text-centered">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-th-each="employeeServicePack : ${employeeServicePacks}">
+            <td data-th-text="${employeeServicePack.getId()}">1</td>
+            <td data-th-text="${employeeServicePack.getName()}">Employee service pack name</td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="has-text-centered"><a data-th-href="@{/buypage}" class="button is-primary is-medium">Buy Page</a></div>
 </section>
 </body>
 </html>

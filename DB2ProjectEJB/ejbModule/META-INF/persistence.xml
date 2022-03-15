@@ -12,12 +12,13 @@
 		<class>it.polimi.db2.project.ejb.entities.ValidityPeriodEntity</class>
 		<class>it.polimi.db2.project.ejb.entities.EmployeeServicePackEntity</class>
 		
-		<properties>
-			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/db2Project"/>
-			<property name="javax.persistence.jdbc.user" value="riccardo"/>
-			<property name="javax.persistence.jdbc.password" value="aielli"/>
-			<property name="eclipselink.logging.level" value="FINE" />
-		</properties>
+<!-- 		<properties> -->
+<!-- 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/> -->
+<!-- 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/db2Project"/> -->
+<!-- 			<property name="javax.persistence.jdbc.user" value="riccardo"/> -->
+<!-- 			<property name="javax.persistence.jdbc.password" value="aielli"/> -->
+<!-- 			<property name="eclipselink.logging.level" value="FINE" /> -->
+<!-- 		</properties> -->
+
 	</persistence-unit>
 </persistence>

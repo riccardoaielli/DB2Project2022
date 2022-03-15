@@ -8,6 +8,7 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 
+import it.polimi.db2.project.ejb.entities.EmployeeServicePackEntity;
 import it.polimi.db2.project.ejb.entities.UserEntity;
 import it.polimi.db2.project.ejb.exceptions.CredentialsException;
 

@@ -3,16 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Homepageguest</title>
+    <title>Buypage</title>
     <link href="../css/bulma.min.css" data-th-href="@{/css/bulma.min.css}" rel="stylesheet">
     <link href="../css/style.css" data-th-href="@{/css/style.css}" rel="stylesheet">
 </head>
-<body class="has-background-light">
+<body>
 <section class="container py-5 vh100">
     <div class="has-text-right">
-        <div data-th-text="GUEST"></div>
-        <a data-th-href="@{/login}">Login</a>
+    	<div data-th-if="${session.user == null}">
+    		<div data-th-text="GUEST"></div>
+    		<a data-th-href="@{/login}">Login</a>
+        </div>
+        <div data-th-if="${session.user != null}"> 
+        <div data-th-text="'Signed in as ' + ${session.user.username}">Signed in as USER </div>
+        <a data-th-href="@{/logout}">Logout</a>
+        </div>
     </div>
+    
 
 </section>
 </body>

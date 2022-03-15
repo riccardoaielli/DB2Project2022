@@ -7,10 +7,20 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "employeeServicePack")
-@NamedQueries({
-        //@NamedQuery(name = "EmployeeEntity.checkCredentials", query = "SELECT a FROM EmployeeEntity a WHERE a.username = :username AND a.password = :password")
-})
 
+@NamedQueries({
+	@NamedQuery(
+	        name = "EmployeeServicePack.findByID",
+	        query = "SELECT esp FROM EmployeeServicePackEntity esp WHERE esp.id = :id"),
+	
+	@NamedQuery(
+	        name = "EmployeeServicePack.findByName",
+	        query = "SELECT esp FROM EmployeeServicePackEntity esp WHERE esp.name = :name"),
+	        
+	@NamedQuery(
+	        name = "EmployeeServicePack.findAll",
+	        query = "SELECT esp FROM EmployeeServicePackEntity esp")
+})
    
 
 public class EmployeeServicePackEntity {
@@ -32,4 +42,46 @@ public class EmployeeServicePackEntity {
 	 @ManyToMany
 	 @JoinTable(name = "comprises", joinColumns = @JoinColumn(name = "EmployeeServicePack_id"), inverseJoinColumns = @JoinColumn(name = "Service_id"))
 	 private List<ServiceEntity> serviceEntities; // owner of the relation comprises
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public List<ServicePackageEntity> getServicePacks() {
+		return servicePacks;
+	}
+
+	public void setServicePacks(List<ServicePackageEntity> servicePacks) {
+		this.servicePacks = servicePacks;
+	}
+
+	public List<ValidityPeriodEntity> getValidityPeriodEntity() {
+		return validityPeriodEntity;
+	}
+
+	public void setValidityPeriodEntity(List<ValidityPeriodEntity> validityPeriodEntity) {
+		this.validityPeriodEntity = validityPeriodEntity;
+	}
+
+	public List<ServiceEntity> getServiceEntities() {
+		return serviceEntities;
+	}
+
+	public void setServiceEntities(List<ServiceEntity> serviceEntities) {
+		this.serviceEntities = serviceEntities;
+	}
+	 
+	 
 }

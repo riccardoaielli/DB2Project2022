@@ -110,6 +110,11 @@ CREATE TABLE `employeeServicePack` (
   UNIQUE KEY (`Name`)
 );
 
+LOCK TABLES `employeeServicePack` WRITE;
+INSERT INTO `employeeServicePack` VALUES (1,'Special new');
+INSERT INTO `employeeServicePack` VALUES (2,'Young special');
+UNLOCK TABLES;
+
 -- ok
 -- Table structure for table `optional_product`
 --
