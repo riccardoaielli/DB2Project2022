@@ -189,3 +189,131 @@ create table salesPerPackage
     constraint salesPerPackage_fk0
         foreign key (EmployeeServicePack_id) references employeeServicePack (Id)
 );
+
+-- Average number of optional products sold together with each service package
+
+
+--
+
+
+-- List of insolvent users, suspended orders and alert
+
+DROP TRIGGER IF EXISTS addAlert;
+
+delimiter //
+CREATE DEFINER  = CURRENT_USER trigger addAlert
+    after insert
+    on alert
+    for each row
+begin
+INSERT INTO alerts
+VALUES (NEW.Id);
+end //
+delimiter ;
+
+DROP TABLE IF EXISTS alerts;
+
+create table alerts
+(
+    Alert_id int not null,
+    constraint alerts_fk0
+        foreign key (Alert_id) references alert (Id)
+);
+
+create index alerts_fk0_idx
+    on alerts (Alert_id);
+    
+
+
+DROP TRIGGER IF EXISTS updateInsolventUser;
+
+delimiter //
+CREATE DEFINER  = CURRENT_USER trigger updateInsolventUser
+    after update
+		on `user`
+			for each row
+begin
+    IF NEW.Flag_Ins = true THEN
+        IF(NEW.Id NOT IN (SELECT User_id FROM insolvent)) THEN
+            INSERT INTO insolvent
+            VALUES (NEW.Id);
+END IF;
+
+ELSE
+DELETE FROM insolvent i
+WHERE i.User_id = NEW.Id;
+END IF;
+end //
+delimiter ;
+
+DROP TABLE IF EXISTS insolvent;
+
+create table insolvent
+(
+    User_id int not null,
+    constraint insolvent_fk0
+        foreign key (User_id) references `user` (Id)
+);
+
+create index insolvent_fk0_idx
+    on insolvent (User_id);
+
+
+DROP TRIGGER IF EXISTS addSuspendedOrder;
+
+delimiter //
+CREATE DEFINER  = CURRENT_USER trigger addSuspendedOrder
+    after insert
+    on `order`
+    for each row
+begin
+    IF(NEW.Isvalid = false) THEN
+        IF(NEW.Id NOT IN (SELECT Order_id FROM suspendedOrders)) THEN
+            INSERT INTO suspendedOrders(Order_id)
+			VALUES(NEW.Id);
+		END IF;
+	ELSE
+	IF(NEW.Id IN (SELECT Order_id FROM suspendedOrders)) THEN
+DELETE FROM suspendedOrders s
+WHERE s.Order_id = NEW.Id;
+END IF;
+END IF;
+end //
+delimiter ;
+
+DROP TRIGGER IF EXISTS updateSuspendedOrder;
+
+delimiter //
+CREATE DEFINER  = CURRENT_USER trigger updateSuspendedOrder
+    after update
+                                   on `order`
+                                   for each row
+begin
+    IF(NEW.Isvalid = false) THEN
+        IF(NEW.Id NOT IN (SELECT Order_id FROM suspendedOrders)) THEN
+            INSERT INTO suspendedOrders(Order_id)
+			VALUES(NEW.Id);
+END IF;
+ELSE
+        IF(NEW.Id IN (SELECT Order_id FROM suspendedOrders)) THEN
+DELETE FROM suspendedOrders s
+WHERE s.Order_id = NEW.Id;
+END IF;
+END IF;
+
+end //
+delimiter ;
+
+DROP TABLE IF EXISTS suspendedOrders;
+
+create table suspendedOrders
+(
+    Order_id int not null,
+    constraint suspendedOrders_fk0
+        foreign key (Order_id) references `order`  (Id)
+);
+
+create index suspendedOrders_fk0_idx
+    on suspendedOrders (Order_id);
+
+

@@ -15,7 +15,7 @@ USE `db2Project`;
 DROP TABLE IF EXISTS `user`;
 
 CREATE TABLE `user` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `Username` varchar(45) NOT NULL,
   `Password` varchar(45) NOT NULL,
   `Email` varchar(90) NOT NULL,
