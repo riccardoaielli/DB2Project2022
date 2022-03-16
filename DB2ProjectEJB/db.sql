@@ -156,6 +156,7 @@ CREATE TABLE `service_pack` (
   `Id` int NOT NULL AUTO_INCREMENT,
   `Validity_period_id` int NOT NULL,
   `Start_date` date NOT NULL,
+  `Deactivation_date` date NOT NULL,
   `Costpackage` float NOT NULL, -- Calcolato tramite il validity_period scelto
   `Totalcostoptionalproducts` float DEFAULT 0 NOT NULL, -- Somma del costo degli optional_product scelti
   `Service_pack_employee_id` int NOT NULL,

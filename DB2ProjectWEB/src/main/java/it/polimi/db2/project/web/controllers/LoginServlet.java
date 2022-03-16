@@ -16,6 +16,7 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
+import it.polimi.db2.project.ejb.entities.ServicePackageEntity;
 import it.polimi.db2.project.ejb.entities.UserEntity;
 import it.polimi.db2.project.ejb.exceptions.CredentialsException;
 import it.polimi.db2.project.ejb.services.UserService;
@@ -29,6 +30,8 @@ public class LoginServlet extends HttpServlet {
 
     @EJB(name = "it.polimi.db2.project.ejb.services/UserService")
     private UserService userService;
+    
+    ServicePackageEntity servicePackage;
 
     @Override
     public void init() {
@@ -42,6 +45,9 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    	
+    	servicePackage = (ServicePackageEntity) req.getSession(false).getAttribute("servicePackage");
+    	
         resp.sendRedirect(getServletContext().getContextPath());
     }
 
@@ -49,6 +55,8 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String username = StringEscapeUtils.escapeJava(req.getParameter("username"));
         String password = StringEscapeUtils.escapeJava(req.getParameter("password"));
+        
+        String servlettoload = "";
 
         if (username == null || password == null || username.isEmpty() || password.isEmpty()) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing credential value.");
@@ -62,19 +70,25 @@ public class LoginServlet extends HttpServlet {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Could not check credentials.");
             return;
         }
+        
+        ServletContext servletContext = getServletContext();
+        final WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
 
         if (user == null) {
             resp.setContentType("text/html");
 
-            ServletContext servletContext = getServletContext();
-            final WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
             ctx.setVariable("errorMessage", "Incorrect username or password.");
-
             templateEngine.process("/WEB-INF/index.html", ctx, resp.getWriter());
-        } else {
-
-            req.getSession().setAttribute("user", user);
-            resp.sendRedirect(getServletContext().getContextPath() + "/homepage");
         }
+        else if(user != null) {
+        	if(servicePackage == null) {
+        		req.getSession().setAttribute("user", user);
+                servlettoload =  "/homepage";
+        	}else {
+        		servlettoload =  "/confirmationpage";
+        	}
+        }
+        
+        resp.sendRedirect(getServletContext().getContextPath() + servlettoload);
     }
 }

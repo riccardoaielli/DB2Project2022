@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Buypage</title>
+    <title>Confirmationpage</title>
     <link href="../css/bulma.min.css" data-th-href="@{/css/bulma.min.css}" rel="stylesheet">
     <link href="../css/style.css" data-th-href="@{/css/style.css}" rel="stylesheet">
 </head>
@@ -12,17 +12,20 @@
     <div class="has-text-right">
     	<div data-th-if="${session.user == null}">
     		<div data-th-text="GUEST"></div>
-    		<a data-th-href="@{/login}">Login</a>
         </div>
         <div data-th-if="${session.user != null}"> 
         <div data-th-text="'Signed in as ' + ${session.user.username}">Signed in as USER </div>
         <a data-th-href="@{/logout}">Logout</a>
         </div>
     </div>
-    <h2 class="is-size-3 mb-2">Form for purchasing</h2>
+    <h2 class="is-size-3 mb-2">Confirmation page</h2>
     
-    
-	<div class="has-text-centered"><a data-th-href="@{/confirmationpage}" class="button is-primary is-medium">Confirm</a></div>
+    <div data-th-if="${session.user == null}">
+    		<div class="has-text-centered"><a data-th-href="@{/login}" class="button is-primary is-medium">Login and Buy</a></div>
+        </div>
+        <div data-th-if="${session.user != null}"> 
+        <div class="has-text-centered"><a data-th-href="@{/extservicebilling}" class="button is-primary is-medium">Buy</a></div>
+        </div>
 </section>
 </body>
 </html>
