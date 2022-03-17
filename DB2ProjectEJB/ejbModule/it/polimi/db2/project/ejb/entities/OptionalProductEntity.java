@@ -27,6 +27,9 @@ public class OptionalProductEntity {
     @ManyToMany(mappedBy = "optionalProductEntities") // relazione has
     private Collection<ServicePackageEntity> servicePackageEntities;
     
+    @ManyToMany(mappedBy = "optionalProductEntity", cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.MERGE}) // relation propose
+    private List<EmployeeServicePackEntity> employeeServicePackEntity = new ArrayList<>();
+    
 
 	public int getId() {
 		return id;
