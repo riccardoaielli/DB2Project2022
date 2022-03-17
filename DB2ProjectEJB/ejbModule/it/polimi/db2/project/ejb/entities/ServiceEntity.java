@@ -12,12 +12,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "service")
-
+@NamedQueries({
+    @NamedQuery(name = "ServiceEntity.findServiceByName", query = "SELECT s FROM ServiceEntity s WHERE s.type=:name"),
+   
+})
 public class ServiceEntity {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

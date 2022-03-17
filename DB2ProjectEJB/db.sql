@@ -3,6 +3,13 @@
 -- Current Database: `db2Project`
 --
 
+-- USE `db2Project`;
+-- INSERT INTO `service` VALUES (1,'MOBILE_PHONE',5.0, 5.0, 500, 1000, 0.0, 0);
+-- INSERT INTO `service` VALUES (2,'FIXED_PHONE',5.0, 0.0, 2000, 0, 0.0, 0);
+-- INSERT INTO `service` VALUES (3,'MOBILE_INTERNET',0.0, 0.0, 0, 0, 20.0, 15);
+-- INSERT INTO `service` VALUES (4,'FIXED_INTERNET',0.0, 0.0, 0, 0, 30.0, 25);
+
+
 DROP SCHEMA `db2Project`;
 CREATE DATABASE IF NOT EXISTS `db2Project`;
 
@@ -145,6 +152,12 @@ CREATE TABLE `service` (
   `Gb` int,
   PRIMARY KEY (`Id`)
 );
+
+-- USE `db2Project`;
+-- INSERT INTO `service` VALUES (1,'MOBILE_PHONE',5.0, 5.0, 500, 1000, 0.0, 0);
+-- INSERT INTO `service` VALUES (2,'FIXED_PHONE',5.0, 0.0, 2000, 0, 0.0, 0);
+-- INSERT INTO `service` VALUES (3,'MOBILE_INTERNET',0.0, 0.0, 0, 0, 20.0, 15);
+-- INSERT INTO `service` VALUES (4,'FIXED_INTERNET',0.0, 0.0, 0, 0, 30.0, 25);
 
 -- ok
 -- Table structure for table `service_pack`

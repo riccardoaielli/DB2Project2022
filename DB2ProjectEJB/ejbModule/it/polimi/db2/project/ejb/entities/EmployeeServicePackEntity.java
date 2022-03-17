@@ -43,6 +43,14 @@ public class EmployeeServicePackEntity {
 	 @JoinTable(name = "comprises", joinColumns = @JoinColumn(name = "EmployeeServicePack_id"), inverseJoinColumns = @JoinColumn(name = "Service_id"))
 	 private List<ServiceEntity> serviceEntities; // owner of the relation comprises
 
+	 public EmployeeServicePackEntity(String name, List<ServiceEntity> services) {
+			this.name =  name;
+			this.serviceEntities = services;
+		}
+	 
+	 public EmployeeServicePackEntity() {}
+	 
+	 
 	public int getId() {
 		return id;
 	}

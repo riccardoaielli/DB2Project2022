@@ -6,10 +6,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "service_pack")
-//@NamedQueries({
-//        @NamedQuery(name = "ProductEntity.findAll", query = "SELECT p FROM ProductEntity p"),
-//        @NamedQuery(name = "ProductEntity.findByDate", query = "SELECT p FROM ProductEntity p INNER JOIN p.questionnaires q WHERE q.date = :date"),
-//})
+@NamedQueries({
+    @NamedQuery(name = "ServicePackageEntity.findAll", query = "SELECT sp FROM ServicePackageEntity sp"),
+    
+})
 public class ServicePackageEntity {
 	
     @Id
