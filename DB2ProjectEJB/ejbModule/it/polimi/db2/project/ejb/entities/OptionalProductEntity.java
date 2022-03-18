@@ -7,10 +7,11 @@ import java.util.List;
 
 @Entity
 @Table(name = "optional_product")
-//@NamedQueries({
-//        @NamedQuery(name = "ProductEntity.findAll", query = "SELECT p FROM ProductEntity p"),
-//        @NamedQuery(name = "ProductEntity.findByDate", query = "SELECT p FROM ProductEntity p INNER JOIN p.questionnaires q WHERE q.date = :date"),
-//})
+@NamedQueries({
+        @NamedQuery(name = "OptionalProductEntity.findAllOptionalProduct", query = "SELECT op FROM OptionalProductEntity op"),
+        @NamedQuery(name = "OptionalProductEntity.findByName", query = "SELECT op FROM OptionalProductEntity op WHERE op.name = :name"),
+        @NamedQuery(name = "OptionalProductEntity.findAssociatedESP", query = "SELECT esp FROM OptionalProductEntity esp WHERE esp.employeeServicePackEntity = :name"),
+})
 
 public class OptionalProductEntity {
     @Id
@@ -27,6 +28,17 @@ public class OptionalProductEntity {
     @ManyToMany(mappedBy = "optionalProductEntities") // relazione has
     private Collection<ServicePackageEntity> servicePackageEntities;
     
+    @ManyToMany(mappedBy = "optionalProductEntity", cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.MERGE}) // relation propose
+    private List<EmployeeServicePackEntity> employeeServicePackEntity = new ArrayList<>();
+    
+   
+
+	public OptionalProductEntity(String name, float fee) {
+	
+		this.name = name;
+		this.fee = fee;
+	}
+	public OptionalProductEntity() {}
 
 	public int getId() {
 		return id;

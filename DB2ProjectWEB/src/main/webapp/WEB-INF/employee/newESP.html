@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Service Package Creation</title>
+<link href="../css/bulma.min.css" data-th-href="@{/css/bulma.min.css}"
+	rel="stylesheet">
+<link href="../css/custom.css" data-th-href="@{/css/custom.css}"
+	rel="stylesheet">
+<script data-th-src="@{/js/questionnaire.js}"
+	src="../js/questionnaire.js"></script>
+</head>
+<body class="has-background-light">
+	<section class="container py-5 vh100">
+		<div class="has-text-right">
+
+			<a data-th-href="@{/logout}">Logout</a> <a
+				style="margin: 10px; width: fit-content;" class="button is-primary"
+				data-th-href="@{/employee/homepage}">Home</a>
+		</div>
+
+		<div data-th-if="${newESP_message == 'success'}">
+			<div class="is-size-5 notification is-primary">The Employee
+				Service Package was correctly created!</div>
+		</div>
+
+		<div class="notification is-danger"
+			data-th-if="${newESP_message != 'success' && newESP_message != null}">
+			<div class="is-size-5" data-th-text="${newESP_message}"></div>
+		</div>
+		<div class="column">
+
+
+			<form data-th-action="@{'/employee/newESP'}" method="post">
+
+				<div class="is-size-3">Service Package Creation</div>
+
+
+				<div class="is-size-5">Please insert the name of the service
+					package to be created:</div>
+
+				<input class="input" type="text" name="SP_name" id="SP_name"
+					placeholder="Name of the SP" required>
+				<div class="box">
+					<div class="is-size-5">Please select the services to be
+						included in the service package:</div>
+
+
+					<div>
+						<input style="display: block" type="checkbox"
+							data-th-each="service : ${services}"
+							data-th-name="${'SER' + service.name}" data-th-text="${service.name}"></input>
+					</div>
+				</div>
+				<div class="box">
+					<div class="is-size-5">Please select the optional products to
+						be associated with the service package:</div>
+					
+					
+					<div class="box" style="width: fit-content;"data-th-each="op : ${optional_products}">
+						<input style="display: block" type="checkbox"
+							data-th-name="${'OPS' + op.name}"
+							data-th-text="${'Name:  ' + op.name +'   '+ 'Cost:  ' + op.fee}"></input>
+					</div>
+						
+					
+					
+					<a style="margin: 10px; width: fit-content;"
+						class="button is-primary" data-th-href="@{/employee/newOP}">New
+						Optional Product</a>
+				</div>
+				<div class="box">
+					<div class="is-size-5">Please select the validity periods to
+						be associated with the service package:</div>
+					<div class="box" style="width: fit-content;"data-th-each="vp : ${val_periods}">
+						<input style="display: block" type="checkbox"
+							data-th-name="${'VPE' + vp.id}"
+							data-th-text="${'Monthly fee:  ' + vp.monthly_fee +'   '+ 'Months:  ' + vp.months}"></input>
+					</div>
+				</div>
+				<input class="button is-primary" name="submit" type="submit"
+					value="Submit">
+			</form>
+		</div>
+	</section>
+
+</body>
+</html>

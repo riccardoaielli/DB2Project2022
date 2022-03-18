@@ -38,14 +38,21 @@ public class EmployeeServicePackEntity {
 	 @ManyToMany
 	 @JoinTable(name = "offers", joinColumns = @JoinColumn(name = "EmployeeServicePack_id"), inverseJoinColumns = @JoinColumn(name = "Validity_period_id"))
 	 private List<ValidityPeriodEntity> validityPeriodEntity; // owner of the relation offers
+	
+	 
+	 @ManyToMany
+	 @JoinTable(name = "propose", joinColumns = @JoinColumn(name = "EmployeeServicePack_id"), inverseJoinColumns = @JoinColumn(name = "Optional_product_id"))
+	 private List<OptionalProductEntity> optionalProductEntity; // owner of the relation propose
 	 
 	 @ManyToMany
 	 @JoinTable(name = "comprises", joinColumns = @JoinColumn(name = "EmployeeServicePack_id"), inverseJoinColumns = @JoinColumn(name = "Service_id"))
 	 private List<ServiceEntity> serviceEntities; // owner of the relation comprises
 
-	 public EmployeeServicePackEntity(String name, List<ServiceEntity> services) {
+	 public EmployeeServicePackEntity(String name, List<ServiceEntity> services, List<ValidityPeriodEntity> vp, List<OptionalProductEntity> op) {
 			this.name =  name;
 			this.serviceEntities = services;
+			this.validityPeriodEntity = vp;
+			this.optionalProductEntity = op;
 		}
 	 
 	 public EmployeeServicePackEntity() {}

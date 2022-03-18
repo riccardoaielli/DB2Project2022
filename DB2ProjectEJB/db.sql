@@ -3,13 +3,6 @@
 -- Current Database: `db2Project`
 --
 
--- USE `db2Project`;
--- INSERT INTO `service` VALUES (1,'MOBILE_PHONE',5.0, 5.0, 500, 1000, 0.0, 0);
--- INSERT INTO `service` VALUES (2,'FIXED_PHONE',5.0, 0.0, 2000, 0, 0.0, 0);
--- INSERT INTO `service` VALUES (3,'MOBILE_INTERNET',0.0, 0.0, 0, 0, 20.0, 15);
--- INSERT INTO `service` VALUES (4,'FIXED_INTERNET',0.0, 0.0, 0, 0, 30.0, 25);
-
-
 DROP SCHEMA `db2Project`;
 CREATE DATABASE IF NOT EXISTS `db2Project`;
 
@@ -56,6 +49,16 @@ CREATE TABLE `validity_period` (
   `Months` int NOT NULL,
   PRIMARY KEY (`Id`)
 );
+
+-- ok
+-- Data for table `validity_period`
+--
+
+LOCK TABLES `validity_period` WRITE;
+INSERT INTO `validity_period` VALUES (1,20,6);
+INSERT INTO `validity_period` VALUES (2,15,12);
+INSERT INTO `validity_period` VALUES (3,10,24);
+UNLOCK TABLES;
 
 -- ok
 -- Table structure for table `alert`
@@ -153,11 +156,18 @@ CREATE TABLE `service` (
   PRIMARY KEY (`Id`)
 );
 
--- USE `db2Project`;
--- INSERT INTO `service` VALUES (1,'MOBILE_PHONE',5.0, 5.0, 500, 1000, 0.0, 0);
--- INSERT INTO `service` VALUES (2,'FIXED_PHONE',5.0, 0.0, 2000, 0, 0.0, 0);
--- INSERT INTO `service` VALUES (3,'MOBILE_INTERNET',0.0, 0.0, 0, 0, 20.0, 15);
--- INSERT INTO `service` VALUES (4,'FIXED_INTERNET',0.0, 0.0, 0, 0, 30.0, 25);
+-- ok
+-- Data for table `service`
+--
+
+LOCK TABLES `service` WRITE;
+INSERT INTO `service` VALUES (1,'MOBILE_PHONE',5.0, 5.0, 500, 1000, 0.0, 0);
+INSERT INTO `service` VALUES (2,'FIXED_PHONE',5.0, 0.0, 2000, 0, 0.0, 0);
+INSERT INTO `service` VALUES (3,'MOBILE_INTERNET',0.0, 0.0, 0, 0, 20.0, 15);
+INSERT INTO `service` VALUES (4,'FIXED_INTERNET',0.0, 0.0, 0, 0, 30.0, 25);
+INSERT INTO `service` VALUES (5,'FIXED_INTERNET',0.0, 0.0, 0, 0, 45.0, 30);
+UNLOCK TABLES;
+
 
 -- ok
 -- Table structure for table `service_pack`
@@ -237,4 +247,18 @@ CREATE TABLE `offers` (
   PRIMARY KEY (`EmployeeServicePack_id`,`Validity_period_id`),
   CONSTRAINT `offers_ibfk_1` FOREIGN KEY (`EmployeeServicePack_id`) REFERENCES `employeeServicePack` (`Id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `offers_ibfk_2` FOREIGN KEY (`Validity_period_id`) REFERENCES `validity_period` (`Id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+);
+
+-- ok
+-- Table structure for table `propose`
+--
+
+DROP TABLE IF EXISTS `propose`;
+
+CREATE TABLE `propose` (
+  `EmployeeServicePack_id` int NOT NULL,
+  `Optional_product_id` int NOT NULL,
+  PRIMARY KEY (`EmployeeServicePack_id`,`Optional_product_id`),
+  CONSTRAINT `propose_ibfk_1` FOREIGN KEY (`EmployeeServicePack_id`) REFERENCES `employeeServicePack` (`Id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `propose_ibfk_2` FOREIGN KEY (`Optional_product_id`) REFERENCES `optional_product` (`Id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 );
