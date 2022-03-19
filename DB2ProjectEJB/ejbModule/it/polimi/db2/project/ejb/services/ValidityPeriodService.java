@@ -1,11 +1,15 @@
 package it.polimi.db2.project.ejb.services;
 
 import java.util.List;
+<<<<<<< HEAD
 
+=======
+import java.util.Optional;
+>>>>>>> refs/heads/buybranch
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
+import it.polimi.db2.project.ejb.entities.ValidityPeriodEntity;
 import it.polimi.db2.project.ejb.entities.*;
 
 
@@ -27,8 +31,13 @@ public class ValidityPeriodService {
                 .findFirst()
                 .orElse(null);
     }
+<<<<<<< HEAD
     
     public List<ValidityPeriodEntity> findValidityPeriodsOfEmployeeServicePackId(int employeeServicePack_id ){
+=======
+	
+	public List<ValidityPeriodEntity> findValidityPeriodsOfEmployeeServicePackId(int employeeServicePack_id ){
+>>>>>>> refs/heads/buybranch
         return em.createNamedQuery("ValidityPeriod.findValidityPeriodsByEmployeeServicePack", ValidityPeriodEntity.class)
             .setParameter("employeeServicePack_id", employeeServicePack_id)
             .getResultList();
