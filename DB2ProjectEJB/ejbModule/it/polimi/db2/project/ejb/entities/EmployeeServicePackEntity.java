@@ -10,7 +10,7 @@ import javax.persistence.*;
 
 @NamedQueries({
 	@NamedQuery(
-	        name = "EmployeeServicePack.findByID",
+	        name = "EmployeeServicePack.findById",
 	        query = "SELECT esp FROM EmployeeServicePackEntity esp WHERE esp.id = :id"),
 	
 	@NamedQuery(

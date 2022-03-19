@@ -27,4 +27,19 @@ public class ValidityPeriodService {
                 .findFirst()
                 .orElse(null);
     }
+    
+    public List<ValidityPeriodEntity> findValidityPeriodsOfEmployeeServicePackId(int employeeServicePack_id ){
+        return em.createNamedQuery("ValidityPeriod.findValidityPeriodsByEmployeeServicePack", ValidityPeriodEntity.class)
+            .setParameter("employeeServicePack_id", employeeServicePack_id)
+            .getResultList();
+    }
+	
+	public ValidityPeriodEntity findByValPeriodID(int validityPeriod_id) {
+        return em.createNamedQuery("ValidityPeriod.findByID", ValidityPeriodEntity.class)
+            .setParameter("validityPeriod_id", validityPeriod_id)
+            .setMaxResults(1)
+            .getResultStream()
+            .findFirst()
+            .orElse(null);
+    }
 }

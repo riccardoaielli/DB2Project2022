@@ -43,6 +43,15 @@ public class EmployeeServicePackService {
                 .findFirst()
                 .orElse(null);
     }
+    
+    public EmployeeServicePackEntity findEmployeeServicePackById (int id) {
+        return em.createNamedQuery("EmployeeServicePack.findById", EmployeeServicePackEntity.class)
+                .setParameter("id", id)
+                .setMaxResults(1)
+                .getResultStream()
+                .findFirst()
+                .orElse(null);
+    }
 	
 	public EmployeeServicePackEntity addNewEmployeeServicePack(String name, List<String> servicesStrings,  List<String> ValidityPIds, List<String> OptionalPStrings) throws NonUniqueResultException {
 		

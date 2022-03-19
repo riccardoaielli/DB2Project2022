@@ -1,28 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Buypage</title>
-    <link href="../css/bulma.min.css" data-th-href="@{/css/bulma.min.css}" rel="stylesheet">
-    <link href="../css/style.css" data-th-href="@{/css/style.css}" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Buypage</title>
+<link href="../css/bulma.min.css" data-th-href="@{/css/bulma.min.css}"
+	rel="stylesheet">
+<link href="../css/style.css" data-th-href="@{/css/style.css}"
+	rel="stylesheet">
 </head>
 <body>
-<section class="container py-5 vh100">
-    <div class="has-text-right">
-    	<div data-th-if="${session.user == null}">
-    		<div data-th-text="GUEST"></div>
-    		<a data-th-href="@{/login}">Login</a>
-        </div>
-        <div data-th-if="${session.user != null}"> 
-        <div data-th-text="'Signed in as ' + ${session.user.username}">Signed in as USER </div>
-        <a data-th-href="@{/logout}">Logout</a>
-        </div>
-    </div>
-    <h2 class="is-size-3 mb-2">Form for purchasing</h2>
-    
-    
-	<div class="has-text-centered"><a data-th-href="@{/confirmationpage}" class="button is-primary is-medium">Confirm</a></div>
-</section>
+	<section class="container py-5 vh100">
+		<div class="has-text-right">
+			<div data-th-if="${session.user == null}">
+				<div data-th-text="GUEST"></div>
+				<a data-th-href="@{/login}">Login</a>
+			</div>
+			<div data-th-if="${session.user != null}">
+				<div data-th-text="'Signed in as ' + ${session.user.username}">Signed
+					in as USER</div>
+				<a data-th-href="@{/logout}">Logout</a>
+			</div>
+		</div>
+		<div class="container">
+			<div class="columns is-centered">
+				<div class="column is-8">
+					<h2 class="is-size-3 mb-2">Form for purchasing</h2>
+
+					<div data-th-if="${employeeServicePackEntity == null}">
+						<form method="post" data-th-action="@{'/buypage'}">
+							<fieldset>
+								<div class="box">
+									<label class="label" for="employeeServicePack">Select a
+										service package:</label>
+									<div class="select">
+										<select data-th-remove="all-but-first"
+											name="employeeServicePackId" id="employeeServicePackId">
+											<option value="volvo"
+												data-th-each="employeeServicePack : ${employeeServicePacks}"
+												data-th-value="${employeeServicePack.id}"
+												data-th-text="${employeeServicePack.name}">Volvo</option>
+										</select>
+										<!-- data-th-value="${employeeServicePack.id}" è il valore che viene ritornato quando premo sul pulsante -->
+									</div>
+									<div class="has-text-centered">
+										<input type="submit" class="button is-primary is-medium"
+											value="Select Package" name="employeeServicePackbtn">
+									</div>
+								</div>
+
+							</fieldset>
+						</form>
+					</div>
+
+					<div data-th-if="${employeeServicePackEntity != null}">
+						<form method="post" data-th-action="@{'/buypage'}">
+							<fieldset>
+
+								<div class="box">
+									<label class="label" for="date">Select a validity
+										period:</label>
+									<div data-th-if="${validityPeriods.isEmpty()}"
+										class="is-size-5 has-text-centered my-5">There are no
+										validity periods!</div>
+									<div class="control"
+										data-th-each="validityPeriod : ${validityPeriods}">
+										<input type="radio" data-th-name="validityPeriod" data-th-value="${validityPeriod.id}">
+										<div class="radio" data-th-value="${validityPeriod.id}"
+											data-th-text="${validityPeriod.monthly_fee} + ' euro/mese per ' + ${validityPeriod.months} + ' mesi '">validity
+											period 1</div>
+									</div>
+								</div>
+
+								<div class="box">
+									<label class="label" for="date">Select zero or more
+										optional products:</label>
+									<div data-th-if="${optionalProducts.isEmpty()}"
+										class="is-size-5 has-text-centered my-5">There are no
+										optional products!</div>
+									<div class="control"
+										data-th-each="optionalProduct : ${optionalProducts}">
+										<input type="checkbox" data-th-name="optProducts" data-th-value="${optionalProduct.name}">
+										<div class="checkbox"
+											data-th-text="${optionalProduct.name} + ', costa ' + ${optionalProduct.fee} + ' euro al mese'">optional
+											product 1</div>
+									</div>
+								</div>
+
+								<div class="box">
+									<label class="label" for="date">Start date:</label>
+									<div class="control">
+										<input class="input" type="date" name="startDate" id="date"
+											data-th-min="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}"
+											required>
+									</div>
+								</div>
+
+								<div class="has-text-centered">
+									<input type="submit" class="button is-primary is-medium"
+										value="Confirm" name="confirmbtn">
+								</div>
+
+							</fieldset>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</section>
 </body>
 </html>

@@ -28,18 +28,18 @@
 	<table data-th-unless="${employeeServicePacks.isEmpty()}" class="table is-fullwidth my-5 has-text-centered">
         <thead>
         <tr>
-            <th>ID</th>
+            <!--<th>ID</th>-->
             <th>Name</th>
         </tr>
         </thead>
         <tbody>
         <tr data-th-each="employeeServicePack : ${employeeServicePacks}">
-            <td data-th-text="${employeeServicePack.getId()}">1</td>
+            <!--<td data-th-text="${employeeServicePack.getId()}">1</td>-->
             <td data-th-text="${employeeServicePack.getName()}">Employee service pack name</td>
         </tr>
         </tbody>
     </table>
-    <div class="has-text-centered"><a data-th-href="@{/buypage}" class="button is-primary is-medium">Buy Page</a></div>
+    <div data-th-if="${employeeServicePacks.isEmpty() == false}" class="has-text-centered"><a data-th-href="@{/buypage}" class="button is-primary is-medium">Buy Page</a></div>
 </section>
 </body>
 </html>

@@ -85,12 +85,4 @@ public class UserService {
         return newUser;
     }
 
-
-//    public void blockUser(int userId) {
-//        UserEntity user = em.find(UserEntity.class, userId);
-//        user.setIsBlocked((byte) 1);
-//
-//        em.merge(user);
-//    }
-
 }

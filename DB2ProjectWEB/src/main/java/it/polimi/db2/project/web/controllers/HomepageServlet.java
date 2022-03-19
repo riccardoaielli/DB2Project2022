@@ -29,8 +29,12 @@ public class HomepageServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private TemplateEngine templateEngine;
     
-    @EJB(name = "it.polimi.db2.project.ejb.services/EmployeeServicePackService")
-    private EmployeeServicePackService employeeServicePackService;
+    
+	@EJB(name = "it.polimi.db2.project.ejb.services/EmployeeServicePackService")
+	private EmployeeServicePackService employeeServicePackService;
+	
+    @EJB(name = "it.polimi.db2.project.ejb.services/UserService")
+    private UserService userService;
 
 
     public void init() {
