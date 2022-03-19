@@ -5,12 +5,31 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+
+
 @Entity
 @Table(name = "optional_product")
-//@NamedQueries({
-//        @NamedQuery(name = "ProductEntity.findAll", query = "SELECT p FROM ProductEntity p"),
-//        @NamedQuery(name = "ProductEntity.findByDate", query = "SELECT p FROM ProductEntity p INNER JOIN p.questionnaires q WHERE q.date = :date"),
-//})
+@NamedQueries({
+	
+	@NamedQuery(
+            name = "OptionalProduct.findByID",
+            query = "SELECT o FROM OptionalProductEntity o " +
+                    "WHERE o.id = :optionalProduct_id"
+    ),
+	
+	@NamedQuery(
+            name = "OptionalProduct.findByName",
+            query = "SELECT o FROM OptionalProductEntity o " +
+                    "WHERE o.name = :optionalProduct_name"
+    ),
+	
+	@NamedQuery(
+	        name = "OptionalProduct.findOptProdOfEmployeeServicePackId",
+	        query = "SELECT o FROM OptionalProductEntity o " +
+	                "JOIN o.employeeServicePackEntity s " +
+	                "WHERE s.id = :employeeServicePack_id "
+	)
+})
 
 public class OptionalProductEntity {
     @Id

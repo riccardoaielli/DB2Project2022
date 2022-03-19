@@ -27,8 +27,17 @@ public class EmployeeServicePackService {
     }
     
     public EmployeeServicePackEntity findEmployeeServicePackByName(String name) {
-        return em.createNamedQuery("EmployeeServicePackEntity.findEmployeeServicePackByName", EmployeeServicePackEntity.class)
+        return em.createNamedQuery("EmployeeServicePack.findByName", EmployeeServicePackEntity.class)
                 .setParameter("name", name)
+                .setMaxResults(1)
+                .getResultStream()
+                .findFirst()
+                .orElse(null);
+    }
+    
+    public EmployeeServicePackEntity findEmployeeServicePackById (int id) {
+        return em.createNamedQuery("EmployeeServicePack.findById", EmployeeServicePackEntity.class)
+                .setParameter("id", id)
                 .setMaxResults(1)
                 .getResultStream()
                 .findFirst()
