@@ -33,6 +33,7 @@ public class LoginServlet extends HttpServlet {
     
     ServicePackageEntity servicePackage;
 
+    
     @Override
     public void init() {
         ServletContext servletContext = getServletContext();
@@ -76,9 +77,9 @@ public class LoginServlet extends HttpServlet {
 
         if (user == null) {
             resp.setContentType("text/html");
-
             ctx.setVariable("errorMessage", "Incorrect username or password.");
             templateEngine.process("/WEB-INF/index.html", ctx, resp.getWriter());
+            
         }
         else if(user != null) {
         	if(servicePackage == null) {
@@ -87,8 +88,9 @@ public class LoginServlet extends HttpServlet {
         	}else {
         		servlettoload =  "/confirmationpage";
         	}
+        	resp.sendRedirect(getServletContext().getContextPath() + servlettoload);
         }
         
-        resp.sendRedirect(getServletContext().getContextPath() + servlettoload);
+        
     }
 }

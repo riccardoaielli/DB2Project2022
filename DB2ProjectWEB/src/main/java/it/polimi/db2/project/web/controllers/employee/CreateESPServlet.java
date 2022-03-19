@@ -15,6 +15,7 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import javax.ejb.EJB;
+import javax.persistence.NonUniqueResultException;
 import javax.servlet.ServletContext;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -27,14 +28,20 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 
-@WebServlet(name = "CreationServlet", value = "/employee/newSP")
-public class CreationServlet extends HttpServlet {
+@WebServlet(name = "CreateESPServlet", value = "/employee/newESP")
+public class CreateESPServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private TemplateEngine templateEngine;
     
     @EJB(name = "it.polimi.db2.project.ejb.services/EmployeeServicePackageService")
     private EmployeeServicePackService ESPservice;
-
+    
+    @EJB(name = "it.polimi.db2.project.ejb.services/OptionalProductService")
+    private OptionalProductService OPservice;
+    
+    @EJB(name = "it.polimi.db2.project.ejb.services/ValidityPeriodService")
+    private ValidityPeriodService VPservice;
+    
     public void init() {
         ServletContext servletContext = getServletContext();
         ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
@@ -56,16 +63,19 @@ public class CreationServlet extends HttpServlet {
         WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
         
         ctx.setVariable("services", Services.values());
-        String[] val_periods = {"val1", "val2", "val3"};
         
+        List<ValidityPeriodEntity> val_periods = VPservice.findAllValidityPeriod();
         ctx.setVariable("val_periods", val_periods);
         
-        // CHECK IF THE CURRENT USER IS AN EMPLOYEE OR NOT, IF IT NOT REDIRECT TO HOME
+        List<OptionalProductEntity> optional_products = OPservice.findAllOptionalProduct();
+        ctx.setVariable("optional_products", optional_products);
+        
+        // CHECK IF THE CURRENT USER IS AN EMPLOYEE OR NOT, IF IT NOT REDIRECT TO INDEX
         if(employee==null) {
         	path = "/WEB-INF/index.html";
         }
         else {
-        	path = "/WEB-INF/employee/newSP.html";
+        	path = "/WEB-INF/employee/newESP.html";
         }
 
         templateEngine.process(path, ctx, resp.getWriter());
@@ -79,7 +89,11 @@ public class CreationServlet extends HttpServlet {
     	
     	String error = "The employee did not authenticate!";
     	
-    	String path = "/WEB-INF/index.html";
+    	String path = "/WEB-INF/employee/index.html";
+    	
+    	String destServlet = "/employee/newESP";
+    	
+    	
     	 
     	if (employee == null) {
             
@@ -87,37 +101,65 @@ public class CreationServlet extends HttpServlet {
             ServletContext servletContext = getServletContext();
             final WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
             ctx.setVariable("errorMessage", error);
-
             templateEngine.process(path, ctx, resp.getWriter());
     	}
     	
     	
+    	
     	List<String> servicesStrings = new ArrayList<>();
+    	List<String> OptionalPStrings = new ArrayList<>();
+    	List<String> ValidityPIds = new ArrayList<>();
+    	
     	Enumeration<String> params = req.getParameterNames(); 
     	String name = req.getParameter(params.nextElement());
-    	while(params.hasMoreElements())
-    		servicesStrings.add(params.nextElement());
+    	String full = "";
+    	String sub = "";
+    	String clean = "";
     	
-    	servicesStrings = new ArrayList(servicesStrings.subList(0, servicesStrings.size() - 1 ));
+    	while(params.hasMoreElements()) {
+    		full  = (String)params.nextElement();
+    		sub = full.substring(0, 3);
+    		clean = full.substring(3);
+    		if( sub.equals("SER") )
+    			servicesStrings.add(clean);
+    		else if( sub.equals("OPS") )
+    			OptionalPStrings.add(clean);
+    		else if( sub.equals("VPE") )
+    			ValidityPIds.add(clean);
+    		
+    	}
     	
-    	System.out.println("Name: "+ name + " ---- " + servicesStrings);
+    	System.out.println(servicesStrings);
+    	System.out.println(OptionalPStrings);
+    	System.out.println(ValidityPIds);
+
+    	
+    	
     
     	EmployeeServicePackEntity newESP = null;
-       
+    	String newESP_message = "The name for the Employee Service Package is already in use!";
         
-        try {
+ 
             
-        	newESP = ESPservice.addNewEmployeeServicePack(name, servicesStrings);
-        } catch (CredentialsException e) {
-            error = e.getMessage();
-        }
-
+        newESP = ESPservice.addNewEmployeeServicePack(name, servicesStrings, ValidityPIds, OptionalPStrings);
         
-    	ServletContext servletContext = getServletContext();
+        if( newESP != null )
+        	newESP_message = "success";
+        
+        path = "/WEB-INF/employee/newESP.html";
+        ServletContext servletContext = getServletContext();
         resp.setContentType("text/html");
-        WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
+    	WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
+    	//resp.sendRedirect(getServletContext().getContextPath() + destServlet);
+        ctx.setVariable("newESP_message", newESP_message);
+        ctx.setVariable("services", Services.values());
+        List<ValidityPeriodEntity> val_periods = VPservice.findAllValidityPeriod();
+        ctx.setVariable("val_periods", val_periods);
+        
+        List<OptionalProductEntity> optional_products = OPservice.findAllOptionalProduct();
+        ctx.setVariable("optional_products", optional_products);
     	templateEngine.process(path, ctx, resp.getWriter());
-    	resp.sendRedirect(getServletContext().getContextPath() + "");
+    	
     }
 }
 

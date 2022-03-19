@@ -9,6 +9,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "optional_product")
+
 @NamedQueries({
 	
 	@NamedQuery(
@@ -28,7 +29,11 @@ import java.util.List;
 	        query = "SELECT o FROM OptionalProductEntity o " +
 	                "JOIN o.employeeServicePackEntity s " +
 	                "WHERE s.id = :employeeServicePack_id "
-	)
+	),
+        @NamedQuery(name = "OptionalProductEntity.findAllOptionalProduct", query = "SELECT op FROM OptionalProductEntity op"),
+        @NamedQuery(name = "OptionalProductEntity.findByName", query = "SELECT op FROM OptionalProductEntity op WHERE op.name = :name"),
+        @NamedQuery(name = "OptionalProductEntity.findAssociatedESP", query = "SELECT esp FROM OptionalProductEntity esp WHERE esp.employeeServicePackEntity = :name"),
+
 })
 
 public class OptionalProductEntity {
@@ -49,6 +54,14 @@ public class OptionalProductEntity {
     @ManyToMany(mappedBy = "optionalProductEntity", cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.MERGE}) // relation propose
     private List<EmployeeServicePackEntity> employeeServicePackEntity = new ArrayList<>();
     
+   
+
+	public OptionalProductEntity(String name, float fee) {
+	
+		this.name = name;
+		this.fee = fee;
+	}
+	public OptionalProductEntity() {}
 
 	public int getId() {
 		return id;

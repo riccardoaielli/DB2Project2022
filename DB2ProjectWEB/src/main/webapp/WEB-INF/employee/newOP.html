@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Optional Product Creation</title>
+    <link href="../css/bulma.min.css" data-th-href="@{/css/bulma.min.css}" rel="stylesheet">
+    <link href="../css/custom.css" data-th-href="@{/css/custom.css}" rel="stylesheet">
+    <script data-th-src="@{/js/questionnaire.js}" src="../js/questionnaire.js"></script>
+</head> 
+<body class="has-background-light">
+<section class="container py-5 vh100">
+    <div class="has-text-right">
+        
+        <a data-th-href="@{/logout}">Logout</a>
+        <a class="button is-primary"  style="margin:10px" data-th-href="@{/employee/newESP}">Back</a>
+    </div>
+
+	<div data-th-if="${newOP_message == 'success'}">
+	<div class="is-size-5 notification is-primary" >The Optional Product was correctly created!</div>
+	</div>
+
+	<div class="notification is-danger" data-th-if="${newOP_message != 'success' && newOP_message != null}">
+	<div class="is-size-5" data-th-text="${newOP_message}"></div>
+	</div>
+    <div class="box">
+       
+       
+        <form data-th-action="@{'/employee/newOP'}" method="post">
+          
+                <div class="is-size-3">
+                  Optional Product Creation
+                </div>
+              
+              
+            <div class="is-size-5">
+            Please insert the optional product to be created:
+            </div>
+            
+           <input class="input" type="text" name="OP_name" id="OP_name"
+                                           placeholder="Name" required>
+                                           
+            <div class="is-size-5">
+            Please input the cost of the optional product:
+            </div>
+             <input class="input" type="text" name="OP_fee" id="OP_fee"
+                                           placeholder="Cost" required>                              
+            <div style="margin:10px" >
+           <input class="button is-primary" name="submit" type="submit" value="Submit">
+           </div>
+           </form>
+     </div>
+</section>
+           
+</body>
+</html>

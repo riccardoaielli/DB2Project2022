@@ -31,8 +31,12 @@ import javax.persistence.Table;
     ),
     @NamedQuery(
     		name = "ValidityPeriod.getValidityPeriods",
-    		query = "SELECT x FROM ValidityPeriodEntity x")
+    		query = "SELECT x FROM ValidityPeriodEntity x"),
+    
+    @NamedQuery(name = "ValidityPeriodEntity.findAllValidityPeriod", query = "SELECT vp FROM ValidityPeriodEntity vp"),
+    @NamedQuery(name = "ValidityPeriodEntity.findValidityPeriodById", query = "SELECT vp FROM ValidityPeriodEntity vp WHERE vp.id= :id")
 })
+
 public class ValidityPeriodEntity {
 	
 	@Id

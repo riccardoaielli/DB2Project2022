@@ -5,13 +5,13 @@
 		<jta-data-source>db2Project</jta-data-source>
 		<class>it.polimi.db2.project.ejb.entities.AlertEntity</class>
 		<class>it.polimi.db2.project.ejb.entities.EmployeeEntity</class>
+		<class>it.polimi.db2.project.ejb.entities.EmployeeServicePackEntity</class>
 		<class>it.polimi.db2.project.ejb.entities.OptionalProductEntity</class>
 		<class>it.polimi.db2.project.ejb.entities.OrderEntity</class>
 		<class>it.polimi.db2.project.ejb.entities.ServiceEntity</class>
 		<class>it.polimi.db2.project.ejb.entities.ServicePackageEntity</class>
 		<class>it.polimi.db2.project.ejb.entities.UserEntity</class>
 		<class>it.polimi.db2.project.ejb.entities.ValidityPeriodEntity</class>
-		<class>it.polimi.db2.project.ejb.entities.EmployeeServicePackEntity</class>
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/db2Project"/> 

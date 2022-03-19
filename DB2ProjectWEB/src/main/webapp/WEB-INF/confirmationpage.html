@@ -1,31 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Confirmationpage</title>
-    <link href="../css/bulma.min.css" data-th-href="@{/css/bulma.min.css}" rel="stylesheet">
-    <link href="../css/style.css" data-th-href="@{/css/style.css}" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Confirmationpage</title>
+<link href="../css/bulma.min.css" data-th-href="@{/css/bulma.min.css}"
+	rel="stylesheet">
+<link href="../css/style.css" data-th-href="@{/css/style.css}"
+	rel="stylesheet">
 </head>
 <body>
-<section class="container py-5 vh100">
-    <div class="has-text-right">
-    	<div data-th-if="${session.user == null}">
-    		<div data-th-text="GUEST"></div>
-        </div>
-        <div data-th-if="${session.user != null}"> 
-        <div data-th-text="'Signed in as ' + ${session.user.username}">Signed in as USER </div>
-        <a data-th-href="@{/logout}">Logout</a>
-        </div>
-    </div>
-    <h2 class="is-size-3 mb-2">Confirmation page</h2>
-    
-    <div data-th-if="${session.user == null}">
-    		<div class="has-text-centered"><a data-th-href="@{/login}" class="button is-primary is-medium">Login and Buy</a></div>
-        </div>
-        <div data-th-if="${session.user != null}"> 
-        <div class="has-text-centered"><a data-th-href="@{/extservicebilling}" class="button is-primary is-medium">Buy</a></div>
-        </div>
-</section>
+	<section class="container py-5 vh100">
+		<div class="has-text-right">
+			<div data-th-if="${session.user == null}">
+				<div data-th-text="GUEST"></div>
+			</div>
+			<div data-th-if="${session.user != null}">
+				<div data-th-text="'Signed in as ' + ${session.user.username}">Signed
+					in as USER</div>
+				<a data-th-href="@{/logout}">Logout</a>
+			</div>
+		</div>
+		<h2 class="is-size-3 mb-2">Confirmation page</h2>
+
+		<div class="columns is-centered">
+			<div class="column is-8">
+				<div class="box">
+					<div class="has-text-centered"
+						data-th-text="${servicePackage.employeeServicePackEntity.name}"></div>
+					<label class="label"
+						data-th-text="${servicePackage.validityPeriod.months}"></label>
+					<label class="label" data-th-text="${servicePackage.sqlStartDate}"></label>
+					<label class="label" data-th-text="${servicePackage.sqlEndDate}"></label>
+					<div class="control"
+						data-th-each="optionalProduct : ${servicePackage.optionalProducts}">
+						<label class="label" data-th-text="${optionalProduct.name}"></label>
+					</div>
+					<label class="label"
+						data-th-text="${servicePackage.totalValueOptProducts}"></label> <label
+						class="label" data-th-text="${servicePackage.valuePackage}"></label>
+				</div>
+			</div>
+		</div>
+
+		<div data-th-if="${session.user == null}">
+			<div class="has-text-centered">
+				<a data-th-href="@{/login}" class="button is-primary is-medium">Login
+					and Buy</a>
+			</div>
+		</div>
+		<div data-th-if="${session.user != null}">
+			<div class="has-text-centered">
+				<a data-th-href="@{/extservicebilling}"
+					class="button is-primary is-medium">Buy</a>
+			</div>
+		</div>
+	</section>
 </body>
 </html>
