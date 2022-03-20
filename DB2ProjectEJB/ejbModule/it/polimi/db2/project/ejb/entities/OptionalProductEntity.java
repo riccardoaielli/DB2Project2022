@@ -13,18 +13,6 @@ import java.util.List;
 @NamedQueries({
 	
 	@NamedQuery(
-            name = "OptionalProduct.findByID",
-            query = "SELECT o FROM OptionalProductEntity o " +
-                    "WHERE o.id = :optionalProduct_id"
-    ),
-	
-	@NamedQuery(
-            name = "OptionalProduct.findByName",
-            query = "SELECT o FROM OptionalProductEntity o " +
-                    "WHERE o.name = :optionalProduct_name"
-    ),
-	
-	@NamedQuery(
 	        name = "OptionalProduct.findOptProdOfEmployeeServicePackId",
 	        query = "SELECT o FROM OptionalProductEntity o " +
 	                "JOIN o.employeeServicePackEntity s " +
@@ -37,21 +25,7 @@ import java.util.List;
                 name = "OptionalProduct.findByID",
                 query = "SELECT o FROM OptionalProductEntity o " +
                         "WHERE o.id = :optionalProduct_id"
-        ),
-    	
-    	@NamedQuery(
-                name = "OptionalProduct.findByName",
-                query = "SELECT o FROM OptionalProductEntity o " +
-                        "WHERE o.name = :optionalProduct_name"
-        ),
-    	
-    	@NamedQuery(
-    	        name = "OptionalProduct.findOptProdOfEmployeeServicePackId",
-    	        query = "SELECT o FROM OptionalProductEntity o " +
-    	                "JOIN o.employeeServicePackEntity s " +
-    	                "WHERE s.id = :employeeServicePack_id "
-    	)
-
+        )
 
 
 
