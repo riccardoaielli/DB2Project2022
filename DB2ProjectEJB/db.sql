@@ -20,6 +20,7 @@ CREATE TABLE `user` (
   `Password` varchar(45) NOT NULL,
   `Email` varchar(90) NOT NULL,
   `Flag_Ins` binary default 0 NOT NULL,
+  `NumberOfFailedPayments` int default 0 NOT NULL,
   PRIMARY KEY (`id`),
   constraint Email
         unique (Email),
@@ -34,7 +35,7 @@ CREATE TABLE `user` (
 --
 
 LOCK TABLES `user` WRITE;
-INSERT INTO `user` VALUES (1,'user','password','user@prova.com','0');
+INSERT INTO `user` VALUES (1,'user','password','user@prova.com','0','0');
 UNLOCK TABLES;
 
 -- ok
@@ -69,7 +70,7 @@ DROP TABLE IF EXISTS `alert`;
 
 CREATE TABLE `alert` (
   `Id` int NOT NULL AUTO_INCREMENT,
-  `Amount` int NOT NULL,
+  `Amount` float NOT NULL,
   `Timestamp` datetime NOT NULL,
   `User_alert_id` int NOT NULL,
   PRIMARY KEY (`Id`),                                                                                                                                                                        
@@ -168,11 +169,11 @@ CREATE TABLE `service` (
 --
 
 LOCK TABLES `service` WRITE;
-INSERT INTO `service` VALUES (1,'MOBILE_PHONE',5.0, 5.0, 500, 1000, 0.0, 0);
-INSERT INTO `service` VALUES (2,'FIXED_PHONE',5.0, 0.0, 2000, 0, 0.0, 0);
-INSERT INTO `service` VALUES (3,'MOBILE_INTERNET',0.0, 0.0, 0, 0, 20.0, 15);
-INSERT INTO `service` VALUES (4,'FIXED_INTERNET',0.0, 0.0, 0, 0, 30.0, 25);
-INSERT INTO `service` VALUES (5,'FIXED_INTERNET',0.0, 0.0, 0, 0, 45.0, 30);
+INSERT INTO `service` (`Id`,`Type`,`Min_fee`,`Sms_fee`,`Min`,`Sms`) VALUES (1,'MOBILE_PHONE',5.0, 5.0, 500, 1000);
+INSERT INTO `service` (`Id`,`Type`,`Min_fee`,`Min`) VALUES (2,'FIXED_PHONE',5.0, 2000);
+INSERT INTO `service` (`Id`,`Type`,`Gb_fee`,`Gb`) VALUES (3,'MOBILE_INTERNET', 20.0, 15);
+INSERT INTO `service` (`Id`,`Type`,`Gb_fee`,`Gb`) VALUES (4,'FIXED_INTERNET', 30.0, 25);
+INSERT INTO `service` (`Id`,`Type`,`Gb_fee`,`Gb`) VALUES (5,'FIXED_INTERNET', 45.0, 30);
 UNLOCK TABLES;
 
 
@@ -191,7 +192,6 @@ CREATE TABLE `service_pack` (
   `Totalcostoptionalproducts` float DEFAULT 0 NOT NULL, -- Somma del costo degli optional_product scelti
   `Service_pack_employee_id` int NOT NULL,
   PRIMARY KEY (`Id`),
-  UNIQUE KEY (`Validity_period_id`),
   CONSTRAINT `validity_period_fk` FOREIGN KEY (`Validity_period_id`) REFERENCES `validity_period` (`Id`),
   CONSTRAINT `service_pack_employee_fk` FOREIGN KEY (`Service_pack_employee_id`) REFERENCES `employeeServicePack` (`Id`)
 );
@@ -205,7 +205,7 @@ DROP TABLE IF EXISTS `order`;
 CREATE TABLE `order` (
   `Id` int NOT NULL AUTO_INCREMENT,
   `Totalcost` float NOT NULL,
-  `Isvalid` binary NOT NULL,
+  `Isvalid` tinyint NOT NULL,
   `Timestamp` datetime NOT NULL,
   `User_id` int NOT NULL,
   `Service_pack_id` int NOT NULL,

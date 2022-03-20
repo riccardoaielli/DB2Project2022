@@ -19,8 +19,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "alert")
 @NamedQueries({
-        @NamedQuery(name = "AlertEntity.findUser", query = "SELECT u FROM UserEntity u WHERE u.id = :user_alert"), // TODO controllare sia corretta
-        
+        @NamedQuery(name = "AlertEntity.findUser", query = "SELECT u FROM UserEntity u WHERE u.id = :user_alert"),         
 })
 public class AlertEntity {
 
@@ -30,7 +29,7 @@ public class AlertEntity {
     private int id;
  
  	@Column(name = "Amount", nullable = false, length = 45)
-    private int amount;
+    private float amount;
 
     @Column(name = "Timestamp", nullable = false, length = 45) // put by default from the db when the entry is created in the table
     private Timestamp timestamp;
@@ -40,7 +39,7 @@ public class AlertEntity {
     private UserEntity user_alert;
 
     
-	    public AlertEntity(int amount, Timestamp timestamp, UserEntity user_alert) {
+	    public AlertEntity(float amount, Timestamp timestamp, UserEntity user_alert) {
 	    	this.amount = amount;
 	        this.timestamp = timestamp;
 	        this.user_alert = user_alert;	      
@@ -57,7 +56,7 @@ public class AlertEntity {
 		this.id = id;
 	}
 
-	public int getAmount() {
+	public float getAmount() {
 		return amount;
 	}
 

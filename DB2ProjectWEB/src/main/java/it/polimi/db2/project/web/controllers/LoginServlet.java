@@ -30,7 +30,7 @@ public class LoginServlet extends HttpServlet {
 
     @EJB(name = "it.polimi.db2.project.ejb.services/UserService")
     private UserService userService;
-    
+//    String visibilita = "visibile";
     ServicePackageEntity servicePackage;
 
     
@@ -48,6 +48,15 @@ public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     	
     	servicePackage = (ServicePackageEntity) req.getSession(false).getAttribute("servicePackage");
+    	
+//    	if(servicePackage != null) {
+//    		visibilita = "nascosto";
+//    	}
+    	
+    	//String servletToLoad = (String) req.getSession().getAttribute("servletToLoad");
+    	
+    	req.setAttribute("servicePackage", servicePackage);
+//    	req.setAttribute("visibilita", visibilita);
     	
         resp.sendRedirect(getServletContext().getContextPath());
     }
@@ -86,6 +95,7 @@ public class LoginServlet extends HttpServlet {
         		req.getSession().setAttribute("user", user);
                 servlettoload =  "/homepage";
         	}else {
+        		req.getSession().setAttribute("user", user);
         		servlettoload =  "/confirmationpage";
         	}
         	resp.sendRedirect(getServletContext().getContextPath() + servlettoload);

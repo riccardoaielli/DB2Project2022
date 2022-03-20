@@ -29,6 +29,9 @@ public class UserEntity {
     
     @Column(name = "Flag_ins", nullable = false)
     private boolean flag_ins;
+    
+    @Column(name = "NumberOfFailedPayments", nullable = false)
+    private int numberOfFailedPayments;
 
 
     @OneToMany(mappedBy = "user_id", cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.MERGE}, orphanRemoval = true)
@@ -44,6 +47,34 @@ public class UserEntity {
         this.email = email;
         this.flag_ins = flag;
 
+    }
+    
+    public int getNumberOfFailedPayments() {
+		return numberOfFailedPayments;
+	}
+
+	public void setNumberOfFailedPayments(int numberOfFailedPayments) {
+		this.numberOfFailedPayments = numberOfFailedPayments;
+	}
+
+	public List<OrderEntity> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(List<OrderEntity> orders) {
+		this.orders = orders;
+	}
+
+	public AlertEntity getAlert() {
+		return alert;
+	}
+
+	public void setAlert(AlertEntity alert) {
+		this.alert = alert;
+	}
+
+	public void increaseNumberOfFailedPayments() {
+    	numberOfFailedPayments++;
     }
 
     public UserEntity() {
