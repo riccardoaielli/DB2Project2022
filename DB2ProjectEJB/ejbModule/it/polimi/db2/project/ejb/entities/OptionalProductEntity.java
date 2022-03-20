@@ -18,6 +18,11 @@ import java.util.List;
 	                "JOIN o.employeeServicePackEntity s " +
 	                "WHERE s.id = :employeeServicePack_id "
 	),
+	@NamedQuery(
+            name = "OptionalProduct.findByName",
+            query = "SELECT o FROM OptionalProductEntity o " +
+                    "WHERE o.name = :optionalProduct_name"
+    ),
         @NamedQuery(name = "OptionalProductEntity.findAllOptionalProduct", query = "SELECT op FROM OptionalProductEntity op"),
         @NamedQuery(name = "OptionalProductEntity.findByName", query = "SELECT op FROM OptionalProductEntity op WHERE op.name = :name"),
         @NamedQuery(name = "OptionalProductEntity.findAssociatedESP", query = "SELECT esp FROM OptionalProductEntity esp WHERE esp.employeeServicePackEntity = :name"),
