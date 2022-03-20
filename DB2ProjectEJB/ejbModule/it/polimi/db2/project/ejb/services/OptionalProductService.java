@@ -1,3 +1,4 @@
+package it.polimi.db2.project.ejb.services;
 
 import it.polimi.db2.project.ejb.entities.EmployeeServicePackEntity;
 import it.polimi.db2.project.ejb.entities.OptionalProductEntity;
@@ -74,8 +75,5 @@ public class OptionalProductService {
             .findFirst()
             .orElse(null);
     }
-<<<<<<< HEAD
-=======
 
->>>>>>> refs/heads/buybranch
 }

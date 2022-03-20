@@ -26,80 +26,34 @@
 		<div class="columns is-centered">
 			<div class="column is-8">
 				<div class="box">
-					<div class="has-text-centered is-size-5"
-						data-th-text="${servicePackage.getService_pack_employee_id().getName()}"></div>
-					<br>
-
-					<div
-						data-th-each="service : ${servicePackage.getService_pack_employee_id().getServiceEntities()}"
-						class="has-text-centered">
-						<div data-th-text="'Service: ' + ${service.getType()}"></div>
-						<div data-th-if="${service.getMin() != 0}"
-							data-th-text="'Min: ' + ${service.getMin()}"></div>
-						<div data-th-if="${service.getMin_fee() != 0}"
-							data-th-text="'Min fee: ' + ${service.getMin_fee()}"></div>
-						<div data-th-if="${service.getSms() != 0}"
-							data-th-text="'SMS: ' + ${service.getSms()}"></div>
-						<div data-th-if="${service.getSms_fee() != 0}"
-							data-th-text="'SMS fee: ' + ${service.getSms_fee()}"></div>
-						<div data-th-if="${service.getGb() != 0}"
-							data-th-text="'GB: ' + ${service.getGb()}"></div>
-						<div data-th-if="${service.getGb_fee() != 0}"
-							data-th-text="'GB fee: ' + ${service.getGb_fee()}"></div>
-						<br>
+					<div class="has-text-centered"
+						data-th-text="${servicePackage.employeeServicePackEntity.name}"></div>
+					<label class="label"
+						data-th-text="${servicePackage.validityPeriod.months}"></label>
+					<label class="label" data-th-text="${servicePackage.sqlStartDate}"></label>
+					<label class="label" data-th-text="${servicePackage.sqlEndDate}"></label>
+					<div class="control"
+						data-th-each="optionalProduct : ${servicePackage.optionalProducts}">
+						<label class="label" data-th-text="${optionalProduct.name}"></label>
 					</div>
-
-					<div
-						data-th-each="optionalProduct : ${servicePackage.getOptionalProductEntities()}"
-						class="has-text-centered">
-						<div
-							data-th-text="'Optional product: ' + ${optionalProduct.getName()} + ' Fee: ' + ${optionalProduct.getFee()} + ' euro al mese'"></div>
-						<br>
-					</div>
-
-					<div class="has-text-centered"
-						data-th-text="'Validity period: ' + ${servicePackage.getValidity_period_id().getMonthly_fee()} + ' euro/mese per ' + ${servicePackage.getValidity_period_id().getMonths()} + ' mesi'"></div>
-					<br>
-
-					<div class="has-text-centered"
-						data-th-text="'Start date: ' + ${servicePackage.getStart_date()}"></div>
-					<br>
-
-					<div class="has-text-centered"
-						data-th-text="'Deactivation date: ' + ${servicePackage.getDeactivation_date()}"></div>
-					<br>
-
-					<div class="has-text-centered"
-						data-th-text="'Costo totale: ' + ${costoTotale} + ' euro'"></div>
-					<br>
+					<label class="label"
+						data-th-text="${servicePackage.totalValueOptProducts}"></label> <label
+						class="label" data-th-text="${servicePackage.valuePackage}"></label>
 				</div>
 			</div>
 		</div>
 
-
 		<div data-th-if="${session.user == null}">
-			<form method="post" data-th-action="@{'/confirmationpage'}">
-				<div class="has-text-centered">
-					<input type="submit" name="buyLoginbtn"
-						class="button is-primary is-medium" value="Login and Buy">
-				</div>
-			</form>
+			<div class="has-text-centered">
+				<a data-th-href="@{/login}" class="button is-primary is-medium">Login
+					and Buy</a>
+			</div>
 		</div>
-
 		<div data-th-if="${session.user != null}">
-			<form method="post" data-th-action="@{'/confirmationpage'}">
-				<div class="has-text-centered">
-					<input type="submit" name="buyFailbtn"
-						class="button is-primary is-medium" value="Buy and Fail Payment">
-				</div>
-			</form>
-			<form method="post" data-th-action="@{'/confirmationpage'}">
-				<div class="has-text-centered">
-					<input type="submit" name="buySuccessbtn"
-						class="button is-primary is-medium"
-						value="Buy and Success Payment">
-				</div>
-			</form>
+			<div class="has-text-centered">
+				<a data-th-href="@{/extservicebilling}"
+					class="button is-primary is-medium">Buy</a>
+			</div>
 		</div>
 	</section>
 </body>

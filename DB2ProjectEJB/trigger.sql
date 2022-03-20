@@ -1,5 +1,15 @@
 -- Number of total purchases per package
 
+DROP TABLE IF EXISTS numberTotalPurchasesPerESP;
+
+create table numberTotalPurchasesPerESP
+(
+    EmployeeServicePack_id int not null primary key,
+    Numbertotalpurchases int default 0 not null,
+    constraint numberOfTotalPurchasesPerPackage foreign key (EmployeeServicePack_id) references employeeServicePack (Id)
+);
+
+
 DROP TRIGGER IF EXISTS addPurchaseToNumberTotalPurchasesPerESP;
 
 delimiter //
@@ -43,17 +53,29 @@ VALUES(NEW.Id);
 end //
 delimiter ;
 
-DROP TABLE IF EXISTS numberTotalPurchasesPerESP;
-
-create table numberTotalPurchasesPerESP
-(
-    EmployeeServicePack_id int not null primary key,
-    Numbertotalpurchases int default 0 not null,
-    constraint numberOfTotalPurchasesPerPackage foreign key (EmployeeServicePack_id) references employeeServicePack (Id)
-);
 
 -- Number of total purchases per package and validity period
 
+DROP TABLE IF EXISTS numberTotalPurchasesPerESPAndValidityPeriod;
+
+create table numberTotalPurchasesPerESPAndValidityPeriod
+(
+    EmployeeServicePack_id     int not null,
+    Validity_period_id   int not null,
+    TotalPurchases int not null DEFAULT 0,
+    constraint numberTotalPurchasesPerESPAndValidityPeriod_fk0
+        foreign key (EmployeeServicePack_id) references employeeServicePack (Id),
+    constraint numberTotalPurchasesPerESPAndValidityPeriod_fk1
+        foreign key (Validity_period_id) references validity_period (Id)
+);
+
+create index numberTotalPurchasesPerESPAndValidityPeriod_fk0_idx
+    on numberTotalPurchasesPerESPAndValidityPeriod (EmployeeServicePack_id);
+
+create index numberTotalPurchasesPerESPAndValidityPeriod_fk1_idx
+    on numberTotalPurchasesPerESPAndValidityPeriod (Validity_period_id);
+
+    
 DROP TRIGGER IF EXISTS addPurchaseToNumberTotalPurchasesPerESPAndVP;
 
 delimiter //
@@ -98,26 +120,19 @@ end //
 delimiter ;
 
 
-DROP TABLE IF EXISTS numberTotalPurchasesPerESPAndValidityPeriod;
-
-create table numberTotalPurchasesPerESPAndValidityPeriod
-(
-    EmployeeServicePack_id     int not null,
-    Validity_period_id   int not null,
-    TotalPurchases int not null DEFAULT 0,
-    constraint numberTotalPurchasesPerESPAndValidityPeriod_fk0
-        foreign key (EmployeeServicePack_id) references employeeServicePack (Id),
-    constraint numberTotalPurchasesPerESPAndValidityPeriod_fk1
-        foreign key (Validity_period_id) references validity_period (Id)
-);
-
-create index numberTotalPurchasesPerESPAndValidityPeriod_fk0_idx
-    on numberTotalPurchasesPerESPAndValidityPeriod (EmployeeServicePack_id);
-
-create index numberTotalPurchasesPerESPAndValidityPeriod_fk1_idx
-    on numberTotalPurchasesPerESPAndValidityPeriod (Validity_period_id);
 
 -- Total value of sales per package with and without the optional products
+DROP TABLE IF EXISTS salesPerPackage;
+
+create table salesPerPackage
+(
+    EmployeeServicePack_id int not null
+        primary key,
+    totalSalesWithOptionalProduct int not null DEFAULT 0,
+    totalSalesWithoutOptionalProduct int not null DEFAULT 0,
+    constraint salesPerPackage_fk0
+        foreign key (EmployeeServicePack_id) references employeeServicePack (Id)
+);
 
 DROP TRIGGER IF EXISTS addSalesPerPackage;
 
@@ -178,17 +193,7 @@ end //
 delimiter ;
 
 
-DROP TABLE IF EXISTS salesPerPackage;
 
-create table salesPerPackage
-(
-    EmployeeServicePack_id int not null
-        primary key,
-    totalSalesWithOptionalProduct int not null DEFAULT 0,
-    totalSalesWithoutOptionalProduct int not null DEFAULT 0,
-    constraint salesPerPackage_fk0
-        foreign key (EmployeeServicePack_id) references employeeServicePack (Id)
-);
 
 -- Average number of optional products sold together with each service package
 
@@ -197,7 +202,40 @@ create table salesPerPackage
 
 
 -- List of insolvent users, suspended orders and alert
+create table suspendedOrders
+(
+    Order_id int not null,
+    constraint suspendedOrders_fk0
+        foreign key (Order_id) references `order`  (Id)
+);
 
+create index suspendedOrders_fk0_idx
+    on suspendedOrders (Order_id);
+
+    create table insolvent
+(
+    User_id int not null,
+    constraint insolvent_fk0
+        foreign key (User_id) references `user` (Id)
+);
+
+create index insolvent_fk0_idx
+    on insolvent (User_id);
+    
+
+    DROP TABLE IF EXISTS alerts;
+
+create table alerts
+(
+    Alert_id int not null,
+    constraint alerts_fk0
+        foreign key (Alert_id) references alert (Id)
+);
+
+create index alerts_fk0_idx
+    on alerts (Alert_id);
+    
+    
 DROP TRIGGER IF EXISTS addAlert;
 
 delimiter //
@@ -211,18 +249,7 @@ VALUES (NEW.Id);
 end //
 delimiter ;
 
-DROP TABLE IF EXISTS alerts;
 
-create table alerts
-(
-    Alert_id int not null,
-    constraint alerts_fk0
-        foreign key (Alert_id) references alert (Id)
-);
-
-create index alerts_fk0_idx
-    on alerts (Alert_id);
-    
 
 
 DROP TRIGGER IF EXISTS updateInsolventUser;
@@ -248,15 +275,7 @@ delimiter ;
 
 DROP TABLE IF EXISTS insolvent;
 
-create table insolvent
-(
-    User_id int not null,
-    constraint insolvent_fk0
-        foreign key (User_id) references `user` (Id)
-);
 
-create index insolvent_fk0_idx
-    on insolvent (User_id);
 
 
 DROP TRIGGER IF EXISTS addSuspendedOrder;
@@ -306,14 +325,5 @@ delimiter ;
 
 DROP TABLE IF EXISTS suspendedOrders;
 
-create table suspendedOrders
-(
-    Order_id int not null,
-    constraint suspendedOrders_fk0
-        foreign key (Order_id) references `order`  (Id)
-);
-
-create index suspendedOrders_fk0_idx
-    on suspendedOrders (Order_id);
 
 

@@ -12,6 +12,9 @@
 		<class>it.polimi.db2.project.ejb.entities.ServicePackageEntity</class>
 		<class>it.polimi.db2.project.ejb.entities.UserEntity</class>
 		<class>it.polimi.db2.project.ejb.entities.ValidityPeriodEntity</class>
+		<class>it.polimi.db2.project.ejb.SalesReportEntities.NumberTotalPurchasesPerESP</class>
+		<class>it.polimi.db2.project.ejb.SalesReportEntities.SalesPerPackage</class>
+		<class>it.polimi.db2.project.ejb.SalesReportEntities.NumberTotalPurchasesPerESPAndValidityPeriod</class>
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/db2Project"/> 

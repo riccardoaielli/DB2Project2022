@@ -11,25 +11,7 @@ import java.util.List;
 @Table(name = "optional_product")
 
 @NamedQueries({
-	
-	@NamedQuery(
-            name = "OptionalProduct.findByID",
-            query = "SELECT o FROM OptionalProductEntity o " +
-                    "WHERE o.id = :optionalProduct_id"
-    ),
-	
-	@NamedQuery(
-            name = "OptionalProduct.findByName",
-            query = "SELECT o FROM OptionalProductEntity o " +
-                    "WHERE o.name = :optionalProduct_name"
-    ),
-	
-	@NamedQuery(
-	        name = "OptionalProduct.findOptProdOfEmployeeServicePackId",
-	        query = "SELECT o FROM OptionalProductEntity o " +
-	                "JOIN o.employeeServicePackEntity s " +
-	                "WHERE s.id = :employeeServicePack_id "
-	),
+
         @NamedQuery(name = "OptionalProductEntity.findAllOptionalProduct", query = "SELECT op FROM OptionalProductEntity op"),
         @NamedQuery(name = "OptionalProductEntity.findByName", query = "SELECT op FROM OptionalProductEntity op WHERE op.name = :name"),
         @NamedQuery(name = "OptionalProductEntity.findAssociatedESP", query = "SELECT esp FROM OptionalProductEntity esp WHERE esp.employeeServicePackEntity = :name"),

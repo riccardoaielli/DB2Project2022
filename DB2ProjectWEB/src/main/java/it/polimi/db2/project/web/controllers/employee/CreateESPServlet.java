@@ -91,7 +91,7 @@ public class CreateESPServlet extends HttpServlet {
     	
     	String path = "/WEB-INF/employee/index.html";
     	
-    	String destServlet = "/employee/newESP";
+    	String destServlet = "/employee";
     	
     	
     	 
@@ -101,10 +101,10 @@ public class CreateESPServlet extends HttpServlet {
             ServletContext servletContext = getServletContext();
             final WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
             ctx.setVariable("errorMessage", error);
-            templateEngine.process(path, ctx, resp.getWriter());
+            resp.sendRedirect(getServletContext().getContextPath() + destServlet);
     	}
     	
-    	
+    	destServlet = "/employee/newESP";
     	
     	List<String> servicesStrings = new ArrayList<>();
     	List<String> OptionalPStrings = new ArrayList<>();
