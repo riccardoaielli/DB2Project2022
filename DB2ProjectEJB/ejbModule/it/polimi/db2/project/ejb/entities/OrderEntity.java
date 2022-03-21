@@ -24,11 +24,9 @@ import javax.persistence.Table;
 
 		@NamedQuery(name = "OrderEntity.findFailedOrdersByUserId", query = "SELECT o FROM OrderEntity o WHERE o.user_id = :user AND o.isvalid=false"),
 
-//	@NamedQuery(
-//	        name = "Order.findOrdersToActivate",
-//	        query = "SELECT DISTINCT o FROM OrderEntity o JOIN o.servicePackageAssociated s WHERE o.userOwner = :user AND o.isValid=true AND s.startDate > CURRENT_TIMESTAMP "
-//
-//	)
+		@NamedQuery(
+	        name = "Order.findOrderScheduledByUserId",
+	        query = "SELECT DISTINCT o FROM OrderEntity o JOIN o.service_pack_id s WHERE o.user_id = :user AND o.isvalid=true AND s.start_date > CURRENT_TIMESTAMP ")
 //		@NamedQuery(name = "Order.findAllOrderByUser", query = "SELECT o FROM OrderEntity o WHERE o.userOwner = :user ")
 
 })

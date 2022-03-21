@@ -53,5 +53,12 @@ public class OrderService {
                 .setParameter("user", user)
                 .getResultList();
     }
+	
+	public List<OrderEntity> findOrderScheduledByUserId(int user_id){
+        UserEntity user = userService.findUserById(user_id);
+        return em.createNamedQuery("Order.findOrderScheduledByUserId", OrderEntity.class)
+            .setParameter("user", user)
+            .getResultList();
+    }
 
 }

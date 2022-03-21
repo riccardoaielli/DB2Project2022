@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Enumeration;
 
 @WebServlet(name = "LogoutServlet", value = "/logout")
 public class LogoutServlet extends HttpServlet {
@@ -17,6 +18,11 @@ public class LogoutServlet extends HttpServlet {
 
         if (session != null) {
             session.removeAttribute("user");
+            Enumeration<String> attributes = session.getAttributeNames();
+            
+            while(attributes.hasMoreElements()) {
+            	session.removeAttribute(attributes.nextElement());
+            }
         }
 
         resp.sendRedirect(getServletContext().getContextPath());

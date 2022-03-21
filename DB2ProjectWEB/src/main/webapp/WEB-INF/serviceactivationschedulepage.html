@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Serviceactivationschedulepage</title>
+<link href="../css/bulma.min.css" data-th-href="@{/css/bulma.min.css}"
+	rel="stylesheet">
+<link href="../css/style.css" data-th-href="@{/css/style.css}"
+	rel="stylesheet">
+</head>
+<body>
+	<section class="container py-5 vh100">
+		<div class="has-text-right">
+			<div data-th-if="${session.user == null}">
+				<div data-th-text="GUEST"></div>
+				<a data-th-href="@{/login}">Login</a>
+			</div>
+			<div data-th-if="${session.user != null}">
+				<div data-th-text="'Signed in as ' + ${session.user.username}">Signed
+					in as USER</div>
+				<a data-th-href="@{/logout}">Logout</a>
+			</div>
+		</div>
+
+		<h2 class="is-size-3 mb-2">Service activation schedule</h2>
+
+		<table data-th-unless="${ordersScheduled.isEmpty()}"
+			class="table is-fullwidth my-5 has-text-centered">
+			<thead>
+				<tr>
+					<th>Order ID</th>
+					<th>Name service pack</th>
+					<th>Included Services</th>
+					<td>Included Optional Products</td>
+					<td>Total Cost</td>
+					<td>Activation Date</td>
+					<td>Deactivation Date</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr data-th-each="order : ${ordersScheduled}">
+					<td data-th-text="${order.getId()}">id</td>
+					<td data-th-text="${order.getService_pack_id().getService_pack_employee_id().getName()}">name</td>
+					
+					<td><div data-th-each="service : ${order.getService_pack_id().getService_pack_employee_id().getServiceEntities()}" data-th-text="${service.getType()}" class="has-text-centered"></div></td>
+							 
+					<td><div data-th-each="opt : ${order.getService_pack_id().getOptionalProductEntities()}" data-th-text="${opt.getName()}" class="has-text-centered"></div></td>
+							 
+					<td data-th-text="${order.getTotalcost()}">total cost</td>
+					<td data-th-text="${order.getService_pack_id().getStart_date()}">activation date</td>
+					<td data-th-text="${order.getService_pack_id().getDeactivation_date()}">deactivation date</td>
+
+				</tr>
+			</tbody>
+		</table>
+		<form method="post" data-th-action="@{'/serviceactivationschedule'}">
+			<div class="has-text-centered">
+				<input type="submit" name="gotohomebtn"
+					class="button is-primary is-medium" value="Go to homepage">
+			</div>
+		</form>
+	</section>
+</body>
+</html>

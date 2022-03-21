@@ -163,10 +163,9 @@ public class ConfirmationpageServlet extends HttpServlet {
         else userService.setUserInsolvent(user, false);
         req.getSession().setAttribute("user", user);
         
-//        if(userService.findOrdersToActivate(user.getId()).size()>0) servletToLoad = "serviceActivationSchedule"; // TODO fare lista degli ordini da attivare
-//        else servletToLoad = "/homepage";
+        if(orderService.findOrderScheduledByUserId(user.getId()).size()>0) servletToLoad = "/serviceactivationschedule";
+        else servletToLoad = "/homepage";
 
-        servletToLoad = "/homepage";
 //        if(servletToLoad == "/homepage") {
 //        	req.removeAttribute("servicePackage");
 //        	req.removeAttribute("costoTotale");
