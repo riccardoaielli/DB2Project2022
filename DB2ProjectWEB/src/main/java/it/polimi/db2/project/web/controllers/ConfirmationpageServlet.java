@@ -57,7 +57,6 @@ public class ConfirmationpageServlet extends HttpServlet {
     float costototale;
     String servletToLoad;
     OrderEntity failedOrder;
-    OrderEntity order;
     boolean isvalid;
 
 	public void init() {
@@ -75,7 +74,7 @@ public class ConfirmationpageServlet extends HttpServlet {
 		UserEntity user = (UserEntity) session.getAttribute("user");
 		
 		
-		failedOrder = (OrderEntity) req.getSession(false).getAttribute("failedOrder");
+//		failedOrder = (OrderEntity) req.getSession(false).getAttribute("failedOrder");
 		
 		servicePackage = (ServicePackageEntity) req.getSession(false).getAttribute("servicePackage");
 		
@@ -83,20 +82,10 @@ public class ConfirmationpageServlet extends HttpServlet {
 		costototale = servicePackage.getTotalcostoptionalproducts() + servicePackage.getCostpackage();
 		String costoTotale = String.valueOf(costototale);
 		
-		//servletToLoad = "/confirmationpage";
 		
-//		System.out.println(costototale);
-//		System.out.println(costoTotale);
-		
-//		session.setAttribute("servletToLoad", servletToLoad);
-		req.setAttribute("failedOrder", failedOrder);
+//		req.setAttribute("failedOrder", failedOrder);
 		req.setAttribute("servicePackage", servicePackage);
 		req.setAttribute("costoTotale", costoTotale);
-
-//		for (ServiceEntity service : servicePackage.getService_pack_employee_id().getServiceEntities()) {
-//			if(service.getGb() == null) System.out.println(service.getGb());
-//			System.out.println(service.getGb());
-//		}
 
 		String path;
 		resp.setContentType("text/html");
@@ -142,14 +131,12 @@ public class ConfirmationpageServlet extends HttpServlet {
     		OrderEntity order = new OrderEntity(new Timestamp(System.currentTimeMillis()), totalcost, user, servicePackage, isvalid);
     		
             try {
-            	System.out.println("inizio servicePackage inserito nel db");
                 servicePackage = servicePackageService.createServicePackage(servicePackage);
                 System.out.println("servicePackage inserito nel db");
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
     		try {
-    			System.out.println("inizio order inserito nel db");
     			order = orderService.createOrder(order);
     			System.out.println("order inserito nel db");
             } catch (SQLException throwables) {
@@ -158,19 +145,20 @@ public class ConfirmationpageServlet extends HttpServlet {
         }
         else {
         	failedOrder = orderService.updateOrder(failedOrder, isvalid);
-            System.out.println("fatto");
+            System.out.println("sistemato isvalid in failed order nel db");
         }
 
         if(!isvalid) user = userService.incrementsFailedPayments(user);
         
         if(user.getNumberOfFailedPayments()==3){
-            AlertEntity alert = new AlertEntity(order.getTotalcost(), order.getTimestamp(), user);
+            AlertEntity alert = new AlertEntity(failedOrder.getTotalcost(), failedOrder.getTimestamp(), user);
+            System.out.println("Creo alert perchè l'utente ha 3 o più pagamenti falliti");
             alertService.createAlert(alert);
             user = userService.setNumberOfFailedPayments(user);
         }
         
         
-        //setto l'utente come insolvente se ha degli ordini falliti
+        //imposto l'utente come insolvente se ha degli ordini falliti
         if(orderService.findFailedOrdersByUserId(user.getId()).size()>=1) userService.setUserInsolvent(user, true);
         else userService.setUserInsolvent(user, false);
         req.getSession().setAttribute("user", user);
@@ -179,9 +167,17 @@ public class ConfirmationpageServlet extends HttpServlet {
 //        else servletToLoad = "/homepage";
 
         servletToLoad = "/homepage";
-        if(servletToLoad == "/homepage") {
-        	req.getSession(false).removeAttribute("servicePackage");
-        }
+//        if(servletToLoad == "/homepage") {
+//        	req.removeAttribute("servicePackage");
+//        	req.removeAttribute("costoTotale");
+//        	req.getSession(false).removeAttribute("failedOrder");
+//        	req.getSession(false).removeAttribute("servicePackage");
+//        }
+        req.removeAttribute("servicePackage");
+    	req.removeAttribute("costoTotale");
+    	req.getSession(false).removeAttribute("failedOrder");
+    	req.getSession(false).removeAttribute("servicePackage");
+    	
         resp.sendRedirect(getServletContext().getContextPath() + servletToLoad);
 
 	}

@@ -113,8 +113,11 @@ public class HomepageServlet extends HttpServlet {
     		servletToLoad = "/confirmationpage";
     		
     	}else {
+    		session.removeAttribute("failedOrder");
+    		session.removeAttribute("servicePackage");
     		servletToLoad = "/buypage";
     	}
+    	session.removeAttribute("orders");
     	resp.sendRedirect(getServletContext().getContextPath() + servletToLoad );
     	return;
     }

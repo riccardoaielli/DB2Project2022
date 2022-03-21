@@ -109,17 +109,6 @@ public class BuypageServlet extends HttpServlet {
 			templateEngine.process(path, ctx, resp.getWriter());
 
 		} else if (req.getParameter("confirmbtn") != null) {
-			
-//			Enumeration<String> paramsName = req.getParameterNames();
-//			while(paramsName.hasMoreElements()) {
-//				System.out.println(paramsName.nextElement());
-//			}
-//			
-//			paramsName = req.getParameterNames();
-//			while(paramsName.hasMoreElements()) {
-//				String name = req.getParameter(paramsName.nextElement());
-//				System.out.println(name);
-//			}
 
 			int validityPeriodId = Integer.parseInt(req.getParameter("validityPeriod"));
 
@@ -145,7 +134,7 @@ public class BuypageServlet extends HttpServlet {
 
 			}
 
-			float valuePackage = validityPeriod.getMonthly_fee() * validityPeriod.getMonths();
+			float costPackage = validityPeriod.getMonthly_fee() * validityPeriod.getMonths();
 
 			startDate = LocalDate.parse(startDateStr);
 			endDate = startDate.plusMonths(validityPeriod.getMonths());
@@ -154,9 +143,14 @@ public class BuypageServlet extends HttpServlet {
 			sqlEndDate = java.sql.Date.valueOf(endDate);
 
 			servicePackage = new ServicePackageEntity(employeeServicePackEntity, validityPeriod, sqlStartDate, sqlEndDate,
-					valuePackage, totalValueOptProducts, optionalProducts);
+					costPackage, totalValueOptProducts, optionalProducts);
 
 			session.setAttribute("servicePackage", servicePackage);
+			
+			session.removeAttribute("employeeServicePacks");
+			session.removeAttribute("validityPeriods");
+			session.removeAttribute("optionalProducts");
+			session.removeAttribute("employeeServicePackEntity");
 
 			resp.sendRedirect(getServletContext().getContextPath() + "/confirmationpage");
 		}

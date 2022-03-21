@@ -43,6 +43,7 @@ public class OrderService {
         OrderEntity orderEntity = em.find(OrderEntity.class, order.getId());
         orderEntity.setIsvalid(isvalid);
         em.merge(orderEntity);
+        em.flush();
         return orderEntity;
     }
 	
