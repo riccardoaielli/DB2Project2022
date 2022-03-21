@@ -1,45 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Homepage</title>
-    <link href="../css/bulma.min.css" data-th-href="@{/css/bulma.min.css}" rel="stylesheet">
-    <link href="../css/style.css" data-th-href="@{/css/style.css}" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Homepage</title>
+<link href="../css/bulma.min.css" data-th-href="@{/css/bulma.min.css}"
+	rel="stylesheet">
+<link href="../css/style.css" data-th-href="@{/css/style.css}"
+	rel="stylesheet">
 </head>
 <body>
-<section class="container py-5 vh100">
-    <div class="has-text-right">
-    	<div data-th-if="${session.user == null}">
-    		<div data-th-text="GUEST"></div>
-    		<a data-th-href="@{/login}">Login</a>
-        </div>
-        <div data-th-if="${session.user != null}"> 
-        <div data-th-text="'Signed in as ' + ${session.user.username}">Signed in as USER</div>
-        <a data-th-href="@{/logout}">Logout</a>
-        </div>
-    </div>
-    
-    <h2 class="is-size-3 mb-2">Employee Service Pack</h2>
-    <div data-th-if="${employeeServicePacks.isEmpty()}" class="is-size-5 has-text-centered my-5">
-    There are no service packs!
-    </div>
+	<section class="container py-5 vh100">
+		<div class="has-text-right">
+			<div data-th-if="${session.user == null}">
+				<div data-th-text="GUEST"></div>
+				<a data-th-href="@{/login}">Login</a>
+			</div>
+			<div data-th-if="${session.user != null}">
+				<div data-th-text="'Signed in as ' + ${session.user.username}">Signed
+					in as USER</div>
+				<a data-th-href="@{/logout}">Logout</a>
+			</div>
+		</div>
 
-	<table data-th-unless="${employeeServicePacks.isEmpty()}" class="table is-fullwidth my-5 has-text-centered">
-        <thead>
-        <tr>
-            <!--<th>ID</th>-->
-            <th>Name</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr data-th-each="employeeServicePack : ${employeeServicePacks}">
-            <!--<td data-th-text="${employeeServicePack.getId()}">1</td>-->
-            <td data-th-text="${employeeServicePack.getName()}">Employee service pack name</td>
-        </tr>
-        </tbody>
-    </table>
-    <div data-th-if="${employeeServicePacks.isEmpty() == false}" class="has-text-centered"><a data-th-href="@{/buypage}" class="button is-primary is-medium">Buy Page</a></div>
-</section>
+		<div data-th-if="${session.user != null}">
+		<div data-th-if="${session.user.flag_ins == 1}">
+			<h2 data-th-if="${session.user.flag_ins == 1}" class="is-size-3 mb-2">Orders
+				failed</h2>
+
+			<table data-th-if="${session.user.flag_ins == 1}"
+				class="table is-fullwidth my-5 has-text-centered">
+				<thead>
+					<tr>
+						<!--<th>ID</th>-->
+						<th>Order id</th>
+						<th>Cost</th>
+						<th>Service Pack</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr data-th-unless="${orders.isEmpty()}"
+						data-th-each="order : ${orders}">
+						<!--<td data-th-text="${employeeServicePack.getId()}">1</td>-->
+						<td data-th-text="${order.getId()}">order id</td>
+						<td data-th-text="${order.getTotalcost()}">order cost</td>
+						<td
+							data-th-text="${order.getService_pack_id().getService_pack_employee_id().getName()}">Employee
+							service pack name</td>
+					</tr>
+				</tbody>
+			</table>
+			<form method="post" data-th-action="@{'/homepage'}">
+				<fieldset>
+
+					<label class="label" for="order">Select an order to
+						complete:</label>
+					<div class="select">
+						<select data-th-remove="all-but-first" name="orderId" id="orderId">
+							<option value="volvo" data-th-each="order : ${orders}"
+								data-th-value="${order.id}" data-th-text="${order.id}">Volvo</option>
+						</select>
+						<!-- data-th-value="${employeeServicePack.id}" è il valore che viene ritornato quando premo sul pulsante -->
+					</div>
+					<div class="has-text-centered">
+						<input type="submit" class="button is-primary is-medium"
+							value="Go to confirmation" name="orderbtn">
+					</div>
+
+				</fieldset>
+			</form>
+			</div>
+		</div>
+
+		<h2 class="is-size-3 mb-2">Employee Service Pack</h2>
+		<div data-th-if="${employeeServicePacks.isEmpty()}"
+			class="is-size-5 has-text-centered my-5">There are no service
+			packs!</div>
+
+		<table data-th-unless="${employeeServicePacks.isEmpty()}"
+			class="table is-fullwidth my-5 has-text-centered">
+			<thead>
+				<tr>
+					<!--<th>ID</th>-->
+					<th>Name</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr data-th-each="employeeServicePack : ${employeeServicePacks}">
+					<!--<td data-th-text="${employeeServicePack.getId()}">1</td>-->
+					<td data-th-text="${employeeServicePack.getName()}">Employee
+						service pack name</td>
+				</tr>
+			</tbody>
+		</table>
+		<div data-th-if="${employeeServicePacks.isEmpty() == false}"
+			class="has-text-centered">
+			<a data-th-href="@{/buypage}" class="button is-primary is-medium">Buy
+				Page</a>
+		</div>
+	</section>
 </body>
 </html>

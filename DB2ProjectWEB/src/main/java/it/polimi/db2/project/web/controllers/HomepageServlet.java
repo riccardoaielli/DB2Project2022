@@ -3,6 +3,8 @@ package it.polimi.db2.project.web.controllers;
 import it.polimi.db2.project.ejb.entities.*;
 import it.polimi.db2.project.ejb.exceptions.CredentialsException;
 import it.polimi.db2.project.ejb.services.EmployeeServicePackService;
+import it.polimi.db2.project.ejb.services.OrderService;
+import it.polimi.db2.project.ejb.services.ServicePackageService;
 import it.polimi.db2.project.ejb.services.UserService;
 
 import org.apache.commons.text.StringEscapeUtils;
@@ -29,12 +31,20 @@ public class HomepageServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private TemplateEngine templateEngine;
     
+    String servletToLoad;
+    
     
 	@EJB(name = "it.polimi.db2.project.ejb.services/EmployeeServicePackService")
 	private EmployeeServicePackService employeeServicePackService;
 	
     @EJB(name = "it.polimi.db2.project.ejb.services/UserService")
     private UserService userService;
+    
+    @EJB
+    private OrderService orderService;
+    
+    @EJB
+    private ServicePackageService servicePackageService;
 
 
     public void init() {
@@ -52,6 +62,24 @@ public class HomepageServlet extends HttpServlet {
         UserEntity user = (UserEntity) session.getAttribute("user");
         String path;
         
+        ServletContext servletContext = getServletContext();
+        WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
+        
+        if(user != null) {
+        	if(user.getFlag_ins()) {
+        	
+	        	List<OrderEntity> orders;
+	        	try {
+	            	orders = orderService.findFailedOrdersByUserId(user.getId());
+	            	        } catch (PersistenceException e) {
+	                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Could not retrieve the orders");
+	                return;
+	            }
+	        	ctx.setVariable("orders", orders);
+        	
+        	}
+        }
+        
         List<EmployeeServicePackEntity> employeeServicePacks;
         try {
         	employeeServicePacks = employeeServicePackService.findAllEmployeeServicePack();
@@ -62,8 +90,6 @@ public class HomepageServlet extends HttpServlet {
 
         resp.setContentType("text/html");
 
-        ServletContext servletContext = getServletContext();
-        WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
         ctx.setVariable("employeeServicePacks", employeeServicePacks);
         path = "/WEB-INF/homepage.html";
         
@@ -73,7 +99,23 @@ public class HomepageServlet extends HttpServlet {
     
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    	
+    	HttpSession session = req.getSession();
+        UserEntity user = (UserEntity) session.getAttribute("user");
         
-    	resp.sendRedirect(getServletContext().getContextPath() + "/buypage");
+    	if (req.getParameter("orderbtn") != null) {
+    		
+    		//recupera il service package
+    		OrderEntity failedOrder = orderService.findOrderByID(Integer.valueOf(req.getParameter("orderId"))).get();
+    		ServicePackageEntity servicePackage = servicePackageService.findServicePackById(failedOrder.getService_pack_id().getId());
+    		session.setAttribute("failedOrder", failedOrder);
+    		session.setAttribute("servicePackage", servicePackage);
+    		servletToLoad = "/confirmationpage";
+    		
+    	}else {
+    		servletToLoad = "/buypage";
+    	}
+    	resp.sendRedirect(getServletContext().getContextPath() + servletToLoad );
+    	return;
     }
 }

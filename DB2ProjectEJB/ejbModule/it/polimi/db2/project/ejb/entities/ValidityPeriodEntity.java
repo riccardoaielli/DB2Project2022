@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,7 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "validity_period")
+@Table(name = "validity_period", schema = "db2Project")
 @NamedQueries({
 	@NamedQuery(
             name = "ValidityPeriod.findByID",
@@ -50,10 +51,10 @@ public class ValidityPeriodEntity {
     @Column(name = "Months", nullable = false)
     private int months;
     
-    @OneToMany(mappedBy = "validity_period_id") // relation associate
+    @OneToMany(mappedBy = "validity_period_id", fetch=FetchType.LAZY, orphanRemoval = true) // relation associate
     private List<ServicePackageEntity> servicePackageEntities;
     
-    @ManyToMany(mappedBy = "validityPeriodEntity", cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.MERGE}) // relation offers
+    @ManyToMany(mappedBy = "validityPeriodEntity", fetch = FetchType.LAZY) // relation offers
     private List<EmployeeServicePackEntity> employeeServicePackEntity = new ArrayList<>();
     
     //fetch = FetchType.EAGER, cascade = CascadeType.REMOVE

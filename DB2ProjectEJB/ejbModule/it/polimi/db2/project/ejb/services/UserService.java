@@ -89,6 +89,7 @@ public class UserService {
         UserEntity userEntity = em.find(UserEntity.class, user.getId());
         userEntity.increaseNumberOfFailedPayments();
         em.merge(userEntity);
+        em.flush();
         return userEntity;
     }
     
@@ -96,6 +97,7 @@ public class UserService {
         UserEntity userEntity = em.find(UserEntity.class, user.getId());
         userEntity.setNumberOfFailedPayments(0);
         em.merge(userEntity);
+        em.flush();
         return userEntity;
 
     }
@@ -104,6 +106,7 @@ public class UserService {
         UserEntity userEntity = em.find(UserEntity.class, user.getId());
         userEntity.setFlag_ins(flag_ins);
         em.merge(userEntity);
+        em.flush();
     }
 
 }

@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,7 +19,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "service")
+@Table(name = "service", schema = "db2Project")
 @NamedQueries({
     @NamedQuery(name = "ServiceEntity.findServiceByName", query = "SELECT s FROM ServiceEntity s WHERE s.type=:name"),
    
@@ -32,26 +33,26 @@ public class ServiceEntity {
  	@Column(name = "Type", nullable = false)
     private String type;
 
-    @Column(name = "Min_fee", nullable = false)
+    @Column(name = "Min_fee")
     private float min_fee;
     
-    @Column(name = "Sms_fee", nullable = false)
+    @Column(name = "Sms_fee")
     private float sms_fee;
     
-    @Column(name = "Min", nullable = false)
+    @Column(name = "Min")
     private int min;
     
-    @Column(name = "Sms", nullable = false)
+    @Column(name = "Sms")
     private int sms;
     
-    @Column(name = "Gb_fee", nullable = false)
+    @Column(name = "Gb_fee")
     private float gb_fee;
     
-    @Column(name = "Gb", nullable = false)
+    @Column(name = "Gb")
     private int gb;
     
-    @ManyToMany(mappedBy = "serviceEntities", cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.MERGE}) // relation comprises
-    private List<EmployeeServicePackEntity> employeeServicePackEntity = new ArrayList<>();
+    @ManyToMany(mappedBy = "serviceEntities", fetch = FetchType.LAZY, cascade = CascadeType.ALL) // relation comprises
+    private List<EmployeeServicePackEntity> employeeServicePackEntity;
 
 	public int getId() {
 		return id;

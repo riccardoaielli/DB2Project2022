@@ -17,7 +17,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "alert")
+@Table(name = "alert", schema = "db2Project")
 @NamedQueries({
         @NamedQuery(name = "AlertEntity.findUser", query = "SELECT u FROM UserEntity u WHERE u.id = :user_alert"),         
 })
@@ -28,13 +28,13 @@ public class AlertEntity {
     @Column(name = "Id", nullable = false)
     private int id;
  
- 	@Column(name = "Amount", nullable = false, length = 45)
+ 	@Column(name = "Amount", nullable = false)
     private float amount;
 
-    @Column(name = "Timestamp", nullable = false, length = 45) // put by default from the db when the entry is created in the table
+    @Column(name = "Timestamp", nullable = false) // put by default from the db when the entry is created in the table
     private Timestamp timestamp;
     
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "User_alert_id", nullable = false)  // alert has the fk of the user who created the alert
     private UserEntity user_alert;
 
@@ -46,7 +46,9 @@ public class AlertEntity {
 
 	    }
     
-    public AlertEntity(){}
+    public AlertEntity(){
+    	
+    }
     
 	public int getId() {
 		return id;

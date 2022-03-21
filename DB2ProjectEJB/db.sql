@@ -19,7 +19,7 @@ CREATE TABLE `user` (
   `Username` varchar(45) NOT NULL,
   `Password` varchar(45) NOT NULL,
   `Email` varchar(90) NOT NULL,
-  `Flag_Ins` binary default 0 NOT NULL,
+  `Flag_Ins` boolean default 0 NOT NULL,
   `NumberOfFailedPayments` int default 0 NOT NULL,
   PRIMARY KEY (`id`),
   constraint Email
@@ -210,6 +210,7 @@ CREATE TABLE `order` (
   `User_id` int NOT NULL,
   `Service_pack_id` int NOT NULL,
   PRIMARY KEY (`Id`),
+  UNIQUE KEY (`Service_pack_id`),
   CONSTRAINT `service_pack_id` FOREIGN KEY (`Service_pack_id`) REFERENCES `service_pack` (`Id`),
   CONSTRAINT `user_id` FOREIGN KEY (`User_id`) REFERENCES `user` (`Id`)
 );

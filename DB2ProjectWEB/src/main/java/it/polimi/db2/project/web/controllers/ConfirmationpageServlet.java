@@ -56,7 +56,7 @@ public class ConfirmationpageServlet extends HttpServlet {
     boolean creaPacchetto = true;
     float costototale;
     String servletToLoad;
-    String failedOrderID;
+    OrderEntity failedOrder;
     OrderEntity order;
     boolean isvalid;
 
@@ -74,13 +74,11 @@ public class ConfirmationpageServlet extends HttpServlet {
 		HttpSession session = req.getSession();
 		UserEntity user = (UserEntity) session.getAttribute("user");
 		
-		failedOrderID = req.getParameter("failedOrderID");
-
-		if (failedOrderID != null) {
-			servicePackage = orderService.findOrderByID(Integer.parseInt(failedOrderID)).get().getService_pack_id();
-		} else {
-			servicePackage = (ServicePackageEntity) req.getSession(false).getAttribute("servicePackage");
-		}
+		
+		failedOrder = (OrderEntity) req.getSession(false).getAttribute("failedOrder");
+		
+		servicePackage = (ServicePackageEntity) req.getSession(false).getAttribute("servicePackage");
+		
 
 		costototale = servicePackage.getTotalcostoptionalproducts() + servicePackage.getCostpackage();
 		String costoTotale = String.valueOf(costototale);
@@ -91,6 +89,7 @@ public class ConfirmationpageServlet extends HttpServlet {
 //		System.out.println(costoTotale);
 		
 //		session.setAttribute("servletToLoad", servletToLoad);
+		req.setAttribute("failedOrder", failedOrder);
 		req.setAttribute("servicePackage", servicePackage);
 		req.setAttribute("costoTotale", costoTotale);
 
@@ -115,25 +114,28 @@ public class ConfirmationpageServlet extends HttpServlet {
 
 		if (req.getParameter("buyLoginbtn") != null) {
 
+			System.out.println("buyLoginbtn premuto");
 			resp.sendRedirect(getServletContext().getContextPath() + "/login");
 			return;
 		
 		}else if(req.getParameter("buyFailbtn") != null){
+			System.out.println("buyFailbtn premuto");
 			isvalid = false;
 			
 		}else if(req.getParameter("buySuccessbtn") != null){
+			System.out.println("buySuccessbtn premuto");
 			isvalid = true;
 		}
 		
-		failedOrderID = req.getParameter("failedOrderID");
+		failedOrder = (OrderEntity) req.getSession(false).getAttribute("failedOrder");
 
-		if (failedOrderID != null) {
-			servicePackage = orderService.findOrderByID(Integer.parseInt(failedOrderID)).get().getService_pack_id();
+		if (failedOrder != null) {
 			creaPacchetto = false;
 		} else {
-			servicePackage = (ServicePackageEntity) req.getSession(false).getAttribute("servicePackage");
 			creaPacchetto = true;
 		}
+		
+		servicePackage = (ServicePackageEntity) req.getSession(false).getAttribute("servicePackage");
 		
 		if(creaPacchetto){
 			float totalcost = servicePackage.getCostpackage() + servicePackage.getTotalcostoptionalproducts();
@@ -155,8 +157,8 @@ public class ConfirmationpageServlet extends HttpServlet {
             }
         }
         else {
-            order = orderService.findOrderByID(Integer.parseInt(failedOrderID)).get();
-            order = orderService.updateOrder(order, isvalid);
+        	failedOrder = orderService.updateOrder(failedOrder, isvalid);
+            System.out.println("fatto");
         }
 
         if(!isvalid) user = userService.incrementsFailedPayments(user);
@@ -171,11 +173,15 @@ public class ConfirmationpageServlet extends HttpServlet {
         //setto l'utente come insolvente se ha degli ordini falliti
         if(orderService.findFailedOrdersByUserId(user.getId()).size()>=1) userService.setUserInsolvent(user, true);
         else userService.setUserInsolvent(user, false);
+        req.getSession().setAttribute("user", user);
         
 //        if(userService.findOrdersToActivate(user.getId()).size()>0) servletToLoad = "serviceActivationSchedule"; // TODO fare lista degli ordini da attivare
 //        else servletToLoad = "/homepage";
 
         servletToLoad = "/homepage";
+        if(servletToLoad == "/homepage") {
+        	req.getSession(false).removeAttribute("servicePackage");
+        }
         resp.sendRedirect(getServletContext().getContextPath() + servletToLoad);
 
 	}

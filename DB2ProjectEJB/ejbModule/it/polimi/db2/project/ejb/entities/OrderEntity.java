@@ -17,29 +17,38 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-@Table(name = "order")
-@NamedQueries({ @NamedQuery(name = "OrderEntity.findOrderById", query = "SELECT o FROM OrderEntity o WHERE o.id = :order_id"),
+@Table(name = "order", schema = "db2Project")
+@NamedQueries({
 
-		@NamedQuery(name = "OrderEntity.findFailedOrdersByUserId", query = "SELECT o FROM OrderEntity o WHERE o.user_id = :user AND o.isvalid=false")
+		@NamedQuery(name = "OrderEntity.findOrderById", query = "SELECT o FROM OrderEntity o WHERE o.id = :order_id"),
+
+		@NamedQuery(name = "OrderEntity.findFailedOrdersByUserId", query = "SELECT o FROM OrderEntity o WHERE o.user_id = :user AND o.isvalid=false"),
+
+//	@NamedQuery(
+//	        name = "Order.findOrdersToActivate",
+//	        query = "SELECT DISTINCT o FROM OrderEntity o JOIN o.servicePackageAssociated s WHERE o.userOwner = :user AND o.isValid=true AND s.startDate > CURRENT_TIMESTAMP "
+//
+//	)
+//		@NamedQuery(name = "Order.findAllOrderByUser", query = "SELECT o FROM OrderEntity o WHERE o.userOwner = :user ")
 
 })
 
 @Entity
 public class OrderEntity {
-	
+
 	public OrderEntity() {
 	}
 
 	public OrderEntity(Timestamp timestamp, float totalcost, UserEntity user_id, ServicePackageEntity service_pack_id,
 			boolean isvalid) {
-		
+
 		this.timestamp = timestamp;
 		this.totalcost = totalcost;
 		this.user_id = user_id;
 		this.service_pack_id = service_pack_id;
 		this.isvalid = isvalid;
 	}
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "Id", nullable = false)
@@ -54,12 +63,12 @@ public class OrderEntity {
 	@Column(name = "Timestamp", nullable = false)
 	private Timestamp timestamp;
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH }, optional = false)
-	@JoinColumn(name = "User_id", nullable = false)
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
+	@JoinColumn(name = "User_id")
 	private UserEntity user_id;
 
-	@OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH }, optional = false)
-	@JoinColumn(name = "Service_pack_id", nullable = false)
+	@OneToOne(optional = false)
+	@JoinColumn(name = "Service_pack_id")
 	private ServicePackageEntity service_pack_id;
 
 	public float getTotalcost() {

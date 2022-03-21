@@ -6,11 +6,12 @@ import java.util.List;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "user")
+@Table(name = "user", schema = "db2Project")
 @NamedQueries({
         @NamedQuery(name = "UserEntity.checkCredentials", query = "SELECT u FROM UserEntity u WHERE u.username = :username AND u.password = :password"),
         @NamedQuery(name = "UserEntity.findByUsername", query = "SELECT u FROM UserEntity u WHERE u.username = :username"),
         @NamedQuery(name = "UserEntity.findByEmail", query = "SELECT u FROM UserEntity u WHERE u.email = :email"),
+        @NamedQuery(name = "UserEntity.findById", query = "SELECT u FROM UserEntity u WHERE u.id = :user_id")
 })
 public class UserEntity {
     @Id
@@ -18,26 +19,25 @@ public class UserEntity {
     @Column(name = "Id", nullable = false)
     private int id;
 
-    @Column(name = "Username", nullable = false, length = 45)
+    @Column(name = "Username", unique=true, nullable=false)
     private String username;
 
-    @Column(name = "Password", nullable = false, length = 45)
+    @Column(name = "Password", nullable = false)
     private String password;
 
-    @Column(name = "Email", nullable = false, length = 90)
+    @Column(name = "Email", unique=true, nullable=false)
     private String email;
     
-    @Column(name = "Flag_ins", nullable = false)
+    @Column(name = "Flag_ins")
     private boolean flag_ins;
     
-    @Column(name = "NumberOfFailedPayments", nullable = false)
+    @Column(name = "NumberOfFailedPayments")
     private int numberOfFailedPayments;
 
+    @OneToMany(mappedBy = "user_id", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderEntity> orders;
 
-    @OneToMany(mappedBy = "user_id", cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.MERGE}, orphanRemoval = true)
-    private List<OrderEntity> orders = new ArrayList<>();
-
-    @OneToOne(mappedBy = "user_alert", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH}, orphanRemoval = true)
+    @OneToOne(mappedBy = "user_alert", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private AlertEntity alert;
     
     
@@ -46,6 +46,7 @@ public class UserEntity {
         this.password = password;
         this.email = email;
         this.flag_ins = flag;
+        numberOfFailedPayments=0;
 
     }
     

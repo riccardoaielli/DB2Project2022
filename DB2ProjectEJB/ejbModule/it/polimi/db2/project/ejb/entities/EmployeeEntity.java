@@ -3,7 +3,7 @@ package it.polimi.db2.project.ejb.entities;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "employee")
+@Table(name = "employee", schema = "db2Project")
 @NamedQueries({
         @NamedQuery(name = "EmployeeEntity.checkCredentials", query = "SELECT a FROM EmployeeEntity a WHERE a.username = :username AND a.password = :password")
 })
@@ -13,10 +13,10 @@ public class EmployeeEntity {
     @Column(name = "Id", nullable = false)
     private int id;
 
-    @Column(name = "Username", nullable = false, length = 45)
+    @Column(name = "Username", unique = true, nullable = false)
     private String username;
 
-    @Column(name = "Password", nullable = false, length = 45)
+    @Column(name = "Password", nullable = false)
     private String password;
     
    

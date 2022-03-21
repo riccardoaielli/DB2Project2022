@@ -2,12 +2,14 @@ package it.polimi.db2.project.ejb.entities;
 
 import javax.persistence.*;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-@Table(name = "service_pack")
-@NamedQueries({ @NamedQuery(name = "ServicePackageEntity.findAll", query = "SELECT sp FROM ServicePackageEntity sp"),
+@Table(name = "service_pack", schema="db2Project")
+@NamedQueries({ 
+	@NamedQuery(name = "ServicePackageEntity.findAll", query = "SELECT sp FROM ServicePackageEntity sp"),
+	@NamedQuery(name = "ServicePackageEntity.findById", query = "SELECT sp FROM ServicePackageEntity sp WHERE sp.id = :id"),
 
 })
 
@@ -18,7 +20,7 @@ public class ServicePackageEntity {
 	}
 
 	public ServicePackageEntity(EmployeeServicePackEntity service_pack_employee_id,
-			ValidityPeriodEntity validity_period_id, Date start_date, Date deactivation_date, float costpackage,
+			ValidityPeriodEntity validity_period_id, java.sql.Date start_date, java.sql.Date deactivation_date, float costpackage,
 			float totalcostoptionalproducts, List<OptionalProductEntity> optionalProductEntities) {
 
 		this.start_date = start_date;
@@ -35,10 +37,12 @@ public class ServicePackageEntity {
 	@Column(name = "Id", nullable = false)
 	private int id;
 
-	@Column(name = "Start_date", nullable = false)
+	@Temporal(TemporalType.DATE)
+	@Column(name = "Start_date")
 	private Date start_date;
 
-	@Column(name = "Deactivation_date", nullable = false)
+	@Temporal(TemporalType.DATE)
+	@Column(name = "Deactivation_date")
 	private Date deactivation_date;
 
 	@Column(name = "Costpackage", unique = true, nullable = false)
@@ -47,13 +51,12 @@ public class ServicePackageEntity {
 	@Column(name = "Totalcostoptionalproducts", unique = true, nullable = false)
 	private float totalcostoptionalproducts;
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE, CascadeType.REFRESH,
-			CascadeType.DETACH })
-	@JoinColumn(name = "Validity_period_id", nullable = false) // owner della relazione associate
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "Validity_period_id") // owner della relazione associate
 	private ValidityPeriodEntity validity_period_id;
 
 	@ManyToMany(fetch=FetchType.EAGER)
-	@JoinTable(name = "has", joinColumns = @JoinColumn(name = "Service_pack_id"), inverseJoinColumns = @JoinColumn(name = "Optional_product_id"))
+	@JoinTable(name = "has", joinColumns = {@JoinColumn(name = "Service_pack_id")}, inverseJoinColumns = {@JoinColumn(name = "Optional_product_id")})
 	private List<OptionalProductEntity> optionalProductEntities; // owner of the relation has
 
 //	@ManyToMany
@@ -63,9 +66,8 @@ public class ServicePackageEntity {
 	@OneToOne(mappedBy = "service_pack_id", cascade = CascadeType.ALL, orphanRemoval = true)
 	private OrderEntity orders; // relazione in
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE, CascadeType.REFRESH,
-			CascadeType.DETACH })
-	@JoinColumn(name = "Service_pack_employee_id", nullable = false)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "Service_pack_employee_id")
 	private EmployeeServicePackEntity service_pack_employee_id; // owner della relazione made_of
 
 	public int getId() {

@@ -6,7 +6,7 @@ import java.util.List;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "employeeServicePack")
+@Table(name = "employeeServicePack", schema = "db2Project")
 
 @NamedQueries({
 	@NamedQuery(
@@ -32,19 +32,19 @@ public class EmployeeServicePackEntity {
 	 @Column(name = "Name", nullable=false)
 	    private String name;
 	 
-	 @OneToMany(mappedBy = "service_pack_employee_id", cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.MERGE}, orphanRemoval = true)
-	    private List<ServicePackageEntity> servicePacks = new ArrayList<>(); // relation made_of
+	 @OneToMany(mappedBy = "service_pack_employee_id", fetch = FetchType.EAGER)
+	    private List<ServicePackageEntity> servicePacks; // relation made_of
 	 
-	 @ManyToMany
+	 @ManyToMany(fetch=FetchType.EAGER)
 	 @JoinTable(name = "offers", joinColumns = @JoinColumn(name = "EmployeeServicePack_id"), inverseJoinColumns = @JoinColumn(name = "Validity_period_id"))
 	 private List<ValidityPeriodEntity> validityPeriodEntity; // owner of the relation offers
 	
 	 
-	 @ManyToMany
+	 @ManyToMany(fetch=FetchType.EAGER)
 	 @JoinTable(name = "propose", joinColumns = @JoinColumn(name = "EmployeeServicePack_id"), inverseJoinColumns = @JoinColumn(name = "Optional_product_id"))
 	 private List<OptionalProductEntity> optionalProductEntity; // owner of the relation propose
 	 
-	 @ManyToMany
+	 @ManyToMany(fetch=FetchType.EAGER)
 	 @JoinTable(name = "comprises", joinColumns = @JoinColumn(name = "EmployeeServicePack_id"), inverseJoinColumns = @JoinColumn(name = "Service_id"))
 	 private List<ServiceEntity> serviceEntities; // owner of the relation comprises
 

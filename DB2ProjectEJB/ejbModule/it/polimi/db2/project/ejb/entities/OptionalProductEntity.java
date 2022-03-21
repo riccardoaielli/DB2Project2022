@@ -8,7 +8,7 @@ import java.util.List;
 
 
 @Entity
-@Table(name = "optional_product")
+@Table(name = "optional_product", schema = "db2Project")
 
 @NamedQueries({
 	
@@ -44,19 +44,17 @@ public class OptionalProductEntity {
     @Column(name = "Id", nullable = false)
     private int id;
     
-    @Column(name = "Name", nullable = false, length = 45)
+    @Column(name = "Name", nullable = false)
     private String name;
 
     @Column(name = "Fee", nullable = false)
     private float fee;
     
-    @ManyToMany(mappedBy = "optionalProductEntities") // relazione has
-    private Collection<ServicePackageEntity> servicePackageEntities;
+    @ManyToMany(mappedBy = "optionalProductEntities", fetch = FetchType.EAGER) // relazione has
+    private List<ServicePackageEntity> servicePackageEntities;
     
-    @ManyToMany(mappedBy = "optionalProductEntity", cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.MERGE}) // relation propose
-    private List<EmployeeServicePackEntity> employeeServicePackEntity = new ArrayList<>();
-    
-   
+    @ManyToMany(mappedBy = "optionalProductEntity", fetch = FetchType.EAGER) // relation propose
+    private List<EmployeeServicePackEntity> employeeServicePackEntity;
 
 	public OptionalProductEntity(String name, float fee) {
 	
@@ -88,10 +86,5 @@ public class OptionalProductEntity {
 	public void setFee(float fee) {
 		this.fee = fee;
 	}
-
-
-//
-//    @OneToMany(mappedBy = "product", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
-//    private List<QuestionnaireEntity> questionnaires = new ArrayList<>();
 
 }
