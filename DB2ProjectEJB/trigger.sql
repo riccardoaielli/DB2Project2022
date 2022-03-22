@@ -101,7 +101,7 @@ DROP TRIGGER IF EXISTS updatePurchaseToNumberTotalPurchasesPerESPAndValidityPeri
 
 delimiter //
 CREATE DEFINER  = CURRENT_USER TRIGGER updatePurchaseToNumberTotalPurchasesPerESPAndValidityPeriod
-    AFTER INSERT ON `order` FOR EACH ROW BEGIN
+    AFTER UPDATE ON `order` FOR EACH ROW BEGIN
                                    IF NEW.IsValid = true THEN
 UPDATE db2Project.numberTotalPurchasesPerESPAndValidityPeriod SET TotalPurchases = TotalPurchases + 1
 WHERE (EmployeeServicePack_id, Validity_period_id) IN (SELECT s.Service_pack_employee_id, s.Validity_period_id
@@ -185,7 +185,7 @@ CREATE DEFINER  = CURRENT_USER TRIGGER updateSalesPerPackage
 BEGIN
     DECLARE cp,tcop float;
     IF NEW.Isvalid = true THEN
-SELECT sp.valuePackage, sp.totalValueOptionalProducts INTO cp,tcop
+SELECT sp.Costpackage, sp.Totalcostoptionalproducts INTO cp,tcop
 FROM service_pack sp
 WHERE sp.Id = NEW.Service_pack_id;
 
