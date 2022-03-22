@@ -192,7 +192,7 @@
 					<tbody>
 						<tr data-th-each="insolvent : ${insolvents}">
 							
-							<td data-th-text="${insolvents.getUser_id()}"></td>
+							<td data-th-text="${insolvent.getUser_id()}"></td>
 							
 						</tr>
 					</tbody>
@@ -229,7 +229,7 @@
 				
 			</div>
 			<div class="box" >
-		<div class="is-size-5">Total number of purchases per Employee Service Pack and Validity Period</div>
+		<div class="is-size-5">Best Seller Optional Product</div>
 		
 			<div data-th-if="${best_seller==null}">
 				<div class="is-size-5 notification is-danger">Data not available!</div>
