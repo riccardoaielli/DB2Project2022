@@ -12,6 +12,7 @@ import javax.validation.ConstraintViolationException;
 
 import it.polimi.db2.project.ejb.SalesReportEntities.Alert;
 import it.polimi.db2.project.ejb.SalesReportEntities.AverageOPwithESP;
+import it.polimi.db2.project.ejb.SalesReportEntities.Best_seller_OP;
 import it.polimi.db2.project.ejb.SalesReportEntities.Insolvent;
 import it.polimi.db2.project.ejb.SalesReportEntities.NumberTotalPurchasesPerESP;
 import it.polimi.db2.project.ejb.SalesReportEntities.NumberTotalPurchasesPerESPAndValidityPeriod;
@@ -53,5 +54,10 @@ public class SalesReportService {
     public List<RejectedOrder> findAllRejectedOrder() {
     	return em.createNamedQuery("RejectedOrder.findAll", RejectedOrder.class)
                 .getResultList();
+    }
+    
+    public Best_seller_OP findAllBest_seller_OP() {
+    	return em.createNamedQuery("Best_seller_OP.findAll", Best_seller_OP.class)
+    			.getResultStream().findFirst().orElse(null);
     }
 }

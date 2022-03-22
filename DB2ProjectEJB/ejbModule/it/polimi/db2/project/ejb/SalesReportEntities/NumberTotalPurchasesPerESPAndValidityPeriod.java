@@ -13,10 +13,8 @@ import javax.persistence.*;
 public class NumberTotalPurchasesPerESPAndValidityPeriod implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private int employeeServicePack_id;
-	
 	@Id
-	private int id;
+	private int employeeServicePack_id;
 
 	private int totalPurchases;
 
@@ -31,14 +29,6 @@ public class NumberTotalPurchasesPerESPAndValidityPeriod implements Serializable
 
 	public void setEmployeeServicePack_id(int employeeServicePack_id) {
 		this.employeeServicePack_id = employeeServicePack_id;
-	}
-
-	public int getId() {
-		return this.id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public int getTotalPurchases() {

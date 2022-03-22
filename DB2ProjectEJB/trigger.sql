@@ -1,3 +1,5 @@
+
+USE db2Project;
 -- Number of total purchases per package
 DROP TABLE IF EXISTS numberTotalPurchasesPerESP;
 
@@ -43,7 +45,8 @@ DROP TABLE IF EXISTS numberTotalPurchasesPerESPAndValidityPeriod;
 
 create table numberTotalPurchasesPerESPAndValidityPeriod
 (
-    EmployeeServicePack_id     int not null,
+    EmployeeServicePack_id     int not null
+    primary key,
     Validity_period_id   int not null,
     TotalPurchases int not null DEFAULT 0,
     constraint numberTotalPurchasesPerESPAndValidityPeriod_fk0
@@ -109,7 +112,7 @@ END IF;
 end //
 delimiter ;
 
---- ************************************************
+-- ************************************************
 
 
 
@@ -195,7 +198,7 @@ WHERE s.EmployeeServicePack_id IN (SELECT s.Service_pack_employee_id
 END IF;
 end //
 delimiter ;
---- ************************************************
+-- ************************************************
 
 
 
@@ -265,6 +268,7 @@ create table best_seller_OP
 (
  Optional_product_id int not null
         primary key,
+         totalSales float not null DEFAULT 0,
     constraint bs_fk0
         foreign key (Optional_product_id) references optional_product (Id)
 );
@@ -279,74 +283,80 @@ create table totalSalesPerOP
         foreign key (Optional_product_id) references optional_product (Id)
 );
 
-DROP TRIGGER IF EXISTS BestSellerOP_new;
+DROP TRIGGER IF EXISTS totalSales_new;
 
 delimiter //
-CREATE DEFINER  = CURRENT_USER TRIGGER BestSellerOP_new
+CREATE DEFINER  = CURRENT_USER TRIGGER totalSales_new
 	AFTER INSERT ON optional_product FOR EACH ROW 
 	    BEGIN
-		    DECLARE massimo integer;
-		    SET massimo := (SELECT *
-		    				FROM best_seller_OP 
-		    				GROUP BY Optional_product_id
-		    				LIMIT 1);
 		    INSERT INTO totalSalesPerOP(Optional_product_id)
 	    		VALUES(NEW.Id);
-		    IF massimo IS NULL OR massimo = '' THEN
-	    		
-	    		INSERT INTO best_seller_OP(Optional_product_id)
-	    		VALUES(NEW.Id);
-
-	    	END IF;
 	    	
-	end //
+		end //
+delimiter ;
+-- Funzionano
+DROP TRIGGER IF EXISTS totalSales_update;
+
+delimiter //
+CREATE DEFINER  = CURRENT_USER TRIGGER totalSales_update
+	AFTER INSERT ON `order` FOR EACH ROW 
+	    BEGIN
+			DECLARE new_sale float;
+            DECLARE opt_id integer;
+            DECLARE bs_entry integer;
+		    IF NEW.Isvalid = 1 THEN
+				
+		
+             SET new_sale :=   (SELECT vp.Months*op.Fee
+								FROM `order` o JOIN  service_pack sp  on sp.Id = o.Service_pack_id
+									JOIN validity_period vp on sp.Validity_period_id = vp.Id
+									JOIN has h on h.Service_pack_id = sp.Id
+									JOIN optional_product op on op.Id = h.Optional_product_id
+								WHERE NEW.Service_pack_id = sp.Id);
+			SET opt_id :=   	(SELECT op.Id
+								FROM `order` o JOIN  service_pack sp  on sp.Id = o.Service_pack_id
+									JOIN validity_period vp on sp.Validity_period_id = vp.Id
+									JOIN has h on h.Service_pack_id = sp.Id
+									JOIN optional_product op on op.Id = h.Optional_product_id
+								WHERE NEW.Service_pack_id = sp.Id);
+			SET bs_entry := (SELECT bs.Optional_product_id
+			    				FROM best_seller_OP bs );
+                                
+			IF bs_entry IS NULL OR bs_entry='' THEN
+				INSERT INTO best_seller_OP VALUES (opt_id, new_sale);
+			END IF;
+			UPDATE totalSalesPerOP
+            SET totalSales = totalSales + new_sale
+            WHERE Optional_product_id = opt_id;
+			END IF;
+		    
+end //
 delimiter ;
 -- Funzionano
 DROP TRIGGER IF EXISTS BestSellerOP_update;
 
 delimiter //
 CREATE DEFINER  = CURRENT_USER TRIGGER BestSellerOP_update
-	AFTER INSERT ON `has` FOR EACH ROW 
+	AFTER UPDATE ON `totalSalesPerOP` FOR EACH ROW 
 	    BEGIN
-		    DECLARE newMaxVal float;
-		    DECLARE newMaxId integer;
-		    
-		    	BEGIN
-			    	DECLARE op_new integer;
-			    	DECLARE newSale float;
-			    	
-			    	SET op_new := (	SELECT h.Optional_product_id as Id
-			    					FROM has h
-			    					WHERE h.Service_pack_id = NEW.Service_pack_id
-			    					LIMIT 1);
-			    	SET newSale := (SELECT op.Fee
-			    					FROM optional_product op
-			    					WHERE op.Id = op_new);
-			    	UPDATE totalSalesPerOP
-			    	SET totalSales = totalSales + newSale
-			    	WHERE Optional_product_id = op_new;
-			    END;
-				
-			    SET newMaxVal :=(SELECT MAX(totalSales) as m
-			    				FROM totalSalesPerOP tot
-			    				GROUP BY tot.Optional_product_id
-			    				LIMIT 1);
-			    SET newMaxId :=(SELECT tot.Optional_product_id as Id
+			DECLARE newMaxVal float;
+            DECLARE newMaxId integer;
+			SET newMaxVal :=(SELECT MAX(totalSales) as m
+			    				FROM totalSalesPerOP tot);
+			SET newMaxId := (SELECT tot.Optional_product_id
 			    				FROM totalSalesPerOP tot
 			    				WHERE tot.totalSales = newMaxVal
 			    				LIMIT 1);
-			    								
-			    UPDATE totalSalesPerOP
-			    SET Optional_product_id = newMaxId
-			    WHERE Optional_product_id != newMaxId;
+			DELETE FROM best_seller_OP;
+			INSERT INTO best_seller_OP VALUES (newMaxId, newMaxVal);
+			
 		    
 		    
 end //
 delimiter ;
---
-'2','3','1','2018-02-03 07:30:00','1','1'
+-- '2','3','1','2018-02-03 07:30:00','1','1'
 
--- List of insolvent users, suspended orders and alert
+-- List of insolvent users,  orders and alert
 
 	-- INSOLVENT USERS ---> Dovrebbe funzionare, problema con value BLOB
 
@@ -419,8 +429,8 @@ CREATE DEFINER  = CURRENT_USER trigger rejectedOrder_update
                                    
 BEGIN
     IF(NEW.Isvalid = true) THEN
-        IF(NEW.Id IN (SELECT Order_id FROM suspendedOrders)) THEN
-           	DELETE FROM suspendedOrders s
+        IF(NEW.Id IN (SELECT Order_id FROM rejectedOrders)) THEN
+           	DELETE FROM rejectedOrders s
 			WHERE s.Order_id = NEW.Id;
 		END IF;
 	END IF;

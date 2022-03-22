@@ -19,6 +19,7 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import it.polimi.db2.project.ejb.SalesReportEntities.Alert;
 import it.polimi.db2.project.ejb.SalesReportEntities.AverageOPwithESP;
+import it.polimi.db2.project.ejb.SalesReportEntities.Best_seller_OP;
 import it.polimi.db2.project.ejb.SalesReportEntities.Insolvent;
 import it.polimi.db2.project.ejb.SalesReportEntities.NumberTotalPurchasesPerESP;
 import it.polimi.db2.project.ejb.SalesReportEntities.NumberTotalPurchasesPerESPAndValidityPeriod;
@@ -97,10 +98,10 @@ public class SalesReportServlet extends HttpServlet {
 		List<Alert> alerts = SRservice.findAllAlert();
 		List<Insolvent> insolvents = SRservice.findAllInsolvent();
 		List<RejectedOrder> rejects = SRservice.findAllRejectedOrder();
-		
+		Best_seller_OP best_seller = SRservice.findAllBest_seller_OP();
 		
 		ctx.setVariable("salesESP", salesESP);
-		
+		ctx.setVariable("best_seller", best_seller);
 		ctx.setVariable("averageOPs", averageOPs);
 	
 		ctx.setVariable("totPurchases", totPurchases);
