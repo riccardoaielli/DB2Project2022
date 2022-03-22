@@ -37,14 +37,12 @@ public class OrderEntity {
 	public OrderEntity() {
 	}
 
-	public OrderEntity(Timestamp timestamp, float totalcost, UserEntity user_id, ServicePackageEntity service_pack_id,
-			boolean isvalid) {
+	public OrderEntity(Timestamp timestamp, float totalcost, UserEntity user_id, ServicePackageEntity service_pack_id) {
 
 		this.timestamp = timestamp;
 		this.totalcost = totalcost;
 		this.user_id = user_id;
 		this.service_pack_id = service_pack_id;
-		this.isvalid = isvalid;
 	}
 
 	@Id

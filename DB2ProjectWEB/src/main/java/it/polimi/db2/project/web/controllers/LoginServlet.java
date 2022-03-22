@@ -16,6 +16,7 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
+import it.polimi.db2.project.ejb.entities.OrderEntity;
 import it.polimi.db2.project.ejb.entities.ServicePackageEntity;
 import it.polimi.db2.project.ejb.entities.UserEntity;
 import it.polimi.db2.project.ejb.exceptions.CredentialsException;
@@ -63,6 +64,17 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    	
+    	servicePackage = (ServicePackageEntity) req.getSession(false).getAttribute("servicePackage");
+        
+        if (req.getParameter("homewithoutloginbtn") != null) {
+    		
+        	req.getSession().removeAttribute("servicePackage");
+    		resp.sendRedirect(getServletContext().getContextPath() + "/homepage");
+    		return;
+    		
+    	}
+        
         String username = StringEscapeUtils.escapeJava(req.getParameter("username"));
         String password = StringEscapeUtils.escapeJava(req.getParameter("password"));
         
@@ -93,6 +105,8 @@ public class LoginServlet extends HttpServlet {
         else if(user != null) {
         	if(servicePackage == null) {
         		req.getSession().setAttribute("user", user);
+        		req.getSession().removeAttribute("servicePackage");
+        		req.removeAttribute("servicePackage");
                 servlettoload =  "/homepage";
         	}else {
         		req.getSession().setAttribute("user", user);
