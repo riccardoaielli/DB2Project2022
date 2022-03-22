@@ -11,10 +11,10 @@ create table numberTotalPurchasesPerESP
 );
 
 
-DROP TRIGGER IF EXISTS addPurchaseToNumberTotalPurchasesPerESP;
+DROP TRIGGER IF EXISTS purchaseToNumberTotalPurchasesPerESP_add;
 
 delimiter //
-CREATE DEFINER  = CURRENT_USER TRIGGER addPurchaseToNumberTotalPurchasesPerESP
+CREATE DEFINER  = CURRENT_USER TRIGGER purchaseToNumberTotalPurchasesPerESP_add
     AFTER INSERT ON `order` FOR EACH ROW
 BEGIN
     IF NEW.Isvalid = true THEN
@@ -26,10 +26,10 @@ END IF;
 end //
 delimiter ;
 
-DROP TRIGGER IF EXISTS createNumberTotalPurchasesPerESP;
+DROP TRIGGER IF EXISTS numberTotalPurchasesPerESP_create;
 
 delimiter //
-CREATE DEFINER  = CURRENT_USER TRIGGER createNumberTotalPurchasesPerESP
+CREATE DEFINER  = CURRENT_USER TRIGGER numberTotalPurchasesPerESP_create
     AFTER INSERT ON employeeServicePack FOR EACH ROW
 BEGIN
 INSERT INTO db2Project.numberTotalPurchasesPerESP(EmployeeServicePack_id)
@@ -55,21 +55,11 @@ create table numberTotalPurchasesPerESPAndValidityPeriod
         foreign key (Validity_period_id) references validity_period (Id)
 );
 
--- A cosa servono?? ************************************************
 
-create index numberTotalPurchasesPerESPAndValidityPeriod_fk0_idx
-    on numberTotalPurchasesPerESPAndValidityPeriod (EmployeeServicePack_id);
-
-create index numberTotalPurchasesPerESPAndValidityPeriod_fk1_idx
-    on numberTotalPurchasesPerESPAndValidityPeriod (Validity_period_id); 
-
--- ************************************************
-
-
-DROP TRIGGER IF EXISTS createNumberTotalPurchasesPerESPAndValidityPeriod;
+DROP TRIGGER IF EXISTS numberTotalPurchasesPerESPAndVP_create;
 
 delimiter //
-CREATE DEFINER  = CURRENT_USER TRIGGER createNumberTotalPurchasesPerESPAndValidityPeriod
+CREATE DEFINER  = CURRENT_USER TRIGGER numberTotalPurchasesPerESPAndVP_create
     AFTER INSERT ON offers FOR EACH ROW BEGIN
     INSERT INTO numberTotalPurchasesPerESPAndValidityPeriod(EmployeeServicePack_id, Validity_period_id)
     VALUES(NEW.EmployeeServicePack_id, NEW.Validity_period_id);
@@ -79,12 +69,12 @@ delimiter ;
     
     
 
-DROP TRIGGER IF EXISTS addPurchaseToNumberTotalPurchasesPerESPAndVP;
+DROP TRIGGER IF EXISTS purchaseToNumberTotalPurchasesPerESPAndVP_new;
 
 delimiter //
-CREATE DEFINER  = CURRENT_USER TRIGGER addPurchaseToNumberTotalPurchasesPerESPAndVP
+CREATE DEFINER  = CURRENT_USER TRIGGER purchaseToNumberTotalPurchasesPerESPAndVP_new
     AFTER INSERT ON `order` FOR EACH ROW BEGIN
-    IF NEW.Isvalid = true THEN
+    IF NEW.Isvalid = 1 THEN
 UPDATE numberTotalPurchasesPerESPAndValidityPeriod 
 SET TotalPurchases = TotalPurchases + 1
 WHERE (EmployeeServicePack_id, Validity_period_id) IN (SELECT s.Service_pack_employee_id, s.Validity_period_id
@@ -95,14 +85,14 @@ END IF;
 end //
 delimiter ;
 
--- A cosa serve?? ************************************************
 
-DROP TRIGGER IF EXISTS updatePurchaseToNumberTotalPurchasesPerESPAndValidityPeriod;
+-- A cosa serve?? ************************************************
+DROP TRIGGER IF EXISTS purchaseToNumberTotalPurchasesPerESPAndVP_update;
 
 delimiter //
-CREATE DEFINER  = CURRENT_USER TRIGGER updatePurchaseToNumberTotalPurchasesPerESPAndValidityPeriod
+CREATE DEFINER  = CURRENT_USER TRIGGER purchaseToNumberTotalPurchasesPerESPAndVP_update
     AFTER UPDATE ON `order` FOR EACH ROW BEGIN
-                                   IF NEW.IsValid = true THEN
+                                   IF NEW.Isvalid = 1 THEN
 UPDATE db2Project.numberTotalPurchasesPerESPAndValidityPeriod SET TotalPurchases = TotalPurchases + 1
 WHERE (EmployeeServicePack_id, Validity_period_id) IN (SELECT s.Service_pack_employee_id, s.Validity_period_id
                                      FROM db2Project.service_pack s
@@ -112,7 +102,7 @@ END IF;
 end //
 delimiter ;
 
--- ************************************************
+-- ----------------------------
 
 
 
@@ -131,10 +121,10 @@ create table salesPerPackage
 );
 
 
-DROP TRIGGER IF EXISTS createESPAddEntryInSalesPerPackage;
+DROP TRIGGER IF EXISTS ESPAddEntryInSalesPerPackage_create;
 
 delimiter //
-CREATE DEFINER  = CURRENT_USER TRIGGER createESPAddEntryInSalesPerPackage
+CREATE DEFINER  = CURRENT_USER TRIGGER ESPAddEntryInSalesPerPackage_create
     AFTER INSERT ON employeeServicePack FOR EACH ROW BEGIN
 
     INSERT INTO salesPerPackage(EmployeeServicePack_id)
@@ -145,10 +135,10 @@ delimiter ;
 
 
 
-DROP TRIGGER IF EXISTS addSalesPerPackage;
+DROP TRIGGER IF EXISTS salesPerPackage_add;
 
 delimiter //
-CREATE DEFINER  = CURRENT_USER TRIGGER addSalesPerPackage
+CREATE DEFINER  = CURRENT_USER TRIGGER salesPerPackage_add
     AFTER INSERT ON `order` FOR EACH ROW
 BEGIN
     DECLARE cp,tcop float;
@@ -177,14 +167,14 @@ delimiter ;
 
 -- A cosa serve?? ************************************************
 
-DROP TRIGGER IF EXISTS updateSalesPerPackage;
+DROP TRIGGER IF EXISTS salesPerPackage_update;
 
 delimiter //
 CREATE DEFINER  = CURRENT_USER TRIGGER updateSalesPerPackage
     AFTER UPDATE ON `order` FOR EACH ROW
 BEGIN
     DECLARE cp,tcop float;
-    IF NEW.Isvalid = true THEN
+    IF NEW.Isvalid = 1 THEN
 SELECT sp.Costpackage, sp.Totalcostoptionalproducts INTO cp,tcop
 FROM service_pack sp
 WHERE sp.Id = NEW.Service_pack_id;
@@ -332,7 +322,8 @@ CREATE DEFINER  = CURRENT_USER TRIGGER totalSales_update
 		    
 end //
 delimiter ;
--- Funzionano
+
+
 DROP TRIGGER IF EXISTS BestSellerOP_update;
 
 delimiter //
@@ -354,11 +345,10 @@ CREATE DEFINER  = CURRENT_USER TRIGGER BestSellerOP_update
 		    
 end //
 delimiter ;
--- '2','3','1','2018-02-03 07:30:00','1','1'
 
 -- List of insolvent users,  orders and alert
 
-	-- INSOLVENT USERS ---> Dovrebbe funzionare, problema con value BLOB
+
 
 DROP TABLE IF EXISTS insolvent;
 
@@ -370,13 +360,13 @@ create table insolvent
         foreign key (User_id) references `user` (Id)
 );
 
-DROP TRIGGER IF EXISTS updateInsolventUser;
+DROP TRIGGER IF EXISTS insolventUser_update;
 
 delimiter //
 CREATE DEFINER  = CURRENT_USER trigger updateInsolventUser
     after UPDATE on `user` FOR EACH ROW
 BEGIN
-    IF NEW.Flag_Ins = true THEN
+    IF NEW.Flag_Ins = 1 THEN
         IF(NEW.Id NOT IN (SELECT User_id FROM insolvent)) THEN
             INSERT INTO insolvent
             VALUES (NEW.Id);
@@ -387,10 +377,6 @@ BEGIN
 	END IF;
 	end //
 delimiter ;
-
-
-
-
 
 
 
@@ -412,7 +398,7 @@ CREATE DEFINER  = CURRENT_USER trigger rejectedOrder_new
     AFTER INSERT on `order` FOR EACH ROW
     
 BEGIN
-    IF(NEW.Isvalid = false) THEN
+    IF(NEW.Isvalid = 0) THEN
         IF(NEW.Id NOT IN (SELECT Order_id FROM rejectedOrders)) THEN
             INSERT INTO rejectedOrders(Order_id)
 			VALUES(NEW.Id);
@@ -421,6 +407,7 @@ BEGIN
 end //
 delimiter ;
 
+
 DROP TRIGGER IF EXISTS rejectedOrder_update;
 
 delimiter //
@@ -428,7 +415,7 @@ CREATE DEFINER  = CURRENT_USER trigger rejectedOrder_update
     AFTER UPDATE on `order` FOR EACH ROW
                                    
 BEGIN
-    IF(NEW.Isvalid = true) THEN
+    IF(NEW.Isvalid = 1) THEN
         IF(NEW.Id IN (SELECT Order_id FROM rejectedOrders)) THEN
            	DELETE FROM rejectedOrders s
 			WHERE s.Order_id = NEW.Id;
