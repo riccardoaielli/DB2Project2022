@@ -51,7 +51,7 @@ public class ServicePackageEntity {
 	@Column(name = "Totalcostoptionalproducts", unique = true, nullable = false)
 	private float totalcostoptionalproducts;
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "Validity_period_id") // owner della relazione associate
 	private ValidityPeriodEntity validity_period_id;
 

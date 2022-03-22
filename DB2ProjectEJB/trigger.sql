@@ -44,9 +44,9 @@ delimiter ;
 DROP TABLE IF EXISTS numberTotalPurchasesPerESPAndValidityPeriod;
 
 create table numberTotalPurchasesPerESPAndValidityPeriod
-(
-    EmployeeServicePack_id     int not null
-    primary key,
+(	
+	Id int not null AUTO_INCREMENT primary key, 
+    EmployeeServicePack_id     int not null,
     Validity_period_id   int not null,
     TotalPurchases int not null DEFAULT 0,
     constraint numberTotalPurchasesPerESPAndValidityPeriod_fk0

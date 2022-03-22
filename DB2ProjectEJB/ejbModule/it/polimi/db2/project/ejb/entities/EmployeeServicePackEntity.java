@@ -32,7 +32,7 @@ public class EmployeeServicePackEntity {
 	 @Column(name = "Name", nullable=false)
 	 private String name;
 	 
-	 @OneToMany(mappedBy = "service_pack_employee_id", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	 @OneToMany(mappedBy = "service_pack_employee_id", cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH }, fetch = FetchType.EAGER)
 	 private List<ServicePackageEntity> servicePacks; // relation made_of
 	 
 	 @ManyToMany(fetch=FetchType.EAGER)

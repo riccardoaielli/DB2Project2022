@@ -14,6 +14,8 @@ public class NumberTotalPurchasesPerESPAndValidityPeriod implements Serializable
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	private int id;
+
 	private int employeeServicePack_id;
 
 	private int totalPurchases;
@@ -21,6 +23,14 @@ public class NumberTotalPurchasesPerESPAndValidityPeriod implements Serializable
 	private int validity_period_id;
 
 	public NumberTotalPurchasesPerESPAndValidityPeriod() {
+	}
+
+	public int getId() {
+		return this.id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public int getEmployeeServicePack_id() {
