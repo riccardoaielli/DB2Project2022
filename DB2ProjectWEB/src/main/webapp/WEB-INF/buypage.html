@@ -65,7 +65,7 @@
 										validity periods!</div>
 									<div class="control"
 										data-th-each="validityPeriod : ${validityPeriods}">
-										<input type="radio" data-th-name="validityPeriod" data-th-value="${validityPeriod.id}">
+										<input type="radio" data-th-name="validityPeriod" data-th-value="${validityPeriod.id}" checked>
 										<div class="radio" data-th-value="${validityPeriod.id}"
 											data-th-text="${validityPeriod.monthly_fee} + ' euro/mese per ' + ${validityPeriod.months} + ' mesi '">validity
 											period 1</div>
