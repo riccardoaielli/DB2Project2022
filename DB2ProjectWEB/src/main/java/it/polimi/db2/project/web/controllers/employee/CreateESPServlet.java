@@ -70,15 +70,19 @@ public class CreateESPServlet extends HttpServlet {
         List<OptionalProductEntity> optional_products = OPservice.findAllOptionalProduct();
         ctx.setVariable("optional_products", optional_products);
         
+        String destServlet = "";
         // CHECK IF THE CURRENT USER IS AN EMPLOYEE OR NOT, IF IT NOT REDIRECT TO INDEX
         if(employee==null) {
-        	path = "/WEB-INF/index.html";
+        	path = "/WEB-INF/employee/index.html";
+        	destServlet = "/employee/index";
         }
         else {
         	path = "/WEB-INF/employee/newESP.html";
+        	destServlet = "/employee/newESP";
         }
 
         templateEngine.process(path, ctx, resp.getWriter());
+        //resp.sendRedirect(getServletContext().getContextPath() + destServlet);
     }
     
     @Override
@@ -142,7 +146,7 @@ public class CreateESPServlet extends HttpServlet {
  
             
         newESP = ESPservice.addNewEmployeeServicePack(name, servicesStrings, ValidityPIds, OptionalPStrings);
-        
+        System.out.println("OK1");
         if( newESP != null )
         	newESP_message = "success";
         

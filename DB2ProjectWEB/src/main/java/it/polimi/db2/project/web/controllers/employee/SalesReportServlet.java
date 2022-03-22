@@ -17,17 +17,24 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
+import it.polimi.db2.project.ejb.SalesReportEntities.Alert;
+import it.polimi.db2.project.ejb.SalesReportEntities.AverageOPwithESP;
+import it.polimi.db2.project.ejb.SalesReportEntities.Insolvent;
+import it.polimi.db2.project.ejb.SalesReportEntities.NumberTotalPurchasesPerESP;
+import it.polimi.db2.project.ejb.SalesReportEntities.NumberTotalPurchasesPerESPAndValidityPeriod;
+import it.polimi.db2.project.ejb.SalesReportEntities.RejectedOrder;
+import it.polimi.db2.project.ejb.SalesReportEntities.SalesPerPackage;
 import it.polimi.db2.project.ejb.entities.EmployeeEntity;
 import it.polimi.db2.project.ejb.entities.OptionalProductEntity;
 import it.polimi.db2.project.ejb.entities.ValidityPeriodEntity;
 import it.polimi.db2.project.ejb.enums.Services;
+import it.polimi.db2.project.ejb.services.EmployeeService;
 import it.polimi.db2.project.ejb.services.EmployeeServicePackService;
 import it.polimi.db2.project.ejb.services.OptionalProductService;
+import it.polimi.db2.project.ejb.services.SalesReportService;
 import it.polimi.db2.project.ejb.services.ValidityPeriodService;
 
-/**
- * Servlet implementation class SalesReportServlet
- */
+
 @WebServlet("/employee/SalesReportServlet")
 public class SalesReportServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -36,6 +43,9 @@ public class SalesReportServlet extends HttpServlet {
 
 	@EJB(name = "it.polimi.db2.project.ejb.services/ValidityPeriodService")
 	private ValidityPeriodService VPservice;
+	
+	@EJB(name = "it.polimi.db2.project.ejb.services/SalesReportService")
+	private SalesReportService SRservice;
 
 	public void init() {
 		ServletContext servletContext = getServletContext();
@@ -51,10 +61,7 @@ public class SalesReportServlet extends HttpServlet {
 		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
+	
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -83,18 +90,33 @@ public class SalesReportServlet extends HttpServlet {
 		response.setContentType("text/html");
 		WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		
+		List<SalesPerPackage> salesESP = SRservice.findAllSalesPerPackage();
+		List<AverageOPwithESP> averageOPs = SRservice.findAllAverageOPwithESP();
+		List<NumberTotalPurchasesPerESP> totPurchases = SRservice.findAllNumberTotalPurchasesPerESP();
+		List<NumberTotalPurchasesPerESPAndValidityPeriod> totPurchasesVP= SRservice.findAllNumberTotalPurchasesPerESPAndValidityPeriod();
+		List<Alert> alerts = SRservice.findAllAlert();
+		List<Insolvent> insolvents = SRservice.findAllInsolvent();
+		List<RejectedOrder> rejects = SRservice.findAllRejectedOrder();
 		
-		//ctx.setVariable("services", Services.values());
+		
+		ctx.setVariable("salesESP", salesESP);
+		
+		ctx.setVariable("averageOPs", averageOPs);
+	
+		ctx.setVariable("totPurchases", totPurchases);
+		
+		ctx.setVariable("totPurchasesVP", totPurchasesVP);
+		
+		ctx.setVariable("alerts", alerts);
+		ctx.setVariable("insolvents", insolvents);
+		ctx.setVariable("rejects", rejects);
 		
 		templateEngine.process(path, ctx, response.getWriter());
 		
 		// resp.sendRedirect(getServletContext().getContextPath() + destServlet);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
+	
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {

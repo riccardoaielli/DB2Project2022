@@ -9,7 +9,228 @@
 <link href="../css/style.css" data-th-href="@{/css/style.css}"
 	rel="stylesheet">
 </head>
-<body>
-	This is the Sales Report Page
+<body class="has-background-light">
+	<section class="container py-5 vh100">
+		<div class="has-text-right">
+
+			<a data-th-href="@{/logout}">Logout</a> <a
+				style="margin: 10px; width: fit-content;" class="button is-primary"
+				data-th-href="@{/employee/homepage}">Home</a>
+		</div>
+
+
+		<div class="column">
+		<div class="box" >
+		<div class="is-size-5">Total sales per Employee Service Pack with and without Optional Products</div>
+		
+			<div data-th-if="${salesESP.isEmpty()}">
+				<div class="is-size-5 notification is-danger">Data not available!</div>
+			</div>
+			<div class="box" data-th-if="${!salesESP.isEmpty() }">
+				
+				<table data-th-unless="${salesESP.isEmpty()}"
+					class="table is-fullwidth my-5 has-text-centered">
+					<thead>
+						<tr>
+							
+							<th>Employee Service Pack ID</th>
+							<th>Total Sales without Optional Products</th>
+							<th>Total Sales with Optional Products</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr data-th-each="esp : ${salesESP}">
+							
+							<td data-th-text="${esp.getEmployeeServicePack_id()}"></td>
+							<td data-th-text="${esp.getTotalSalesWithoutOptionalProduct()}"></td>
+							<td data-th-text="${esp.getTotalSalesWithOptionalProduct()}"></td>
+						</tr>
+					</tbody>
+				</table>
+
+				</div>
+
+			</div>
+			
+			<div class="box" >
+		<div class="is-size-5">Average number of Optional products sold with every Employee Service Pack</div>
+		
+			<div data-th-if="${averageOPs.isEmpty()}">
+				<div class="is-size-5 notification is-danger">Data not available!</div>
+			</div>
+			<div class="box" data-th-if="${!averageOPs.isEmpty() }">
+				
+				<table data-th-unless="${averageOPs.isEmpty()}"
+					class="table is-fullwidth my-5 has-text-centered">
+					<thead>
+						<tr>
+							
+							<th>Employee Service Pack ID</th>
+							<th>Average Optional Products</th>
+							
+						</tr>
+					</thead>
+					<tbody>
+						<tr data-th-each="avgOP : ${averageOPs}">
+							
+							<td data-th-text="${avgOP.getEmployeeServicePack_id()}"></td>
+							<td data-th-text="${avgOP.getAverageOPs()}"></td>
+						
+						</tr>
+					</tbody>
+				</table>
+
+				</div>
+
+			</div>
+		<div class="box" >
+		<div class="is-size-5">Total number of purchases per Employee Service Pack</div>
+		
+			<div data-th-if="${totPurchases.isEmpty()}">
+				<div class="is-size-5 notification is-danger">Data not available!</div>
+			</div>
+			<div class="box" data-th-if="${!totPurchases.isEmpty() }">
+				
+				<table data-th-unless="${totPurchases.isEmpty()}"
+					class="table is-fullwidth my-5 has-text-centered">
+					<thead>
+						<tr>
+							
+							<th>Employee Service Pack ID</th>
+							<th>Total number of purchases</th>
+							
+						</tr>
+					</thead>
+					<tbody>
+						<tr data-th-each="purchase : ${totPurchases}">
+							
+							<td data-th-text="${purchase.getEmployeeServicePack_id()}"></td>
+							<td data-th-text="${purchase.getNumbertotalpurchases()}"></td>
+						
+						</tr>
+					</tbody>
+				</table>
+
+				</div>
+
+			</div>
+			<div class="box" >
+		<div class="is-size-5">Total number of purchases per Employee Service Pack and Validity Period</div>
+		
+			<div data-th-if="${totPurchasesVP.isEmpty()}">
+				<div class="is-size-5 notification is-danger">Data not available!</div>
+			</div>
+			<div class="box" data-th-if="${!totPurchasesVP.isEmpty() }">
+				
+				<table data-th-unless="${totPurchasesVP.isEmpty()}"
+					class="table is-fullwidth my-5 has-text-centered">
+					<thead>
+						<tr>
+							
+							<th>Employee Service Pack ID</th>							
+							<th>Validity Period ID</th>
+							<th>Total number of purchases</th>
+							
+						</tr>
+					</thead>
+					<tbody>
+						<tr data-th-each="purchasevp : ${totPurchasesVP}">
+							
+							<td data-th-text="${purchasevp.getEmployeeServicePack_id()}"></td>
+							<td data-th-text="${purchasevp.getValidity_period_id()}"></td>
+							<td data-th-text="${purchasevp.getTotalPurchases()}"></td>
+						</tr>
+					</tbody>
+				</table>
+
+				</div>
+
+			</div>
+			<div class="box" >
+		<div class="is-size-5">Alerts</div>
+		
+			<div data-th-if="${alerts.isEmpty()}">
+				<div class="is-size-5 notification is-danger">Data not available!</div>
+			</div>
+			<div class="box" data-th-if="${!alerts.isEmpty() }">
+				
+				<table data-th-unless="${alerts.isEmpty()}"
+					class="table is-fullwidth my-5 has-text-centered">
+					<thead>
+						<tr>
+							
+							<th>Alert ID</th>							
+							
+						</tr>
+					</thead>
+					<tbody>
+						<tr data-th-each="alert : ${alerts}">
+							
+							<td data-th-text="${alert.getAlert_id()}"></td>
+							
+						</tr>
+					</tbody>
+				</table>
+
+				</div>
+				<div class="is-size-5">Insolvent Users</div>
+		
+			<div data-th-if="${insolvents.isEmpty()}">
+				<div class="is-size-5 notification is-danger">Data not available!</div>
+			</div>
+			<div class="box" data-th-if="${!insolvents.isEmpty() }">
+				
+				<table data-th-unless="${insolvents.isEmpty()}"
+					class="table is-fullwidth my-5 has-text-centered">
+					<thead>
+						<tr>
+							
+							<th>Insolvent User ID</th>							
+							
+						</tr>
+					</thead>
+					<tbody>
+						<tr data-th-each="insolvent : ${insolvents}">
+							
+							<td data-th-text="${insolvents.getUser_id()}"></td>
+							
+						</tr>
+					</tbody>
+				</table>
+
+				</div>
+				
+				<div class="is-size-5">Rejected Orders</div>
+		
+			<div data-th-if="${rejects.isEmpty()}">
+				<div class="is-size-5 notification is-danger">Data not available!</div>
+			</div>
+			<div class="box" data-th-if="${!rejects.isEmpty() }">
+				
+				<table data-th-unless="${rejects.isEmpty()}"
+					class="table is-fullwidth my-5 has-text-centered">
+					<thead>
+						<tr>
+							
+							<th>Rejected Order ID</th>							
+							
+						</tr>
+					</thead>
+					<tbody>
+						<tr data-th-each="reject : ${rejects}">
+							
+							<td data-th-text="${reject.getOrder_id()}"></td>
+							
+						</tr>
+					</tbody>
+				</table>
+
+				</div>
+				
+			</div>
+
+		</div>
+	</section>
+
 </body>
 </html>

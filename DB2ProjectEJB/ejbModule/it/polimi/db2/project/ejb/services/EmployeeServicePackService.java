@@ -16,6 +16,8 @@ import it.polimi.db2.project.ejb.entities.OptionalProductEntity;
 import it.polimi.db2.project.ejb.entities.ServiceEntity;
 import it.polimi.db2.project.ejb.entities.ValidityPeriodEntity;
 import it.polimi.db2.project.ejb.exceptions.CredentialsException;
+import it.polimi.db2.project.ejb.entities.*;
+
 
 @Stateless
 public class EmployeeServicePackService {
@@ -55,11 +57,10 @@ public class EmployeeServicePackService {
 	
 	public EmployeeServicePackEntity addNewEmployeeServicePack(String name, List<String> servicesStrings,  List<String> ValidityPIds, List<String> OptionalPStrings) throws NonUniqueResultException {
 		
-		
+
 		if (findEmployeeServicePackByName(name) != null) {
-        	
+        	         
             return null;
-            
         }
        
 		
@@ -96,11 +97,13 @@ public class EmployeeServicePackService {
         	}
         }
         
-        
+       
         EmployeeServicePackEntity newESP = new EmployeeServicePackEntity(name, services, vps, ops);
         em.persist(newESP);
-
+ 
         return newESP;
     }
+	
+	
 
 }
