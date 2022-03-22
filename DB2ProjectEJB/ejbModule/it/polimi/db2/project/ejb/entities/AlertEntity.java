@@ -34,7 +34,7 @@ public class AlertEntity {
     @Column(name = "Timestamp", nullable = false) // put by default from the db when the entry is created in the table
     private Timestamp timestamp;
     
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "User_alert_id", nullable = false)  // alert has the fk of the user who created the alert
     private UserEntity user_alert;
 

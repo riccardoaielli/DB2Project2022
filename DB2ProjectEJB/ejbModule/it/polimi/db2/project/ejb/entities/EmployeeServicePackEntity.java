@@ -25,15 +25,15 @@ import javax.persistence.*;
 
 public class EmployeeServicePackEntity {
 	 @Id
-	    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	    @Column(name = "Id", nullable = false)
-	    private int id;
+     @GeneratedValue(strategy = GenerationType.IDENTITY)
+     @Column(name = "Id", nullable = false)
+     private int id;
 	 
 	 @Column(name = "Name", nullable=false)
-	    private String name;
+	 private String name;
 	 
-	 @OneToMany(mappedBy = "service_pack_employee_id", fetch = FetchType.EAGER)
-	    private List<ServicePackageEntity> servicePacks; // relation made_of
+	 @OneToMany(mappedBy = "service_pack_employee_id", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	 private List<ServicePackageEntity> servicePacks; // relation made_of
 	 
 	 @ManyToMany(fetch=FetchType.EAGER)
 	 @JoinTable(name = "offers", joinColumns = @JoinColumn(name = "EmployeeServicePack_id"), inverseJoinColumns = @JoinColumn(name = "Validity_period_id"))

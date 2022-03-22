@@ -51,7 +51,7 @@ public class ServicePackageEntity {
 	@Column(name = "Totalcostoptionalproducts", unique = true, nullable = false)
 	private float totalcostoptionalproducts;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
 	@JoinColumn(name = "Validity_period_id") // owner della relazione associate
 	private ValidityPeriodEntity validity_period_id;
 
@@ -66,7 +66,7 @@ public class ServicePackageEntity {
 	@OneToOne(mappedBy = "service_pack_id", cascade = CascadeType.ALL, orphanRemoval = true)
 	private OrderEntity orders; // relazione in
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
 	@JoinColumn(name = "Service_pack_employee_id")
 	private EmployeeServicePackEntity service_pack_employee_id; // owner della relazione made_of
 

@@ -51,7 +51,7 @@ public class ValidityPeriodEntity {
     @Column(name = "Months", nullable = false)
     private int months;
     
-    @OneToMany(mappedBy = "validity_period_id", fetch=FetchType.LAZY, orphanRemoval = true) // relation associate
+    @OneToMany(mappedBy = "validity_period_id", fetch=FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true) // relation associate
     private List<ServicePackageEntity> servicePackageEntities;
     
     @ManyToMany(mappedBy = "validityPeriodEntity", fetch = FetchType.LAZY) // relation offers

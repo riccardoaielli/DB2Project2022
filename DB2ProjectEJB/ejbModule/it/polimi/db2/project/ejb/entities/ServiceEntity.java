@@ -51,7 +51,7 @@ public class ServiceEntity {
     @Column(name = "Gb")
     private int gb;
     
-    @ManyToMany(mappedBy = "serviceEntities", fetch = FetchType.LAZY, cascade = CascadeType.ALL) // relation comprises
+    @ManyToMany(mappedBy = "serviceEntities", fetch = FetchType.LAZY) // relation comprises
     private List<EmployeeServicePackEntity> employeeServicePackEntity;
 
 	public int getId() {
