@@ -40,7 +40,10 @@ public class CreateESPServlet extends HttpServlet {
     private OptionalProductService OPservice;
     
     @EJB(name = "it.polimi.db2.project.ejb.services/ValidityPeriodService")
-    private ValidityPeriodService VPservice;
+    private ValidityPeriodService VPservice; 
+    
+    @EJB(name = "it.polimi.db2.project.ejb.services/ServiceService")
+    private ServiceService sservice;
     
     public void init() {
         ServletContext servletContext = getServletContext();
@@ -68,9 +71,12 @@ public class CreateESPServlet extends HttpServlet {
         ctx.setVariable("val_periods", val_periods);
         
         List<OptionalProductEntity> optional_products = OPservice.findAllOptionalProduct();
+        List<ServiceEntity> services = sservice.findAllService();
+        ctx.setVariable("services", services);
         ctx.setVariable("optional_products", optional_products);
         
         String destServlet = "";
+        
         // CHECK IF THE CURRENT USER IS AN EMPLOYEE OR NOT, IF IT NOT REDIRECT TO INDEX
         if(employee==null) {
         	path = "/WEB-INF/employee/index.html";
@@ -110,7 +116,7 @@ public class CreateESPServlet extends HttpServlet {
     	
     	
     	
-    	List<String> servicesStrings = new ArrayList<>();
+    	List<String> servicesIds = new ArrayList<>();
     	List<String> OptionalPStrings = new ArrayList<>();
     	List<String> ValidityPIds = new ArrayList<>();
     	
@@ -125,7 +131,7 @@ public class CreateESPServlet extends HttpServlet {
     		sub = full.substring(0, 3);
     		clean = full.substring(3);
     		if( sub.equals("SER") )
-    			servicesStrings.add(clean);
+    			servicesIds.add(clean);
     		else if( sub.equals("OPS") )
     			OptionalPStrings.add(clean);
     		else if( sub.equals("VPE") )
@@ -133,7 +139,7 @@ public class CreateESPServlet extends HttpServlet {
     		
     	}
     	
-    	System.out.println(servicesStrings);
+    	System.out.println(servicesIds);
     	System.out.println(OptionalPStrings);
     	System.out.println(ValidityPIds);
 
@@ -145,7 +151,7 @@ public class CreateESPServlet extends HttpServlet {
         
  
             
-        newESP = ESPservice.addNewEmployeeServicePack(name, servicesStrings, ValidityPIds, OptionalPStrings);
+        newESP = ESPservice.addNewEmployeeServicePack(name, servicesIds, ValidityPIds, OptionalPStrings);
         System.out.println("OK1");
         if( newESP != null )
         	newESP_message = "success";
@@ -156,7 +162,8 @@ public class CreateESPServlet extends HttpServlet {
     	WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
     	//resp.sendRedirect(getServletContext().getContextPath() + destServlet);
         ctx.setVariable("newESP_message", newESP_message);
-        ctx.setVariable("services", Services.values());
+        List<ServiceEntity> services = sservice.findAllService();
+        ctx.setVariable("services", services);
         List<ValidityPeriodEntity> val_periods = VPservice.findAllValidityPeriod();
         ctx.setVariable("val_periods", val_periods);
         

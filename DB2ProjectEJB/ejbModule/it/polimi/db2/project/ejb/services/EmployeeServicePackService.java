@@ -55,7 +55,7 @@ public class EmployeeServicePackService {
                 .orElse(null);
     }
 	
-	public EmployeeServicePackEntity addNewEmployeeServicePack(String name, List<String> servicesStrings,  List<String> ValidityPIds, List<String> OptionalPStrings) throws NonUniqueResultException {
+	public EmployeeServicePackEntity addNewEmployeeServicePack(String name, List<String> servicesIds,  List<String> ValidityPIds, List<String> OptionalPStrings) throws NonUniqueResultException {
 		
 
 		if (findEmployeeServicePackByName(name) != null) {
@@ -72,8 +72,8 @@ public class EmployeeServicePackService {
         ValidityPeriodEntity vpEntity = null;
         OptionalProductEntity opEntity = null;
        
-        for (String serv : servicesStrings){
-        	servEntity = servService.findServiceByName(serv);
+        for (String serv : servicesIds){
+        	servEntity = servService.findServiceById(Integer.parseInt(serv));
     
         	if( servEntity != null ) {
         		services.add(servEntity);

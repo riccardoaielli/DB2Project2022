@@ -47,11 +47,40 @@
 						included in the service package:</div>
 
 
-					<div>
+					<div class="box" style="width: fit-content;"data-th-each="s : ${services}">
 						<input style="display: block" type="checkbox"
-							data-th-each="service : ${services}"
-							data-th-name="${'SER' + service.name}" data-th-text="${service.name}"></input>
-					</div>
+							data-th-name="${'SER' + s.id}"></input>
+					
+					
+					<table data-th-unless="${services.isEmpty()}"
+					class="table is-fullwidth my-5 has-text-centered">
+					<thead>
+						<tr>
+							
+							<th>Type</th>
+							<th>Mins</th>
+							<th>Mins Fee</th>
+							<th>SMS</th>
+							<th>SMS Fee</th>
+							<th>Gigabytes</th>
+							<th>Gigabytes Fee</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td data-th-text="${s.getType()}"></td>
+							<td data-th-text="${s.getMin()}"></td>
+							<td data-th-text="${s.getMin_fee()}"></td>
+							<td data-th-text="${s.getSms()}"></td>
+							<td data-th-text="${s.getSms_fee()}"></td>
+							<td data-th-text="${s.getGb()}"></td>
+							<td data-th-text="${s.getGb_fee()}"></td>
+						</tr>
+					</tbody>
+				</table> 
+				</div>
+					
+					
 				</div>
 				<div class="box">
 					<div class="is-size-5">Please select the optional products to

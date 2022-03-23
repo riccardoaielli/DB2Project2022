@@ -22,7 +22,8 @@ import javax.persistence.Table;
 @Table(name = "service", schema = "db2Project")
 @NamedQueries({
     @NamedQuery(name = "ServiceEntity.findServiceByName", query = "SELECT s FROM ServiceEntity s WHERE s.type=:name"),
-   
+    @NamedQuery(name = "ServiceEntity.findServiceById", query = "SELECT s FROM ServiceEntity s WHERE s.id=:id"),
+    @NamedQuery(name="ServiceEntity.findAll", query="SELECT s FROM ServiceEntity s")
 })
 public class ServiceEntity {
 	@Id
