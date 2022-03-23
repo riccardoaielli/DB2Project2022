@@ -65,7 +65,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     	
-    	servicePackage = (ServicePackageEntity) req.getSession(false).getAttribute("servicePackage");
+    	servicePackage = (ServicePackageEntity) req.getSession().getAttribute("servicePackage");
         
         if (req.getParameter("homewithoutloginbtn") != null) {
     		
