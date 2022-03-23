@@ -243,7 +243,6 @@ CREATE DEFINER  = CURRENT_USER TRIGGER averageOPwithESP_add
 		DECLARE totalOPsPerESP_update integer;
 	    IF NEW.isValid = 1 THEN
  			
- 			
 			
  			SET totalOPsPerESP_update := (	SELECT COUNT(h.Optional_product_id)
  											FROM has h
@@ -293,142 +292,120 @@ delimiter ;
 
 
 -- Best Seller: the OP with the highest number of sales in terms of $$
+   
+DROP TRIGGER IF EXISTS totalSales_update;
+DROP TRIGGER IF EXISTS totalSales_add;
+DROP TRIGGER IF EXISTS totalSales_new;
 
 DROP TABLE IF EXISTS best_seller_OP;
 DROP TABLE IF EXISTS totalSalesPerOP;
+DROP TABLE IF EXISTS totalSalesPerOPO;
 
 create table best_seller_OP
 (
- Optional_product_id int not null
+    Optional_product_id int   not null
         primary key,
-         totalSales float not null DEFAULT 0,
-    constraint bs_fk0
+    totalSales              float not null,
+    constraint best_seller_OP_fk0
         foreign key (Optional_product_id) references optional_product (Id)
 );
+
+
+create table totalSalesPerOPO
+(
+    Optional_product_id int   not null
+        primary key,
+    totalSales     float default 0 not null
+);
+
+
 
 create table totalSalesPerOP
 (
- Optional_product_id int not null
-        primary key,
-    totalSales float not null DEFAULT 0,
-   
-    constraint totalSalesPerOP_fk1
-        foreign key (Optional_product_id) references optional_product (Id)
+    Optional_product_id int             not null,
+    totalSales     float default 0 not null
 );
 
-DROP TRIGGER IF EXISTS totalSales_new;
+delimiter //
+CREATE DEFINER  = CURRENT_USER trigger totalSales_add
+    after insert
+    on `order`
+    for each row
+begin
+
+
+    IF NEW.Isvalid = 1 THEN
+		DELETE FROM totalSalesPerOPO;
+		INSERT INTO totalSalesPerOPO
+
+			SELECT op.Id, (op.Fee * v.Months)
+			FROM `order` o
+		         JOIN service_pack s on s.Id = o.Service_pack_id
+		         JOIN has h on h.Service_pack_id = s.Id
+		         JOIN validity_period v on v.Id = s.Validity_period_id
+		         JOIN optional_product op on op.Id = h.Optional_product_id
+			WHERE s.Id = NEW.Service_pack_id;
+
+		UPDATE totalSalesPerOP s, totalSalesPerOPO op
+		SET s.totalSales = s.totalSales + op.totalSales
+		WHERE s.Optional_product_id = op.Optional_product_id;
+
+
+		DELETE FROM best_seller_OP;
+		INSERT INTO best_seller_OP
+			SELECT s1.Optional_product_id, s1.totalSales
+			FROM totalSalesPerOP s1
+			WHERE s1.Optional_product_id is not null and s1.totalSales IN (SELECT MAX(s2.totalSales) FROM totalSalesPerOP s2);
+	end if;
+
+end //
+delimiter ;
+
+delimiter //
+CREATE DEFINER  = CURRENT_USER trigger totalSales_update
+    after update
+    on `order`
+    for each row
+begin
+
+
+    IF NEW.Isvalid = 1 THEN
+		DELETE FROM totalSalesPerOPO;
+		INSERT INTO totalSalesPerOPO
+
+			SELECT op.Id, (op.Fee * v.Months)
+			FROM `order` o
+		         JOIN service_pack s on s.Id = o.Service_pack_id
+		         JOIN has h on h.Service_pack_id = s.Id
+		         JOIN validity_period v on v.Id = s.Validity_period_id
+		         JOIN optional_product op on op.Id = h.Optional_product_id
+			WHERE s.Id = NEW.Service_pack_id;
+
+		UPDATE totalSalesPerOP s, totalSalesPerOPO op
+		SET s.totalSales = s.totalSales + op.totalSales
+		WHERE s.Optional_product_id = op.Optional_product_id;
+
+
+		DELETE FROM best_seller_OP;
+		INSERT INTO best_seller_OP
+			SELECT s1.Optional_product_id, s1.totalSales
+			FROM totalSalesPerOP s1
+			WHERE s1.Optional_product_id is not null and s1.totalSales IN (SELECT MAX(s2.totalSales) FROM totalSalesPerOP s2);
+	end if;
+
+end //
+delimiter ;
+
 
 delimiter //
 CREATE DEFINER  = CURRENT_USER TRIGGER totalSales_new
-	AFTER INSERT ON optional_product FOR EACH ROW 
-	    BEGIN
-		    INSERT INTO totalSalesPerOP(Optional_product_id)
-	    		VALUES(NEW.Id);
-	    	
-		end //
-delimiter ;
-
-DROP TRIGGER IF EXISTS totalSales_add;
-
-delimiter //
-CREATE DEFINER  = CURRENT_USER TRIGGER totalSales_add
-	AFTER INSERT ON `order` FOR EACH ROW 
-	    BEGIN
-			DECLARE new_sale float;
-            DECLARE opt_id integer;
-            DECLARE bs_entry integer;
-		    IF NEW.Isvalid = 1 THEN
-				
-		
-             SET new_sale :=   (SELECT vp.Months*op.Fee
-								FROM `order` o JOIN  service_pack sp  on sp.Id = o.Service_pack_id
-									JOIN validity_period vp on sp.Validity_period_id = vp.Id
-									JOIN has h on h.Service_pack_id = sp.Id
-									JOIN optional_product op on op.Id = h.Optional_product_id
-								WHERE NEW.Service_pack_id = sp.Id);
-			SET opt_id :=   	(SELECT op.Id
-								FROM `order` o JOIN  service_pack sp  on sp.Id = o.Service_pack_id
-									JOIN validity_period vp on sp.Validity_period_id = vp.Id
-									JOIN has h on h.Service_pack_id = sp.Id
-									JOIN optional_product op on op.Id = h.Optional_product_id
-								WHERE NEW.Service_pack_id = sp.Id);
-			SET bs_entry := (SELECT bs.Optional_product_id
-			    				FROM best_seller_OP bs );
-                                
-			IF bs_entry IS NULL OR bs_entry='' THEN
-				INSERT INTO best_seller_OP VALUES (opt_id, new_sale);
-			END IF;
-			UPDATE totalSalesPerOP
-            SET totalSales = totalSales + new_sale
-            WHERE Optional_product_id = opt_id;
-			END IF;
-		    
+    AFTER INSERT ON optional_product FOR EACH ROW BEGIN
+    INSERT INTO totalSalesPerOP(Optional_product_id)
+    VALUES(NEW.Id);
 end //
 delimiter ;
 
--- TO BE TESTED ************************************************
 
-DROP TRIGGER IF EXISTS totalSales_update;
-
-delimiter //
-CREATE DEFINER  = CURRENT_USER TRIGGER totalSales_update
-	AFTER UPDATE ON `order` FOR EACH ROW 
-	    BEGIN
-			DECLARE new_sale float;
-            DECLARE opt_id integer;
-            DECLARE bs_entry integer;
-		    IF NEW.Isvalid = 1 THEN
-				
-	            SET new_sale :=   (SELECT vp.Months*op.Fee
-									FROM `order` o JOIN  service_pack sp  on sp.Id = o.Service_pack_id
-										JOIN validity_period vp on sp.Validity_period_id = vp.Id
-										JOIN has h on h.Service_pack_id = sp.Id
-										JOIN optional_product op on op.Id = h.Optional_product_id
-									WHERE NEW.Service_pack_id = sp.Id);
-				SET opt_id :=   	(SELECT op.Id
-									FROM `order` o JOIN  service_pack sp  on sp.Id = o.Service_pack_id
-										JOIN validity_period vp on sp.Validity_period_id = vp.Id
-										JOIN has h on h.Service_pack_id = sp.Id
-										JOIN optional_product op on op.Id = h.Optional_product_id
-									WHERE NEW.Service_pack_id = sp.Id);
-				SET bs_entry := (SELECT bs.Optional_product_id
-				    				FROM best_seller_OP bs );
-                                
-				IF bs_entry IS NULL OR bs_entry='' THEN
-					INSERT INTO best_seller_OP VALUES (opt_id, new_sale);
-				END IF;
-				
-				UPDATE totalSalesPerOP
-	            SET totalSales = totalSales + new_sale
-	            WHERE Optional_product_id = opt_id;
-			END IF;
-		    
-end //
-delimiter ;
-
--- ************************************************
-
-DROP TRIGGER IF EXISTS BestSellerOP_update;
-
-delimiter //
-CREATE DEFINER  = CURRENT_USER TRIGGER BestSellerOP_update
-	AFTER UPDATE ON `totalSalesPerOP` FOR EACH ROW 
-	    BEGIN
-			DECLARE newMaxVal float;
-            DECLARE newMaxId integer;
-			SET newMaxVal :=(SELECT MAX(totalSales) as m
-			    				FROM totalSalesPerOP tot);
-			SET newMaxId := (SELECT tot.Optional_product_id
-			    				FROM totalSalesPerOP tot
-			    				WHERE tot.totalSales = newMaxVal
-			    				LIMIT 1);
-			DELETE FROM best_seller_OP;
-			INSERT INTO best_seller_OP VALUES (newMaxId, newMaxVal);
-			
-		    
-		    
-end //
-delimiter ;
 
 -- List of insolvent users,  orders and alert
 
