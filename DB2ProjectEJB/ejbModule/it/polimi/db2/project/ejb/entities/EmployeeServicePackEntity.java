@@ -40,11 +40,11 @@ public class EmployeeServicePackEntity {
 	 private List<ValidityPeriodEntity> validityPeriodEntity; // owner of the relation offers
 	
 	 
-	 @ManyToMany(fetch=FetchType.EAGER)
+	 @ManyToMany(fetch=FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
 	 @JoinTable(name = "propose", joinColumns = @JoinColumn(name = "EmployeeServicePack_id"), inverseJoinColumns = @JoinColumn(name = "Optional_product_id"))
 	 private List<OptionalProductEntity> optionalProductEntity; // owner of the relation propose
 	 
-	 @ManyToMany(fetch=FetchType.EAGER)
+	 @ManyToMany(fetch=FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
 	 @JoinTable(name = "comprises", joinColumns = @JoinColumn(name = "EmployeeServicePack_id"), inverseJoinColumns = @JoinColumn(name = "Service_id"))
 	 private List<ServiceEntity> serviceEntities; // owner of the relation comprises
 

@@ -50,10 +50,10 @@ public class OptionalProductEntity {
     @Column(name = "Fee", nullable = false)
     private float fee;
     
-    @ManyToMany(mappedBy = "optionalProductEntities", fetch = FetchType.EAGER) // relazione has
+    @ManyToMany(mappedBy = "optionalProductEntities", fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH}) // relazione has
     private List<ServicePackageEntity> servicePackageEntities;
     
-    @ManyToMany(mappedBy = "optionalProductEntity", fetch = FetchType.EAGER) // relation propose
+    @ManyToMany(mappedBy = "optionalProductEntity", fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH}) // relation propose
     private List<EmployeeServicePackEntity> employeeServicePackEntity;
 
 	public OptionalProductEntity(String name, float fee) {

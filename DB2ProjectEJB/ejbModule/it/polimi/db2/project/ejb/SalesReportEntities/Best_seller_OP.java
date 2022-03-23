@@ -9,6 +9,7 @@ import javax.persistence.*;
  * 
  */
 @Entity
+@Table(name = "best_seller_OP", schema = "db2Project")
 @NamedQuery(name="Best_seller_OP.findAll", query="SELECT b FROM Best_seller_OP b")
 public class Best_seller_OP implements Serializable {
 	private static final long serialVersionUID = 1L;

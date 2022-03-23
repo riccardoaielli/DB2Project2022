@@ -2,20 +2,13 @@
 -- Data for table `validity_period`
 --
 
-LOCK TABLES `validity_period` WRITE;
-INSERT INTO `validity_period` VALUES (1,20,6);
-INSERT INTO `validity_period` VALUES (2,15,12);
-INSERT INTO `validity_period` VALUES (3,10,24);
-INSERT INTO `validity_period` VALUES (4,8,30);
-UNLOCK TABLES;
+
 
 -- ok
 -- Data for table `user`
 --
 
-LOCK TABLES `user` WRITE;
-INSERT INTO `user` VALUES (1,'user','password','user@prova.com','0','0');
-UNLOCK TABLES;
+
 
 -- ok
 -- Data for table `alert`
@@ -30,9 +23,9 @@ UNLOCK TABLES;
 -- Data for table `employee`
 --
 
-LOCK TABLES `employee` WRITE;
-INSERT INTO `employee` VALUES (1,'employee','password');
-UNLOCK TABLES;
+
+
+
 
 
 LOCK TABLES `employeeServicePack` WRITE;

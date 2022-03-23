@@ -91,6 +91,7 @@ public class SalesReportServlet extends HttpServlet {
 		response.setContentType("text/html");
 		WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		
+		SRservice.refreshAll();
 		List<SalesPerPackage> salesESP = SRservice.findAllSalesPerPackage();
 		List<AverageOPwithESP> averageOPs = SRservice.findAllAverageOPwithESP();
 		List<NumberTotalPurchasesPerESP> totPurchases = SRservice.findAllNumberTotalPurchasesPerESP();
@@ -115,6 +116,7 @@ public class SalesReportServlet extends HttpServlet {
 		templateEngine.process(path, ctx, response.getWriter());
 		
 		// resp.sendRedirect(getServletContext().getContextPath() + destServlet);
+
 	}
 
 	

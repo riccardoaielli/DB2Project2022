@@ -55,7 +55,7 @@ public class ServicePackageEntity {
 	@JoinColumn(name = "Validity_period_id") // owner della relazione associate
 	private ValidityPeriodEntity validity_period_id;
 
-	@ManyToMany(fetch=FetchType.EAGER)
+	@ManyToMany(fetch=FetchType.EAGER , cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
 	@JoinTable(name = "has", joinColumns = {@JoinColumn(name = "Service_pack_id")}, inverseJoinColumns = {@JoinColumn(name = "Optional_product_id")})
 	private List<OptionalProductEntity> optionalProductEntities; // owner of the relation has
 

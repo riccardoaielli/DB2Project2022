@@ -17,7 +17,7 @@ delimiter //
 CREATE DEFINER  = CURRENT_USER TRIGGER purchaseToNumberTotalPurchasesPerESP_add
     AFTER INSERT ON `order` FOR EACH ROW
 BEGIN
-    IF NEW.Isvalid = true THEN
+    IF NEW.Isvalid = 1 THEN
 UPDATE numberTotalPurchasesPerESP SET Numbertotalpurchases = Numbertotalpurchases + 1
 WHERE EmployeeServicePack_id IN (SELECT s.Service_pack_employee_id
                      FROM service_pack s
@@ -37,7 +37,22 @@ VALUES(NEW.Id);
 end //
 delimiter ;
 
+--  TO BE TESTED *********************************
+DROP TRIGGER IF EXISTS purchaseToNumberTotalPurchasesPerESP_update;
+delimiter //
+CREATE DEFINER  = CURRENT_USER TRIGGER purchaseToNumberTotalPurchasesPerESP_update
+    AFTER UPDATE ON `order` FOR EACH ROW
+BEGIN
+    IF NEW.Isvalid = 1 THEN
+UPDATE numberTotalPurchasesPerESP SET Numbertotalpurchases = Numbertotalpurchases + 1
+WHERE EmployeeServicePack_id IN (SELECT s.Service_pack_employee_id
+                     FROM service_pack s
+                     WHERE s.Id = NEW.Service_pack_id);
+END IF;
+end //
+delimiter ;
 
+-- *********************************
 
 -- Number of total purchases per package and validity period
 
@@ -86,7 +101,7 @@ end //
 delimiter ;
 
 
--- A cosa serve?? ************************************************
+--  TO BE TESTED *********************************
 DROP TRIGGER IF EXISTS purchaseToNumberTotalPurchasesPerESPAndVP_update;
 
 delimiter //
@@ -102,7 +117,7 @@ END IF;
 end //
 delimiter ;
 
--- ----------------------------
+-- *********************************
 
 
 
@@ -165,12 +180,12 @@ delimiter ;
 
 
 
--- A cosa serve?? ************************************************
+-- TO BE TESTED ************************************************
 
 DROP TRIGGER IF EXISTS salesPerPackage_update;
 
 delimiter //
-CREATE DEFINER  = CURRENT_USER TRIGGER updateSalesPerPackage
+CREATE DEFINER  = CURRENT_USER TRIGGER salesPerPackage_update
     AFTER UPDATE ON `order` FOR EACH ROW
 BEGIN
     DECLARE cp,tcop float;
@@ -219,11 +234,39 @@ CREATE DEFINER  = CURRENT_USER TRIGGER averageOPwithESP_new
 end //
 delimiter ;
 
+DROP TRIGGER IF EXISTS averageOPwithESP_add;
+
+delimiter //
+CREATE DEFINER  = CURRENT_USER TRIGGER averageOPwithESP_add
+    AFTER INSERT ON `order` FOR EACH ROW 
+    BEGIN 
+		DECLARE totalOPsPerESP_update integer;
+	    IF NEW.isValid = 1 THEN
+ 			
+ 			
+			
+ 			SET totalOPsPerESP_update := (	SELECT COUNT(h.Optional_product_id)
+ 											FROM has h
+ 											WHERE h.Service_pack_id = NEW.Service_pack_id);
+ 			UPDATE averageOPwithESP
+ 			SET totalOPsPerESP = totalOPsPerESP + totalOPsPerESP_update,
+            totalOrdersPerESP = totalOrdersPerESP + 1, 
+            averageOPs = (totalOPsPerESP + totalOPsPerESP_update)/(totalOrdersPerESP + 1)
+ 			WHERE EmployeeServicePack_id IN (SELECT s.Service_pack_employee_id
+ 											FROM service_pack s
+ 											WHERE s.Id = NEW.Service_pack_id);
+ 			
+		END IF;
+	end //
+delimiter ;
+   
+-- TO BE TESTED ************************************************
+
 DROP TRIGGER IF EXISTS averageOPwithESP_update;
 
 delimiter //
 CREATE DEFINER  = CURRENT_USER TRIGGER averageOPwithESP_update
-    AFTER INSERT ON `order` FOR EACH ROW 
+    AFTER UPDATE ON `order` FOR EACH ROW 
     BEGIN 
 		DECLARE totalOPsPerESP_update integer;
 	    IF NEW.isValid = 1 THEN
@@ -246,7 +289,7 @@ CREATE DEFINER  = CURRENT_USER TRIGGER averageOPwithESP_update
 delimiter ;
     
 
---
+-- ************************************************
 
 
 -- Best Seller: the OP with the highest number of sales in terms of $$
@@ -284,11 +327,11 @@ CREATE DEFINER  = CURRENT_USER TRIGGER totalSales_new
 	    	
 		end //
 delimiter ;
--- Funzionano
-DROP TRIGGER IF EXISTS totalSales_update;
+
+DROP TRIGGER IF EXISTS totalSales_add;
 
 delimiter //
-CREATE DEFINER  = CURRENT_USER TRIGGER totalSales_update
+CREATE DEFINER  = CURRENT_USER TRIGGER totalSales_add
 	AFTER INSERT ON `order` FOR EACH ROW 
 	    BEGIN
 			DECLARE new_sale float;
@@ -323,6 +366,47 @@ CREATE DEFINER  = CURRENT_USER TRIGGER totalSales_update
 end //
 delimiter ;
 
+-- TO BE TESTED ************************************************
+
+DROP TRIGGER IF EXISTS totalSales_update;
+
+delimiter //
+CREATE DEFINER  = CURRENT_USER TRIGGER totalSales_update
+	AFTER UPDATE ON `order` FOR EACH ROW 
+	    BEGIN
+			DECLARE new_sale float;
+            DECLARE opt_id integer;
+            DECLARE bs_entry integer;
+		    IF NEW.Isvalid = 1 THEN
+				
+	            SET new_sale :=   (SELECT vp.Months*op.Fee
+									FROM `order` o JOIN  service_pack sp  on sp.Id = o.Service_pack_id
+										JOIN validity_period vp on sp.Validity_period_id = vp.Id
+										JOIN has h on h.Service_pack_id = sp.Id
+										JOIN optional_product op on op.Id = h.Optional_product_id
+									WHERE NEW.Service_pack_id = sp.Id);
+				SET opt_id :=   	(SELECT op.Id
+									FROM `order` o JOIN  service_pack sp  on sp.Id = o.Service_pack_id
+										JOIN validity_period vp on sp.Validity_period_id = vp.Id
+										JOIN has h on h.Service_pack_id = sp.Id
+										JOIN optional_product op on op.Id = h.Optional_product_id
+									WHERE NEW.Service_pack_id = sp.Id);
+				SET bs_entry := (SELECT bs.Optional_product_id
+				    				FROM best_seller_OP bs );
+                                
+				IF bs_entry IS NULL OR bs_entry='' THEN
+					INSERT INTO best_seller_OP VALUES (opt_id, new_sale);
+				END IF;
+				
+				UPDATE totalSalesPerOP
+	            SET totalSales = totalSales + new_sale
+	            WHERE Optional_product_id = opt_id;
+			END IF;
+		    
+end //
+delimiter ;
+
+-- ************************************************
 
 DROP TRIGGER IF EXISTS BestSellerOP_update;
 
@@ -363,7 +447,7 @@ create table insolvent
 DROP TRIGGER IF EXISTS insolventUser_update;
 
 delimiter //
-CREATE DEFINER  = CURRENT_USER trigger updateInsolventUser
+CREATE DEFINER  = CURRENT_USER trigger insolventUser_update
     after UPDATE on `user` FOR EACH ROW
 BEGIN
     IF NEW.Flag_Ins = 1 THEN
@@ -377,8 +461,6 @@ BEGIN
 	END IF;
 	end //
 delimiter ;
-
-
 
 
 DROP TABLE IF EXISTS rejectedOrders;

@@ -15,11 +15,14 @@ public class NumberTotalPurchasesPerESPAndValidityPeriod implements Serializable
 
 	@Id
 	private int id;
-
+	
+	
 	private int employeeServicePack_id;
+	
 
 	private int totalPurchases;
-
+	
+	
 	private int validity_period_id;
 
 	public NumberTotalPurchasesPerESPAndValidityPeriod() {

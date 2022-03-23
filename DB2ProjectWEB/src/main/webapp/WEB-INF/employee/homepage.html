@@ -27,7 +27,10 @@
         <h2 class="is-size-3 mb-2">Employee homepage!</h2>
 
         <div><p>Go to
-        <a style="display: block" href="salesreport.html" data-th-href="@{/employee/SalesReportServlet}">Sales Report Page</a>
+        
+        <form data-th-action="@{'/employee/SalesReportServlet'}" method="get">
+        <input class="button is-primary" name="submit" type="submit"
+					value="Sales Report Page"></form>
         <a style="display: block" href="newESP.html" data-th-href="@{/employee/newESP}">Create a new service package</a>
         </div>
     </div>

@@ -60,4 +60,7 @@ public class SalesReportService {
     	return em.createNamedQuery("Best_seller_OP.findAll", Best_seller_OP.class)
     			.getResultStream().findFirst().orElse(null);
     }
+    
+    public void refreshAll() {
+    	em.getEntityManagerFactory().getCache().evictAll();    }
 }
