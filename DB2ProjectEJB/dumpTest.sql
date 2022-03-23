@@ -141,7 +141,6 @@ CREATE TABLE `comprises` (
 
 LOCK TABLES `comprises` WRITE;
 /*!40000 ALTER TABLE `comprises` DISABLE KEYS */;
-INSERT INTO `comprises` VALUES (1,1),(1,2),(2,3);
 /*!40000 ALTER TABLE `comprises` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -192,7 +191,7 @@ CREATE TABLE `employeeServicePack` (
 
 LOCK TABLES `employeeServicePack` WRITE;
 /*!40000 ALTER TABLE `employeeServicePack` DISABLE KEYS */;
-INSERT INTO `employeeServicePack` VALUES (3,'Senior special'),(1,'Special new'),(2,'Young special');
+INSERT INTO `employeeServicePack` VALUES (1,'ESP1'),(2,'ESP2'),(3,'ESP3');
 /*!40000 ALTER TABLE `employeeServicePack` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -287,7 +286,7 @@ CREATE TABLE `numberTotalPurchasesPerESPAndValidityPeriod` (
   KEY `numberTotalPurchasesPerESPAndValidityPeriod_fk1` (`Validity_period_id`),
   CONSTRAINT `numberTotalPurchasesPerESPAndValidityPeriod_fk0` FOREIGN KEY (`EmployeeServicePack_id`) REFERENCES `employeeServicePack` (`Id`),
   CONSTRAINT `numberTotalPurchasesPerESPAndValidityPeriod_fk1` FOREIGN KEY (`Validity_period_id`) REFERENCES `validity_period` (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -296,7 +295,7 @@ CREATE TABLE `numberTotalPurchasesPerESPAndValidityPeriod` (
 
 LOCK TABLES `numberTotalPurchasesPerESPAndValidityPeriod` WRITE;
 /*!40000 ALTER TABLE `numberTotalPurchasesPerESPAndValidityPeriod` DISABLE KEYS */;
-INSERT INTO `numberTotalPurchasesPerESPAndValidityPeriod` VALUES (1,1,1,0),(2,1,2,0),(3,1,3,0),(4,2,3,0);
+INSERT INTO `numberTotalPurchasesPerESPAndValidityPeriod` VALUES (1,1,1,0),(2,1,2,0),(3,1,3,0),(4,2,2,0),(5,2,3,0),(6,2,4,0),(7,3,1,0),(8,3,2,0),(9,3,3,0);
 /*!40000 ALTER TABLE `numberTotalPurchasesPerESPAndValidityPeriod` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -323,7 +322,7 @@ CREATE TABLE `offers` (
 
 LOCK TABLES `offers` WRITE;
 /*!40000 ALTER TABLE `offers` DISABLE KEYS */;
-INSERT INTO `offers` VALUES (1,1),(1,2),(1,3),(2,3);
+INSERT INTO `offers` VALUES (1,1),(3,1),(1,2),(2,2),(3,2),(1,3),(2,3),(3,3),(2,4);
 /*!40000 ALTER TABLE `offers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -340,7 +339,7 @@ CREATE TABLE `optional_product` (
   `Fee` float NOT NULL,
   PRIMARY KEY (`Id`),
   UNIQUE KEY `Name` (`Name`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -349,7 +348,7 @@ CREATE TABLE `optional_product` (
 
 LOCK TABLES `optional_product` WRITE;
 /*!40000 ALTER TABLE `optional_product` DISABLE KEYS */;
-INSERT INTO `optional_product` VALUES (1,'OPT1',10),(2,'OPT2',20);
+INSERT INTO `optional_product` VALUES (1,'OPT1',10),(2,'trigger-OPT2',20),(3,'trigger-OPT3',30),(4,'OPT-4',40);
 /*!40000 ALTER TABLE `optional_product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -407,7 +406,7 @@ CREATE TABLE `propose` (
 
 LOCK TABLES `propose` WRITE;
 /*!40000 ALTER TABLE `propose` DISABLE KEYS */;
-INSERT INTO `propose` VALUES (1,1),(2,1),(1,2);
+INSERT INTO `propose` VALUES (1,1),(2,2),(3,2),(1,3),(3,3),(2,4),(3,4);
 /*!40000 ALTER TABLE `propose` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -477,7 +476,7 @@ CREATE TABLE `service` (
   `Gb_fee` float DEFAULT NULL,
   `Gb` int DEFAULT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -486,7 +485,6 @@ CREATE TABLE `service` (
 
 LOCK TABLES `service` WRITE;
 /*!40000 ALTER TABLE `service` DISABLE KEYS */;
-INSERT INTO `service` VALUES (1,'MOBILE_PHONE',5,5,500,1000,NULL,NULL),(2,'FIXED_PHONE',5,NULL,2000,NULL,NULL,NULL),(3,'MOBILE_INTERNET',NULL,NULL,NULL,NULL,20,15),(4,'FIXED_INTERNET',NULL,NULL,NULL,NULL,30,25),(5,'FIXED_INTERNET',NULL,NULL,NULL,NULL,45,30);
 /*!40000 ALTER TABLE `service` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -543,7 +541,7 @@ CREATE TABLE `totalSalesPerOP` (
 
 LOCK TABLES `totalSalesPerOP` WRITE;
 /*!40000 ALTER TABLE `totalSalesPerOP` DISABLE KEYS */;
-INSERT INTO `totalSalesPerOP` VALUES (1,0),(2,0);
+INSERT INTO `totalSalesPerOP` VALUES (1,0),(2,0),(3,0),(4,0);
 /*!40000 ALTER TABLE `totalSalesPerOP` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -612,4 +610,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-03-23 10:18:11
+-- Dump completed on 2022-03-23 11:02:55
