@@ -3,8 +3,13 @@
 	<persistence-unit name="DB2ProjectEJB">
 	
 		<jta-data-source>db2Project</jta-data-source>
+		<class>it.polimi.db2.project.ejb.SalesReportEntities.Alert</class>
 		<class>it.polimi.db2.project.ejb.SalesReportEntities.AverageOPwithESP</class>
+		<class>it.polimi.db2.project.ejb.SalesReportEntities.Best_seller_OP</class>
+		<class>it.polimi.db2.project.ejb.SalesReportEntities.Insolvent</class>
 		<class>it.polimi.db2.project.ejb.SalesReportEntities.NumberTotalPurchasesPerESP</class>
+		<class>it.polimi.db2.project.ejb.SalesReportEntities.NumberTotalPurchasesPerESPAndValidityPeriod</class>
+		<class>it.polimi.db2.project.ejb.SalesReportEntities.RejectedOrder</class>
 		<class>it.polimi.db2.project.ejb.SalesReportEntities.SalesPerPackage</class>
 		<class>it.polimi.db2.project.ejb.entities.AlertEntity</class>
 		<class>it.polimi.db2.project.ejb.entities.EmployeeEntity</class>
@@ -15,11 +20,6 @@
 		<class>it.polimi.db2.project.ejb.entities.ServicePackageEntity</class>
 		<class>it.polimi.db2.project.ejb.entities.UserEntity</class>
 		<class>it.polimi.db2.project.ejb.entities.ValidityPeriodEntity</class>
-		<class>it.polimi.db2.project.ejb.SalesReportEntities.Alert</class>
-		<class>it.polimi.db2.project.ejb.SalesReportEntities.Insolvent</class>
-		<class>it.polimi.db2.project.ejb.SalesReportEntities.RejectedOrder</class>
-		<class>it.polimi.db2.project.ejb.SalesReportEntities.Best_seller_OP</class>
-		<class>it.polimi.db2.project.ejb.SalesReportEntities.NumberTotalPurchasesPerESPAndValidityPeriod</class>
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/db2Project"/> 

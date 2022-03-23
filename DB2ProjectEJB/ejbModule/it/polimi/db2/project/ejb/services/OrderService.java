@@ -23,7 +23,10 @@ public class OrderService {
 	@EJB
     private UserService userService;
 
-	public OrderEntity createOrder(OrderEntity order) throws SQLException {
+	public OrderEntity createOrder(UserEntity user, ServicePackageEntity servicePackage, boolean isvalid) throws SQLException {
+		float totalcost = servicePackage.getCostpackage() + servicePackage.getTotalcostoptionalproducts();
+		OrderEntity order = new OrderEntity(new Timestamp(System.currentTimeMillis()), totalcost, user, servicePackage);
+		order.setIsvalid(isvalid);
 		try {
 			em.persist(order);
 			em.flush();
@@ -43,7 +46,6 @@ public class OrderService {
         OrderEntity orderEntity = em.find(OrderEntity.class, order.getId());
         orderEntity.setIsvalid(isvalid);
         em.merge(orderEntity);
-        em.flush();
         return orderEntity;
     }
 	

@@ -58,6 +58,7 @@ public class ConfirmationpageServlet extends HttpServlet {
     String servletToLoad;
     OrderEntity failedOrder;
     boolean isvalid;
+    OrderEntity order;
 
 	public void init() {
 		ServletContext servletContext = getServletContext();
@@ -127,8 +128,8 @@ public class ConfirmationpageServlet extends HttpServlet {
 		servicePackage = (ServicePackageEntity) req.getSession(false).getAttribute("servicePackage");
 		
 		if(creaPacchetto){
-			float totalcost = servicePackage.getCostpackage() + servicePackage.getTotalcostoptionalproducts();
-    		OrderEntity order = new OrderEntity(new Timestamp(System.currentTimeMillis()), totalcost, user, servicePackage, isvalid);
+			//float totalcost = servicePackage.getCostpackage() + servicePackage.getTotalcostoptionalproducts();
+    		//OrderEntity order = new OrderEntity(new Timestamp(System.currentTimeMillis()), totalcost, user, servicePackage, isvalid);
     		
             try {
                 servicePackage = servicePackageService.createServicePackage(servicePackage);
@@ -137,21 +138,21 @@ public class ConfirmationpageServlet extends HttpServlet {
                 throwables.printStackTrace();
             }
     		try {
-    			order = orderService.createOrder(order);
+    			order = orderService.createOrder(user, servicePackage, isvalid);
     			System.out.println("order inserito nel db");
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
         }
         else {
-        	failedOrder = orderService.updateOrder(failedOrder, isvalid);
+        	order = orderService.updateOrder(failedOrder, isvalid);
             System.out.println("sistemato isvalid in failed order nel db");
         }
 
         if(!isvalid) user = userService.incrementsFailedPayments(user);
         
         if(user.getNumberOfFailedPayments()==3){
-            AlertEntity alert = new AlertEntity(failedOrder.getTotalcost(), failedOrder.getTimestamp(), user);
+            AlertEntity alert = new AlertEntity(order.getTotalcost(), order.getTimestamp(), user);
             System.out.println("Creo alert perchè l'utente ha 3 o più pagamenti falliti");
             alertService.createAlert(alert);
             user = userService.setNumberOfFailedPayments(user);
@@ -174,8 +175,8 @@ public class ConfirmationpageServlet extends HttpServlet {
 //        }
         req.removeAttribute("servicePackage");
     	req.removeAttribute("costoTotale");
-    	req.getSession(false).removeAttribute("failedOrder");
-    	req.getSession(false).removeAttribute("servicePackage");
+    	req.getSession().removeAttribute("failedOrder");
+    	req.getSession().removeAttribute("servicePackage");
     	
         resp.sendRedirect(getServletContext().getContextPath() + servletToLoad);
 

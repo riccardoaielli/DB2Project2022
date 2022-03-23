@@ -41,8 +41,17 @@
                             <div class="has-text-centered"><input type="submit" class="button is-primary is-medium"
                                                                   value="Login"></div>
                         </fieldset>
-                        <div data-th-if="${servicePackage == null}" class="mt-4"><p>Proceed without login <a id="homepageanchor" href="homepage">Homepage</a></p></div>
                     </form>
+                    <br>
+                    <div>
+					<form method="post" data-th-if="${servicePackage == null}" data-th-action="@{'/login'}">
+						<div class="has-text-centered">
+							<input type="submit" name="homewithoutloginbtn"
+								class="button is-primary is-medium"
+								value="Proceed without login">
+						</div>
+					</form>
+				</div>
                 </div>
             </div>
         </div>
