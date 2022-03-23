@@ -149,14 +149,17 @@ public class ConfirmationpageServlet extends HttpServlet {
             System.out.println("sistemato isvalid in failed order nel db");
         }
 
-        if(!isvalid) user = userService.incrementsFailedPayments(user);
-        
-        if(user.getNumberOfFailedPayments()==3){
-            AlertEntity alert = new AlertEntity(order.getTotalcost(), order.getTimestamp(), user);
-            System.out.println("Creo alert perchè l'utente ha 3 o più pagamenti falliti");
-            alertService.createAlert(alert);
-            user = userService.setNumberOfFailedPayments(user);
-        }
+        if(!isvalid) {
+        	
+        	user = userService.incrementsFailedPayments(user);
+        	
+        	if(user.getNumberOfFailedPayments()==3){
+                AlertEntity alert = new AlertEntity(order.getTotalcost(), order.getTimestamp(), user);
+                System.out.println("Creo alert perchè l'utente ha 3 o più pagamenti falliti");
+                alertService.createAlert(alert);
+//                user = userService.setNumberOfFailedPayments(user);
+            }
+        } 
         
         
         //imposto l'utente come insolvente se ha degli ordini falliti

@@ -93,13 +93,13 @@ public class UserService {
         return userEntity;
     }
     
-    public UserEntity setNumberOfFailedPayments(UserEntity user){
-        UserEntity userEntity = em.find(UserEntity.class, user.getId());
-        userEntity.setNumberOfFailedPayments(0);
-        em.merge(userEntity);
-        return userEntity;
-
-    }
+//    public UserEntity setNumberOfFailedPayments(UserEntity user){
+//        UserEntity userEntity = em.find(UserEntity.class, user.getId());
+//        userEntity.setNumberOfFailedPayments(0);
+//        em.merge(userEntity);
+//        return userEntity;
+//
+//    }
     
     public void setUserInsolvent(UserEntity user, boolean flag_ins){
         UserEntity userEntity = em.find(UserEntity.class, user.getId());
