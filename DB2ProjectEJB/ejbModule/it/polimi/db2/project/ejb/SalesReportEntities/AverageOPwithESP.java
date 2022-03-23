@@ -3,6 +3,8 @@ package it.polimi.db2.project.ejb.SalesReportEntities;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import it.polimi.db2.project.ejb.entities.EmployeeServicePackEntity;
+
 
 
 /**
@@ -10,21 +12,32 @@ import javax.persistence.*;
  * 
  */
 @Entity
-@NamedQuery(name="AverageOPwithESP.findAll", query="SELECT a FROM AverageOPwithESP a")
+@NamedQuery(name="AverageOPwithESP.findAll", query="SELECT a FROM AverageOPwithESP a") // TODO ?non serve trovare per service pack?
+@Table(name = "averageOPwithESP", schema = "db2Project")
 public class AverageOPwithESP implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@Column(name = "EmployeeServicePack_id", nullable = false)
 	private int employeeServicePack_id;
+	
+	@OneToOne
+    @JoinColumn(name = "EmployeeServicePack_id")
+    private EmployeeServicePackEntity employeeServicePack;
 
+	@Column(name = "averageOPs", nullable = false)
 	private float averageOPs;
 
+	@Column(name = "totalOPsPerESP", nullable = false)
 	private int totalOPsPerESP;
 
+	@Column(name = "totalOrdersPerESP", nullable = false)
 	private int totalOrdersPerESP;
 
 	public AverageOPwithESP() {
 	}
+	
+	//TODO ?Manca il costruttore?
 
 	public int getEmployeeServicePack_id() {
 		return this.employeeServicePack_id;
@@ -56,6 +69,14 @@ public class AverageOPwithESP implements Serializable {
 
 	public void setTotalOrdersPerESP(int totalOrdersPerESP) {
 		this.totalOrdersPerESP = totalOrdersPerESP;
+	}
+
+	public EmployeeServicePackEntity getEmployeeServicePack() {
+		return employeeServicePack;
+	}
+
+	public void setEmployeeServicePack(EmployeeServicePackEntity employeeServicePack) {
+		this.employeeServicePack = employeeServicePack;
 	}
 
 }

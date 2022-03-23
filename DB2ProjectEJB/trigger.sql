@@ -157,7 +157,7 @@ CREATE DEFINER  = CURRENT_USER TRIGGER salesPerPackage_add
     AFTER INSERT ON `order` FOR EACH ROW
 BEGIN
     DECLARE cp,tcop float;
-    IF NEW.Isvalid = 1 THEN
+    IF NEW.Isvalid = 1 THEN --     --------------- perchè hai cambiato?
 SET cp := 	(SELECT sp.Costpackage
 			FROM service_pack sp
 			WHERE sp.Id = NEW.Service_pack_id);
@@ -167,10 +167,10 @@ SET tcop := 	(SELECT sp.Totalcostoptionalproducts
 				WHERE sp.Id = NEW.Service_pack_id);
 
 
-UPDATE salesPerPackage
-SET totalSalesWithOptionalProduct = totalSalesWithOptionalProduct + cp + tcop,
-    totalSalesWithoutOptionalProduct = totalSalesWithoutOptionalProduct + cp
-WHERE EmployeeServicePack_id IN (SELECT s.Service_pack_employee_id
+UPDATE salesPerPackage s -- ----------------------------------------------------------- modificata
+SET s.totalSalesWithOptionalProduct = s.totalSalesWithOptionalProduct + cp + tcop,
+    s.totalSalesWithoutOptionalProduct = s.totalSalesWithoutOptionalProduct + cp
+WHERE s.EmployeeServicePack_id IN (SELECT s.Service_pack_employee_id
                        FROM service_pack s
                        WHERE s.Id = NEW.Service_pack_id );
 END IF;
@@ -515,7 +515,7 @@ create table alerts
 (
     Alert_id int not null
     	primary key,
-    constraint alerts_fk0
+    constraint Alerts_fk0
         foreign key (Alert_id) references alert (Id)
 );
 
