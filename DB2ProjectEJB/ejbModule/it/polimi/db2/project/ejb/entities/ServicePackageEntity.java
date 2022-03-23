@@ -55,7 +55,7 @@ public class ServicePackageEntity {
 	@JoinColumn(name = "Validity_period_id") // owner della relazione associate
 	private ValidityPeriodEntity validity_period_id;
 
-	@ManyToMany(fetch=FetchType.EAGER , cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+	@ManyToMany(fetch=FetchType.EAGER )
 	@JoinTable(name = "has", joinColumns = {@JoinColumn(name = "Service_pack_id")}, inverseJoinColumns = {@JoinColumn(name = "Optional_product_id")})
 	private List<OptionalProductEntity> optionalProductEntities; // owner of the relation has
 
@@ -66,7 +66,7 @@ public class ServicePackageEntity {
 	@OneToOne(mappedBy = "service_pack_id", cascade = CascadeType.ALL, orphanRemoval = true)
 	private OrderEntity orders; // relazione in
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "Service_pack_employee_id")
 	private EmployeeServicePackEntity service_pack_employee_id; // owner della relazione made_of
 
