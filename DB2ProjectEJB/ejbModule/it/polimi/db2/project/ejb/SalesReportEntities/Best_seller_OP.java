@@ -21,7 +21,7 @@ public class Best_seller_OP implements Serializable {
 	private int optional_product_id;
 	
 	@OneToOne
-	@JoinColumn(name = "Optional_product_id")
+	@JoinColumn(name = "Optional_product_id", updatable=false, insertable=false)
 	private OptionalProductEntity optionalProduct;
 	
 	@Column(name = "totalSales", nullable = false)

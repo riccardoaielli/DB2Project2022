@@ -22,7 +22,7 @@ public class AverageOPwithESP implements Serializable {
 	private int employeeServicePack_id;
 	
 	@OneToOne
-    @JoinColumn(name = "EmployeeServicePack_id")
+    @JoinColumn(name = "EmployeeServicePack_id", updatable=false, insertable=false)
     private EmployeeServicePackEntity employeeServicePack;
 
 	@Column(name = "averageOPs", nullable = false)

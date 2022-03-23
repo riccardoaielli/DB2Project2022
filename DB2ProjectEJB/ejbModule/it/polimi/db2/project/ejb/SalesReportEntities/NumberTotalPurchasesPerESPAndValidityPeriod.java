@@ -24,7 +24,7 @@ public class NumberTotalPurchasesPerESPAndValidityPeriod implements Serializable
 	private int employeeServicePack_id;
 	
 	@OneToOne
-    @JoinColumn(name = "EmployeeServicePack_id")
+    @JoinColumn(name = "EmployeeServicePack_id", updatable=false, insertable=false)
     private EmployeeServicePackEntity employeeServicePack;
 	
 	@Column(name = "TotalPurchases", nullable = false)
@@ -34,7 +34,7 @@ public class NumberTotalPurchasesPerESPAndValidityPeriod implements Serializable
 	private int validity_period_id;
 	
 	@OneToOne
-    @JoinColumn(name = "Validity_period_id")
+    @JoinColumn(name = "Validity_period_id", updatable=false, insertable=false)
     private ValidityPeriodEntity validityPeriod;
 
 	public NumberTotalPurchasesPerESPAndValidityPeriod() {

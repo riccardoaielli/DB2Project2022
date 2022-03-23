@@ -21,7 +21,7 @@ public class Insolvent implements Serializable {
 	private int user_id;
 	
 	@OneToOne
-    @JoinColumn(name = "User_id")
+    @JoinColumn(name = "User_id", updatable=false, insertable=false)
     private UserEntity user;
 
 	public Insolvent() {

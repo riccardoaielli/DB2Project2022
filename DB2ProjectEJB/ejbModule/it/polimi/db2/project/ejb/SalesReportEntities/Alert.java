@@ -21,7 +21,7 @@ public class Alert implements Serializable {
 	private int alert_id;
 	
 	@OneToOne
-    @JoinColumn(name = "Alert_id")
+    @JoinColumn(name = "Alert_id", updatable=false, insertable=false)
     private AlertEntity alert;
 
 	public Alert() {

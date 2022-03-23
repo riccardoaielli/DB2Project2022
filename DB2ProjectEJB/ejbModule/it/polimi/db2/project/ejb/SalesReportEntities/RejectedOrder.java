@@ -21,7 +21,7 @@ public class RejectedOrder implements Serializable {
 	private int order_id;
 	
 	@OneToOne
-    @JoinColumn(name = "Order_id")
+    @JoinColumn(name = "Order_id", updatable=false, insertable=false)
     private OrderEntity order;
 
 	public RejectedOrder() {

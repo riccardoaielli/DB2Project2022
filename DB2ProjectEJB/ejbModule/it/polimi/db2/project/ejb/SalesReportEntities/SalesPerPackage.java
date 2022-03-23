@@ -21,7 +21,7 @@ public class SalesPerPackage implements Serializable {
 	private int employeeServicePack_id;
 	
 	@OneToOne
-    @JoinColumn(name = "EmployeeServicePack_id")
+    @JoinColumn(name = "EmployeeServicePack_id", updatable=false, insertable=false)
     private EmployeeServicePackEntity empServicePack;
 
 	@Column(name = "totalSalesWithOptionalProduct", nullable = false)
