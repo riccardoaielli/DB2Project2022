@@ -149,14 +149,6 @@ CREATE TABLE `service` (
 -- Data for table `service`
 --
 
-LOCK TABLES `service` WRITE;
-INSERT INTO `service` (`Id`,`Type`,`Min_fee`,`Sms_fee`,`Min`,`Sms`) VALUES (1,'MOBILE_PHONE',5.0, 5.0, 500, 1000);
-INSERT INTO `service` (`Id`,`Type`,`Min_fee`,`Min`) VALUES (2,'FIXED_PHONE',5.0, 2000);
-INSERT INTO `service` (`Id`,`Type`,`Gb_fee`,`Gb`) VALUES (3,'MOBILE_INTERNET', 20.0, 15);
-INSERT INTO `service` (`Id`,`Type`,`Gb_fee`,`Gb`) VALUES (4,'FIXED_INTERNET', 30.0, 25);
-INSERT INTO `service` (`Id`,`Type`,`Gb_fee`,`Gb`) VALUES (5,'FIXED_INTERNET', 45.0, 30);
-UNLOCK TABLES;
-
 -- ok
 -- Table structure for table `service_pack`
 --
