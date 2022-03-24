@@ -59,10 +59,6 @@ public class ServicePackageEntity {
 	@JoinTable(name = "has", joinColumns = {@JoinColumn(name = "Service_pack_id")}, inverseJoinColumns = {@JoinColumn(name = "Optional_product_id")})
 	private List<OptionalProductEntity> optionalProductEntities; // owner of the relation has
 
-//	@ManyToMany
-//	@JoinTable(name = "comprises", joinColumns = @JoinColumn(name = "Service_pack_id"), inverseJoinColumns = @JoinColumn(name = "Service_id"))
-//	private List<ServiceEntity> serviceEntities; // owner of the relation
-
 	@OneToOne(mappedBy = "service_pack_id", cascade = CascadeType.ALL, orphanRemoval = true)
 	private OrderEntity orders; // relazione in
 

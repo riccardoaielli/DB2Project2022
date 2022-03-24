@@ -22,11 +22,6 @@ public class ServicePackageService {
                 .getResultList();
     }
     
-//    public List<ServicePackageEntity> findServicePackById() {
-//        return em.createNamedQuery("ServicePackageEntity.findById", ServicePackageEntity.class)
-//                .getResultList();
-//    }
-    
     public ServicePackageEntity findServicePackById(int id) {
         return em.createNamedQuery("ServicePackageEntity.findById", ServicePackageEntity.class)
                 .setParameter("id", id)

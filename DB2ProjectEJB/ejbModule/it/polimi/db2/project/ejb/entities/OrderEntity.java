@@ -63,7 +63,7 @@ public class OrderEntity {
 	@JoinColumn(name = "User_id")
 	private UserEntity user_id;
 
-	@OneToOne(optional = false, cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH}) // TODO
+	@OneToOne(optional = false, cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
 	@JoinColumn(name = "Service_pack_id")
 	private ServicePackageEntity service_pack_id;
 

@@ -39,15 +39,7 @@ public class UserService {
                 .orElse(null);
     }
     
-    /**
-     * Checks user credentials against those saved in the database.
-     *
-     * @param username the username of the user.
-     * @param password the password of the user.
-     * @return the {@code UserEntity} linked to the username and password if the user is found and password matches, {@code null} otherwise.
-     * @throws CredentialsException     when the connection with the database fails or when there are more than one user registered with same credentials.
-     * @throws NonUniqueResultException when there are more than one user registered with same credentials.
-     */
+    
     public UserEntity checkCredentials(String username, String password) throws CredentialsException, NonUniqueResultException {
         List<UserEntity> uList;
 
@@ -92,19 +84,21 @@ public class UserService {
         em.merge(userEntity);
         return userEntity;
     }
-    
-//    public UserEntity setNumberOfFailedPayments(UserEntity user){
-//        UserEntity userEntity = em.find(UserEntity.class, user.getId());
-//        userEntity.setNumberOfFailedPayments(0);
-//        em.merge(userEntity);
-//        return userEntity;
-//
-//    }
-    
+       
     public void setUserInsolvent(UserEntity user, boolean flag_ins){
         UserEntity userEntity = em.find(UserEntity.class, user.getId());
         userEntity.setFlag_ins(flag_ins);
         em.merge(userEntity);
     }
+    
+    
+//  public UserEntity setNumberOfFailedPayments(UserEntity user){
+//      UserEntity userEntity = em.find(UserEntity.class, user.getId());
+//      userEntity.setNumberOfFailedPayments(0);
+//      em.merge(userEntity);
+//      return userEntity;
+//
+//  }
+
 
 }

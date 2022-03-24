@@ -72,16 +72,7 @@ public class AlertEntity {
 
 	public void setTimestamp(Timestamp timestamp) {
 		this.timestamp = timestamp;
-	}
-
-//		public int getUser_alert() {
-//			return user_alert;
-//		}
-//
-//		public void setUser_alert(int user_alert) {
-//			this.user_alert = user_alert;
-//		}
-	    
+	}    
 
 	    
 }

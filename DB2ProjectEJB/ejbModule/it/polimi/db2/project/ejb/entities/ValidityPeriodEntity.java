@@ -56,8 +56,6 @@ public class ValidityPeriodEntity {
     
     @ManyToMany(mappedBy = "validityPeriodEntity", fetch = FetchType.LAZY) // relation offers
     private List<EmployeeServicePackEntity> employeeServicePackEntity = new ArrayList<>();
-    
-    //fetch = FetchType.EAGER, cascade = CascadeType.REMOVE
 
 	public int getId() {
 		return id;
