@@ -115,7 +115,6 @@ public class CreateOPServlet extends HttpServlet {
         ServletContext servletContext = getServletContext();
         resp.setContentType("text/html");
     	WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
-    	//resp.sendRedirect(getServletContext().getContextPath() + destServlet);
         ctx.setVariable("newOP_message", newOP_message);
 
     	templateEngine.process(path, ctx, resp.getWriter());

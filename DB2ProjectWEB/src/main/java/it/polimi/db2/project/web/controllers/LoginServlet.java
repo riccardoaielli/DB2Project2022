@@ -50,14 +50,10 @@ public class LoginServlet extends HttpServlet {
     	
     	servicePackage = (ServicePackageEntity) req.getSession(false).getAttribute("servicePackage");
     	
-//    	if(servicePackage != null) {
-//    		visibilita = "nascosto";
-//    	}
-    	
-    	//String servletToLoad = (String) req.getSession().getAttribute("servletToLoad");
+
     	
     	req.setAttribute("servicePackage", servicePackage);
-//    	req.setAttribute("visibilita", visibilita);
+
     	
         resp.sendRedirect(getServletContext().getContextPath());
     }

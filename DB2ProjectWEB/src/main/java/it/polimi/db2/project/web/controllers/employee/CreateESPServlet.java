@@ -88,7 +88,7 @@ public class CreateESPServlet extends HttpServlet {
         }
 
         templateEngine.process(path, ctx, resp.getWriter());
-        //resp.sendRedirect(getServletContext().getContextPath() + destServlet);
+        
     }
     
     @Override
@@ -160,7 +160,7 @@ public class CreateESPServlet extends HttpServlet {
         ServletContext servletContext = getServletContext();
         resp.setContentType("text/html");
     	WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
-    	//resp.sendRedirect(getServletContext().getContextPath() + destServlet);
+    	
         ctx.setVariable("newESP_message", newESP_message);
         List<ServiceEntity> services = sservice.findAllService();
         ctx.setVariable("services", services);

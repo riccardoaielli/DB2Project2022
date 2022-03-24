@@ -6,12 +6,8 @@ import javax.persistence.*;
 import it.polimi.db2.project.ejb.entities.EmployeeServicePackEntity;
 
 
-/**
- * The persistent class for the numberTotalPurchasesPerESP database table.
- * 
- */
 @Entity
-@NamedQuery(name="NumberTotalPurchasesPerESP.findAll", query="SELECT n FROM NumberTotalPurchasesPerESP n") // TODO ?non serve trovare by empsp?
+@NamedQuery(name="NumberTotalPurchasesPerESP.findAll", query="SELECT n FROM NumberTotalPurchasesPerESP n") 
 @Table(name = "numberTotalPurchasesPerESP")
 public class NumberTotalPurchasesPerESP implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -27,7 +23,6 @@ public class NumberTotalPurchasesPerESP implements Serializable {
 	@Column(name = "Numbertotalpurchases", nullable = false)
 	private int numbertotalpurchases;
 	
-	//TODO ?Manca il costruttore?
 
 	public NumberTotalPurchasesPerESP() {
 	}

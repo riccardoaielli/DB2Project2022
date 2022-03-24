@@ -184,7 +184,7 @@ delimiter ;
 
 
 
--- TO BE TESTED ************************************************
+
 
 DROP TRIGGER IF EXISTS salesPerPackage_update;
 
@@ -208,7 +208,7 @@ CREATE DEFINER  = CURRENT_USER TRIGGER salesPerPackage_update
 		end //
 delimiter ;
 
--- ************************************************
+
 
 
 
@@ -263,8 +263,7 @@ CREATE DEFINER  = CURRENT_USER TRIGGER averageOPwithESP_add
 		END IF;
 	end //
 delimiter ;
-   
--- TO BE TESTED ************************************************
+
 
 DROP TRIGGER IF EXISTS averageOPwithESP_update;
 
@@ -293,7 +292,6 @@ CREATE DEFINER  = CURRENT_USER TRIGGER averageOPwithESP_update
 delimiter ;
     
 
--- ************************************************
 
 
 -- Best Seller: the OP with the highest number of sales in terms of $$

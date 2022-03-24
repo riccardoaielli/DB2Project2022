@@ -6,10 +6,6 @@ import javax.persistence.*;
 import it.polimi.db2.project.ejb.entities.OrderEntity;
 
 
-/**
- * The persistent class for the rejectedOrders database table.
- * 
- */
 @Entity
 @Table(name="rejectedOrders")
 @NamedQuery(name="RejectedOrder.findAll", query="SELECT r FROM RejectedOrder r")

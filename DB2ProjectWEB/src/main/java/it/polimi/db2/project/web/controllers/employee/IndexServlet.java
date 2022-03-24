@@ -31,7 +31,7 @@ public class IndexServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         HttpSession session = req.getSession(false);
 
-        if (session == null || session.getAttribute("employee") == null) { // No logged-in user found, so redirect to login page.
+        if (session == null || session.getAttribute("employee") == null) { 
             resp.setContentType("text/html");
 
             ServletContext servletContext = getServletContext();

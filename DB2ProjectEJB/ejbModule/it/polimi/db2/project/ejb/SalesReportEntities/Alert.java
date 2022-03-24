@@ -6,10 +6,6 @@ import javax.persistence.*;
 import it.polimi.db2.project.ejb.entities.AlertEntity;
 
 
-/**
- * The persistent class for the alerts database table.
- * 
- */
 @Entity
 @Table(name="alerts")
 @NamedQuery(name="Alert.findAll", query="SELECT a FROM Alert a")

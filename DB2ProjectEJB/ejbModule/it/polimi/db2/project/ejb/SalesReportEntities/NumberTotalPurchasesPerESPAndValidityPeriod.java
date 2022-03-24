@@ -7,10 +7,6 @@ import it.polimi.db2.project.ejb.entities.EmployeeServicePackEntity;
 import it.polimi.db2.project.ejb.entities.ValidityPeriodEntity;
 
 
-/**
- * The persistent class for the numberTotalPurchasesPerESPAndValidityPeriod database table.
- * 
- */
 @Entity
 @NamedQuery(name="NumberTotalPurchasesPerESPAndValidityPeriod.findAll", query="SELECT n FROM NumberTotalPurchasesPerESPAndValidityPeriod n") // TODO ?non serve trovare per service pack e val period?
 @Table(name = "numberTotalPurchasesPerESPAndValidityPeriod")
@@ -40,7 +36,7 @@ public class NumberTotalPurchasesPerESPAndValidityPeriod implements Serializable
 	public NumberTotalPurchasesPerESPAndValidityPeriod() {
 	}
 	
-	//TODO ?Manca il costruttore?
+	
 
 	public int getId() {
 		return this.id;

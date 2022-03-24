@@ -6,10 +6,7 @@ import javax.persistence.*;
 import it.polimi.db2.project.ejb.entities.OptionalProductEntity;
 
 
-/**
- * The persistent class for the best_seller_OP database table.
- * 
- */
+
 @Entity
 @Table(name = "best_seller_OP", schema = "db2Project")
 @NamedQuery(name="Best_seller_OP.findAll", query="SELECT b FROM Best_seller_OP b")
@@ -30,7 +27,7 @@ public class Best_seller_OP implements Serializable {
 	public Best_seller_OP() {
 	}
 	
-	//TODO ?Manca il costruttore?
+	
 
 	public int getOptional_product_id() {
 		return this.optional_product_id;

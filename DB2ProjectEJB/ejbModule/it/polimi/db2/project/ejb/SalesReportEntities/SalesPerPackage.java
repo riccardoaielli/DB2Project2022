@@ -6,12 +6,8 @@ import javax.persistence.*;
 import it.polimi.db2.project.ejb.entities.EmployeeServicePackEntity;
 
 
-/**
- * The persistent class for the salesPerPackage database table.
- * 
- */
 @Entity
-@NamedQuery(name="SalesPerPackage.findAll", query="SELECT s FROM SalesPerPackage s")  // TODO ?non serve trovare per service pack?
+@NamedQuery(name="SalesPerPackage.findAll", query="SELECT s FROM SalesPerPackage s") 
 @Table(name = "salesPerPackage")
 public class SalesPerPackage implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -30,7 +26,7 @@ public class SalesPerPackage implements Serializable {
 	@Column(name = "totalSalesWithoutOptionalProduct", nullable = false)
 	private int totalSalesWithoutOptionalProduct;
 	
-	//TODO ?Manca il costruttore?
+	
 
 	public SalesPerPackage() {
 	}

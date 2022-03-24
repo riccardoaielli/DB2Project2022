@@ -75,7 +75,7 @@ public class ConfirmationpageServlet extends HttpServlet {
 		UserEntity user = (UserEntity) session.getAttribute("user");
 		
 		
-//		failedOrder = (OrderEntity) req.getSession(false).getAttribute("failedOrder");
+
 		
 		servicePackage = (ServicePackageEntity) req.getSession(false).getAttribute("servicePackage");
 		
@@ -84,7 +84,7 @@ public class ConfirmationpageServlet extends HttpServlet {
 		String costoTotale = String.valueOf(costototale);
 		
 		
-//		req.setAttribute("failedOrder", failedOrder);
+
 		req.setAttribute("servicePackage", servicePackage);
 		req.setAttribute("costoTotale", costoTotale);
 
@@ -128,8 +128,7 @@ public class ConfirmationpageServlet extends HttpServlet {
 		servicePackage = (ServicePackageEntity) req.getSession(false).getAttribute("servicePackage");
 		
 		if(creaPacchetto){
-			//float totalcost = servicePackage.getCostpackage() + servicePackage.getTotalcostoptionalproducts();
-    		//OrderEntity order = new OrderEntity(new Timestamp(System.currentTimeMillis()), totalcost, user, servicePackage, isvalid);
+			
     		
             try {
                 servicePackage = servicePackageService.createServicePackage(servicePackage);
@@ -157,7 +156,7 @@ public class ConfirmationpageServlet extends HttpServlet {
                 AlertEntity alert = new AlertEntity(order.getTotalcost(), order.getTimestamp(), user);
                 System.out.println("Creo alert perchè l'utente ha 3 o più pagamenti falliti");
                 alertService.createAlert(alert);
-//                user = userService.setNumberOfFailedPayments(user);
+
             }
         } 
         
@@ -170,12 +169,7 @@ public class ConfirmationpageServlet extends HttpServlet {
         if(orderService.findOrderScheduledByUserId(user.getId()).size()>0) servletToLoad = "/serviceactivationschedule";
         else servletToLoad = "/homepage";
 
-//        if(servletToLoad == "/homepage") {
-//        	req.removeAttribute("servicePackage");
-//        	req.removeAttribute("costoTotale");
-//        	req.getSession(false).removeAttribute("failedOrder");
-//        	req.getSession(false).removeAttribute("servicePackage");
-//        }
+
         req.removeAttribute("servicePackage");
     	req.removeAttribute("costoTotale");
     	req.getSession().removeAttribute("failedOrder");

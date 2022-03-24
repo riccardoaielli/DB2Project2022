@@ -7,10 +7,6 @@ import it.polimi.db2.project.ejb.entities.EmployeeServicePackEntity;
 
 
 
-/**
- * The persistent class for the averageOPwithESP database table.
- * 
- */
 @Entity
 @NamedQuery(name="AverageOPwithESP.findAll", query="SELECT a FROM AverageOPwithESP a") // TODO ?non serve trovare per service pack?
 @Table(name = "averageOPwithESP", schema = "db2Project")
@@ -37,7 +33,6 @@ public class AverageOPwithESP implements Serializable {
 	public AverageOPwithESP() {
 	}
 	
-	//TODO ?Manca il costruttore?
 
 	public int getEmployeeServicePack_id() {
 		return this.employeeServicePack_id;

@@ -6,10 +6,6 @@ import javax.persistence.*;
 import it.polimi.db2.project.ejb.entities.UserEntity;
 
 
-/**
- * The persistent class for the insolvent database table.
- * 
- */
 @Entity
 @Table(name="insolvent")
 @NamedQuery(name="Insolvent.findAll", query="SELECT i FROM Insolvent i")

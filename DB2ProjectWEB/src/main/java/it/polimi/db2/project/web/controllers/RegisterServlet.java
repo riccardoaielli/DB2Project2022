@@ -41,15 +41,6 @@ public class RegisterServlet extends HttpServlet {
         templateResolver.setSuffix(".html");
     }
 
-//    @Override
-//    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-//        resp.setContentType("text/html");
-//
-//        ServletContext servletContext = getServletContext();
-//        WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
-//
-//        templateEngine.process(registerPath, ctx, resp.getWriter());
-//    }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {

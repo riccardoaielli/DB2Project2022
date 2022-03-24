@@ -59,16 +59,17 @@ public class SalesReportServlet extends HttpServlet {
 
 	public SalesReportServlet() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		
 
 		HttpSession session = request.getSession();
+		SRservice.refreshAll();
 		EmployeeEntity employee = (EmployeeEntity) session.getAttribute("employee");
 		
 		String destServlet = "/employee";
@@ -91,7 +92,7 @@ public class SalesReportServlet extends HttpServlet {
 		response.setContentType("text/html");
 		WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		
-		SRservice.refreshAll();
+		
 		List<SalesPerPackage> salesESP = SRservice.findAllSalesPerPackage();
 		List<AverageOPwithESP> averageOPs = SRservice.findAllAverageOPwithESP();
 		List<NumberTotalPurchasesPerESP> totPurchases = SRservice.findAllNumberTotalPurchasesPerESP();
@@ -115,7 +116,7 @@ public class SalesReportServlet extends HttpServlet {
 		
 		templateEngine.process(path, ctx, response.getWriter());
 		
-		// resp.sendRedirect(getServletContext().getContextPath() + destServlet);
+		
 
 	}
 
@@ -123,7 +124,7 @@ public class SalesReportServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
+
 		doGet(request, response);
 	}
 
