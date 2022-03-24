@@ -16,14 +16,14 @@ DROP TRIGGER IF EXISTS purchaseToNumberTotalPurchasesPerESP_add;
 delimiter //
 CREATE DEFINER  = CURRENT_USER TRIGGER purchaseToNumberTotalPurchasesPerESP_add
     AFTER INSERT ON `order` FOR EACH ROW
-BEGIN
-    IF NEW.Isvalid = 1 THEN
-UPDATE numberTotalPurchasesPerESP SET Numbertotalpurchases = Numbertotalpurchases + 1
-WHERE EmployeeServicePack_id IN (SELECT s.Service_pack_employee_id
-                     FROM service_pack s
-                     WHERE s.Id = NEW.Service_pack_id);
-END IF;
-end //
+	BEGIN
+		IF NEW.Isvalid = 1 THEN
+			UPDATE numberTotalPurchasesPerESP SET Numbertotalpurchases = Numbertotalpurchases + 1
+			WHERE EmployeeServicePack_id IN (	SELECT s.Service_pack_employee_id
+	                     						FROM service_pack s
+	                     						WHERE s.Id = NEW.Service_pack_id);
+	END IF;
+	end //
 delimiter ;
 
 DROP TRIGGER IF EXISTS numberTotalPurchasesPerESP_create;
@@ -31,28 +31,28 @@ DROP TRIGGER IF EXISTS numberTotalPurchasesPerESP_create;
 delimiter //
 CREATE DEFINER  = CURRENT_USER TRIGGER numberTotalPurchasesPerESP_create
     AFTER INSERT ON employeeServicePack FOR EACH ROW
-BEGIN
-INSERT INTO db2Project.numberTotalPurchasesPerESP(EmployeeServicePack_id)
-VALUES(NEW.Id);
-end //
+	BEGIN
+		INSERT INTO db2Project.numberTotalPurchasesPerESP(EmployeeServicePack_id)
+		VALUES(NEW.Id);
+	end //
 delimiter ;
 
---  TO BE TESTED *********************************
+
 DROP TRIGGER IF EXISTS purchaseToNumberTotalPurchasesPerESP_update;
 delimiter //
 CREATE DEFINER  = CURRENT_USER TRIGGER purchaseToNumberTotalPurchasesPerESP_update
-    AFTER UPDATE ON `order` FOR EACH ROW
-BEGIN
-    IF NEW.Isvalid = 1 THEN
-UPDATE numberTotalPurchasesPerESP SET Numbertotalpurchases = Numbertotalpurchases + 1
-WHERE EmployeeServicePack_id IN (SELECT s.Service_pack_employee_id
-                     FROM service_pack s
-                     WHERE s.Id = NEW.Service_pack_id);
-END IF;
-end //
+	AFTER UPDATE ON `order` FOR EACH ROW
+	BEGIN
+	    IF NEW.Isvalid = 1 THEN
+			UPDATE numberTotalPurchasesPerESP SET Numbertotalpurchases = Numbertotalpurchases + 1
+			WHERE EmployeeServicePack_id IN (SELECT s.Service_pack_employee_id
+	                     					FROM service_pack s
+	                     					WHERE s.Id = NEW.Service_pack_id);
+		END IF;
+	end //
 delimiter ;
 
--- *********************************
+
 
 -- Number of total purchases per package and validity period
 
@@ -75,11 +75,12 @@ DROP TRIGGER IF EXISTS numberTotalPurchasesPerESPAndVP_create;
 
 delimiter //
 CREATE DEFINER  = CURRENT_USER TRIGGER numberTotalPurchasesPerESPAndVP_create
-    AFTER INSERT ON offers FOR EACH ROW BEGIN
-    INSERT INTO numberTotalPurchasesPerESPAndValidityPeriod(EmployeeServicePack_id, Validity_period_id)
-    VALUES(NEW.EmployeeServicePack_id, NEW.Validity_period_id);
+    AFTER INSERT ON offers FOR EACH ROW 
+    BEGIN
+    	INSERT INTO numberTotalPurchasesPerESPAndValidityPeriod(EmployeeServicePack_id, Validity_period_id)
+    	VALUES(NEW.EmployeeServicePack_id, NEW.Validity_period_id);
 
-end //
+	end //
 delimiter ;
     
     
@@ -88,36 +89,38 @@ DROP TRIGGER IF EXISTS purchaseToNumberTotalPurchasesPerESPAndVP_new;
 
 delimiter //
 CREATE DEFINER  = CURRENT_USER TRIGGER purchaseToNumberTotalPurchasesPerESPAndVP_new
-    AFTER INSERT ON `order` FOR EACH ROW BEGIN
-    IF NEW.Isvalid = 1 THEN
-UPDATE numberTotalPurchasesPerESPAndValidityPeriod 
-SET TotalPurchases = TotalPurchases + 1
-WHERE (EmployeeServicePack_id, Validity_period_id) IN (SELECT s.Service_pack_employee_id, s.Validity_period_id
-                                     FROM db2Project.service_pack s
-                                     WHERE s.Id = NEW.Service_pack_id);
+    AFTER INSERT ON `order` FOR EACH ROW 
+    BEGIN
+    	IF NEW.Isvalid = 1 THEN
+			UPDATE numberTotalPurchasesPerESPAndValidityPeriod 
+			SET TotalPurchases = TotalPurchases + 1
+			WHERE (EmployeeServicePack_id, Validity_period_id) IN (SELECT s.Service_pack_employee_id, s.Validity_period_id
+                                     								FROM db2Project.service_pack s
+                                     								WHERE s.Id = NEW.Service_pack_id);
                                      
-END IF;
-end //
+		END IF;
+	end //
 delimiter ;
 
 
---  TO BE TESTED *********************************
+
 DROP TRIGGER IF EXISTS purchaseToNumberTotalPurchasesPerESPAndVP_update;
 
 delimiter //
 CREATE DEFINER  = CURRENT_USER TRIGGER purchaseToNumberTotalPurchasesPerESPAndVP_update
-    AFTER UPDATE ON `order` FOR EACH ROW BEGIN
-                                   IF NEW.Isvalid = 1 THEN
-UPDATE db2Project.numberTotalPurchasesPerESPAndValidityPeriod SET TotalPurchases = TotalPurchases + 1
-WHERE (EmployeeServicePack_id, Validity_period_id) IN (SELECT s.Service_pack_employee_id, s.Validity_period_id
-                                     FROM db2Project.service_pack s
-                                     WHERE s.Id = NEW.Service_pack_id);
+    AFTER UPDATE ON `order` FOR EACH ROW 
+    BEGIN
+       IF NEW.Isvalid = 1 THEN
+			UPDATE db2Project.numberTotalPurchasesPerESPAndValidityPeriod SET TotalPurchases = TotalPurchases + 1
+			WHERE (EmployeeServicePack_id, Validity_period_id) IN (SELECT s.Service_pack_employee_id, s.Validity_period_id
+                                     								FROM db2Project.service_pack s
+                                     								WHERE s.Id = NEW.Service_pack_id);
 
-END IF;
-end //
+		END IF;
+	end //
 delimiter ;
 
--- *********************************
+
 
 
 
@@ -140,12 +143,13 @@ DROP TRIGGER IF EXISTS ESPAddEntryInSalesPerPackage_create;
 
 delimiter //
 CREATE DEFINER  = CURRENT_USER TRIGGER ESPAddEntryInSalesPerPackage_create
-    AFTER INSERT ON employeeServicePack FOR EACH ROW BEGIN
+    AFTER INSERT ON employeeServicePack FOR EACH ROW 
+    BEGIN
 
-    INSERT INTO salesPerPackage(EmployeeServicePack_id)
-    VALUES(NEW.Id);
+	    INSERT INTO salesPerPackage(EmployeeServicePack_id)
+	    VALUES(NEW.Id);
 
-end //
+	end //
 delimiter ;
 
 
@@ -155,26 +159,26 @@ DROP TRIGGER IF EXISTS salesPerPackage_add;
 delimiter //
 CREATE DEFINER  = CURRENT_USER TRIGGER salesPerPackage_add
     AFTER INSERT ON `order` FOR EACH ROW
-BEGIN
-    DECLARE cp,tcop float;
-    IF NEW.Isvalid = 1 THEN --     --------------- perchè hai cambiato?
-SET cp := 	(SELECT sp.Costpackage
-			FROM service_pack sp
-			WHERE sp.Id = NEW.Service_pack_id);
+	BEGIN
+    	DECLARE cp,tcop float;
+    	IF NEW.Isvalid = 1 THEN 
+			SET cp := 	(SELECT sp.Costpackage
+						FROM service_pack sp
+						WHERE sp.Id = NEW.Service_pack_id);
 			
-SET tcop := 	(SELECT sp.Totalcostoptionalproducts
-				FROM service_pack sp
-				WHERE sp.Id = NEW.Service_pack_id);
+			SET tcop := 	(SELECT sp.Totalcostoptionalproducts
+							FROM service_pack sp
+							WHERE sp.Id = NEW.Service_pack_id);
 
 
-UPDATE salesPerPackage s -- ----------------------------------------------------------- modificata
-SET s.totalSalesWithOptionalProduct = s.totalSalesWithOptionalProduct + cp + tcop,
-    s.totalSalesWithoutOptionalProduct = s.totalSalesWithoutOptionalProduct + cp
-WHERE s.EmployeeServicePack_id IN (SELECT s.Service_pack_employee_id
-                       FROM service_pack s
-                       WHERE s.Id = NEW.Service_pack_id );
-END IF;
-end //
+			UPDATE salesPerPackage s
+			SET s.totalSalesWithOptionalProduct = s.totalSalesWithOptionalProduct + cp + tcop,
+			    s.totalSalesWithoutOptionalProduct = s.totalSalesWithoutOptionalProduct + cp
+			WHERE s.EmployeeServicePack_id IN (SELECT s.Service_pack_employee_id
+			                       				FROM service_pack s
+			                       				WHERE s.Id = NEW.Service_pack_id );
+		END IF;
+	end //
 delimiter ;
 
 
@@ -187,22 +191,23 @@ DROP TRIGGER IF EXISTS salesPerPackage_update;
 delimiter //
 CREATE DEFINER  = CURRENT_USER TRIGGER salesPerPackage_update
     AFTER UPDATE ON `order` FOR EACH ROW
-BEGIN
-    DECLARE cp,tcop float;
-    IF NEW.Isvalid = 1 THEN
-SELECT sp.Costpackage, sp.Totalcostoptionalproducts INTO cp,tcop
-FROM service_pack sp
-WHERE sp.Id = NEW.Service_pack_id;
+		BEGIN
+    		DECLARE cp,tcop float;
+    		IF NEW.Isvalid = 1 THEN
+				SELECT sp.Costpackage, sp.Totalcostoptionalproducts INTO cp,tcop
+				FROM service_pack sp
+				WHERE sp.Id = NEW.Service_pack_id;
 
-UPDATE salesPerPackage s
-SET s.totalSalesWithOptionalProduct = s.totalSalesWithOptionalProduct + cp + tcop,
-    s.totalSalesWithoutOptionalProduct = s.totalSalesWithoutOptionalProduct + cp
-WHERE s.EmployeeServicePack_id IN (SELECT s.Service_pack_employee_id
-                       FROM service_pack s
-                       WHERE s.Id = NEW.Service_pack_id );
-END IF;
-end //
+			UPDATE salesPerPackage s
+			SET s.totalSalesWithOptionalProduct = s.totalSalesWithOptionalProduct + cp + tcop,
+			    s.totalSalesWithoutOptionalProduct = s.totalSalesWithoutOptionalProduct + cp
+			WHERE s.EmployeeServicePack_id IN (SELECT s.Service_pack_employee_id
+			                       				FROM service_pack s
+			                       				WHERE s.Id = NEW.Service_pack_id );
+			END IF;
+		end //
 delimiter ;
+
 -- ************************************************
 
 
@@ -426,16 +431,16 @@ DROP TRIGGER IF EXISTS insolventUser_update;
 delimiter //
 CREATE DEFINER  = CURRENT_USER trigger insolventUser_update
     after UPDATE on `user` FOR EACH ROW
-BEGIN
-    IF NEW.Flag_Ins = 1 THEN
-        IF(NEW.Id NOT IN (SELECT User_id FROM insolvent)) THEN
-            INSERT INTO insolvent
-            VALUES (NEW.Id);
-	END IF;
-	ELSE
-	DELETE FROM insolvent i
-	WHERE i.User_id = NEW.Id;
-	END IF;
+	BEGIN
+	    IF NEW.Flag_Ins = 1 THEN
+	        IF(NEW.Id NOT IN (SELECT User_id FROM insolvent)) THEN
+	            INSERT INTO insolvent
+	            VALUES (NEW.Id);
+		END IF;
+		ELSE
+			DELETE FROM insolvent i
+			WHERE i.User_id = NEW.Id;
+		END IF;
 	end //
 delimiter ;
 
