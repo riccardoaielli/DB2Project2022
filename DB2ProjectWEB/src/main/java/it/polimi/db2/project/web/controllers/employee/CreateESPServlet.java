@@ -149,6 +149,24 @@ public class CreateESPServlet extends HttpServlet {
     	EmployeeServicePackEntity newESP = null;
     	String newESP_message = "The name for the Employee Service Package is already in use!";
         
+    	if(ValidityPIds.isEmpty() || servicesIds.isEmpty() ) {
+    		newESP_message = "Missing required parameters!";
+    		 path = "/WEB-INF/employee/newESP.html";
+    	      ServletContext servletContext = getServletContext();
+    	        resp.setContentType("text/html");
+    	    	WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
+    	    	
+    	        ctx.setVariable("newESP_message", newESP_message);
+    	        List<ServiceEntity> services = sservice.findAllService();
+    	        ctx.setVariable("services", services);
+    	        List<ValidityPeriodEntity> val_periods = VPservice.findAllValidityPeriod();
+    	        ctx.setVariable("val_periods", val_periods);
+    	        
+    	        List<OptionalProductEntity> optional_products = OPservice.findAllOptionalProduct();
+    	        ctx.setVariable("optional_products", optional_products);
+    	    	templateEngine.process(path, ctx, resp.getWriter());
+    	    	return;
+    	}
  
             
         newESP = ESPservice.addNewEmployeeServicePack(name, servicesIds, ValidityPIds, OptionalPStrings);
