@@ -11,7 +11,7 @@ It consists in developing a consumer application and an employee application usi
 For more details read the official [specifications](/Specifications.pdf).
 
 ## Presentation
-For more details read the presentation [presentation](/Presentation.pdf).
+For more details about our work read the presentation [presentation](/Presentation.pdf).
 
 ## Group members
 - [__Riccardo Aielli__](https://github.com/riccardoaielli)
