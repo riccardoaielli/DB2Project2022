@@ -7,6 +7,7 @@ Evaluation: 15,5/16
 It consists in developing a consumer application and an employee application using the following technologies: 
 * Java Platform Enterprise Edition (Java EE) in particular Java Persistence API (JPA)
 * MySQL Data Base
+<br>
 For more details read the official [specifications](/Specifications.pdf).
 
 ## Presentation
