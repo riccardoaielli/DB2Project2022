@@ -21,4 +21,4 @@ For more details about our work read the [presentation](/Presentation.pdf).
 
 ## Group members
 - [__Riccardo Aielli__](https://github.com/riccardoaielli)
-- [__Riccardo_Casciotti__](https://github.com/RiccardoCasciotti)
+- [__Riccardo Casciotti__](https://github.com/RiccardoCasciotti)
